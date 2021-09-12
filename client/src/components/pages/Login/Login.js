@@ -114,7 +114,7 @@ function Login() {
 export default Login;
 
 export const SignupContainer = styled.div`
-  width: 47%;
+  width: 480px;
   margin: auto;
   display: flex;
   flex-direction: column;

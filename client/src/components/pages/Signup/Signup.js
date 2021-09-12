@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   emailField: {
     marginBottom: theme.spacing(3),
     marginRight: theme.spacing(2),
+    width: '52ch',
   },
 }));
 
@@ -66,31 +67,32 @@ function Signup() {
       <Title>Sign up</Title>
 
       <form className={classes.root} onSubmit={formik.handleSubmit}>
-        <TextField
-          id='firstName'
-          name='firstName'
-          label='First Name'
-          type='text'
-          value={formik.values.firstName}
-          onChange={formik.handleChange}
-          error={formik.touched.firstName && Boolean(formik.errors.firstName)}
-          helperText={formik.touched.firstName && formik.errors.firstName}
-          className={classes.textField}
-          variant='outlined'
-        />
-        <TextField
-          id='lastName'
-          name='lastName'
-          label='Last Name'
-          type='text'
-          value={formik.values.lastName}
-          onChange={formik.handleChange}
-          error={formik.touched.lastName && Boolean(formik.errors.lastName)}
-          helperText={formik.touched.lastName && formik.errors.lastName}
-          className={classes.textField}
-          variant='outlined'
-        />
-
+        <div>
+          <TextField
+            id='firstName'
+            name='firstName'
+            label='First Name'
+            type='text'
+            value={formik.values.firstName}
+            onChange={formik.handleChange}
+            error={formik.touched.firstName && Boolean(formik.errors.firstName)}
+            helperText={formik.touched.firstName && formik.errors.firstName}
+            className={classes.textField}
+            variant='outlined'
+          />
+          <TextField
+            id='lastName'
+            name='lastName'
+            label='Last Name'
+            type='text'
+            value={formik.values.lastName}
+            onChange={formik.handleChange}
+            error={formik.touched.lastName && Boolean(formik.errors.lastName)}
+            helperText={formik.touched.lastName && formik.errors.lastName}
+            className={classes.textField}
+            variant='outlined'
+          />
+        </div>
         <TextField
           id='email'
           name='email'
@@ -101,7 +103,7 @@ function Signup() {
           helperText={formik.touched.email && formik.errors.email}
           className={classes.emailField}
           variant='outlined'
-          fullWidth
+          // fullWidth
         />
 
         <div>
@@ -146,7 +148,7 @@ function Signup() {
 export default Signup;
 
 export const SignupContainer = styled.div`
-  width: 47%;
+  width: 480px;
   margin: auto;
   display: flex;
   flex-direction: column;
@@ -155,7 +157,7 @@ export const SignupContainer = styled.div`
     align-items: flex-end;
     width: 20%;
     margin-left: auto;
-    margin-right: 10px;
+    margin-right: 20px;
   }
 
   height: 100%;
