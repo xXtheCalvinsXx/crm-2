@@ -1,10 +1,11 @@
+import { Container } from '@material-ui/core';
 import React from 'react';
 
 function ContactView() {
   return (
-    <div>
-      <p>I am a page</p>;
-    </div>
+    <Container size= "sm">
+      <p>CONTACTS</p>
+    </Container>
   );
 }
 

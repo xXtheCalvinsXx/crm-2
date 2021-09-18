@@ -1,20 +1,34 @@
-import React from 'react';
-import { Switch, Route, BrowserRouter as Router } from 'react-router-dom';
-import Timeline from './components/pages/TimelineView/Timeline';
-// import ContactView from './components/pages/ContactView/ContactView';
-import Home from './components/pages/Home';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import Home from './components/pages/Home'
+import Contacts from './components/pages/ContactView/ContactView'
+import { createTheme, ThemeProvider } from '@material-ui/core'
+import SideNavBar from './components/pages/SideNavBar/SideNavBar'
+
+
+const theme = createTheme({
+  palette: {
+    primary: {
+      main: '#fefefe'
+    }
+  }
+})
 
 function App() {
   return (
-    <div className='App'>
-      <p>I am a page!</p>
+    <ThemeProvider theme={theme}>
       <Router>
-        <Switch>
-          <Route path='/home' component={Home} />
-          <Route path='/timeline' component={Timeline} />
-        </Switch>
+        <SideNavBar>
+          <Switch>
+            <Route exact path="/">
+              <Home />
+            </Route>
+            <Route path="/contacts">
+              <Contacts />
+            </Route>
+          </Switch>
+        </SideNavBar>
       </Router>
-    </div>
+    </ThemeProvider>
   );
 }
 
