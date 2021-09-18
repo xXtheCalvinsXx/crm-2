@@ -131,16 +131,17 @@ function Signup() {
             className={classes.textField}
             variant='outlined'
           />
+
+          <Button
+            id='SubmitButton'
+            color='primary'
+            variant='outlined'
+            type='submit'
+          >
+            Sign up
+          </Button>
         </div>
       </form>
-      <Button
-        id='SubmitButton'
-        color='primary'
-        variant='outlined'
-        type='submit'
-      >
-        Sign up
-      </Button>
     </SignupContainer>
   );
 }

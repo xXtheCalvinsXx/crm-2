@@ -5,10 +5,15 @@ import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
+import { TextField, CircularProgress } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+
 import { Title } from '../../../styles';
+import axios from 'axios';
+
 const textWidth = '25ch';
+
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -17,30 +22,25 @@ const useStyles = makeStyles((theme) => ({
   textField: {
     marginBottom: theme.spacing(3),
   },
+  customError: {
+    color: 'red',
+    fontSize: '0.8rem',
+    marginTop: 10,
+  },
 }));
+
+const validationSchema = Yup.object({
+  email: Yup.string('Enter your email')
+    .email('Enter a valid email')
+    .required('Email is required'),
+  password: Yup.string('Enter your password').required('Password is required'),
+});
 
 function Login() {
   const history = useHistory();
-  //   const navigateToSignup = () => history.push('/signup');
-
   const classes = useStyles();
-  const validationSchema = Yup.object({
-    email: Yup.string('Enter your email')
-      .email('Enter a valid email')
-      .required('Email is required'),
-    password: Yup.string('Enter your password')
-      .min(8, 'Password should be of minimum 8 characters length')
-      .required('Password is required'),
-    password2: Yup.string()
-      .oneOf([Yup.ref('password'), null], 'Passwords must match.')
-      .required('Password confirmation is required'),
-    firstName: Yup.string('Enter your first name')
-      .matches(/[a-zA-Z]/, 'Password can only contain alphabetical letters.')
-      .required(),
-    lastName: Yup.string('Enter your first name')
-      .matches(/[a-zA-Z]/, 'Password can only contain alphabetical letters.')
-      .required(),
-  });
+  const [loading, setLoading] = useState(false);
+  const [axiosErrors, setAxiosErrors] = useState({});
 
   const formik = useFormik({
     initialValues: {
@@ -50,11 +50,30 @@ function Login() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(values);
+      console.log('yeet!');
+      const loginVariables = {
+        email: values.email,
+        password: values.password,
+      };
+
+      // setLoading(true);
+      // axios
+      //   .post('/login', loginVariables)
+      //   .then((res) => {
+      //     console.log(res);
+      //     setLoading(false);
+      //     history.push('/timeline');
+      //   })
+      //   .catch((err) => {
+      //     setAxiosErrors(err);
+      //     setLoading(false);
+      //     console.log(axiosErrors);
+      //   });
     },
   });
 
   return (
-    <SignupContainer id='Login Container'>
+    <LoginContainer id='Login Container'>
       <Title>Login</Title>
 
       <form className={classes.root} onSubmit={formik.handleSubmit}>
@@ -64,8 +83,16 @@ function Login() {
           label='Email'
           value={formik.values.email}
           onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
+          error={
+            axiosErrors.email
+              ? axiosErrors.email
+              : formik.touched.email && Boolean(formik.errors.email)
+          }
+          helperText={
+            axiosErrors.email
+              ? axiosErrors.email
+              : formik.touched.email && formik.errors.email
+          }
           variant='outlined'
           fullWidth
           className={classes.textField}
@@ -84,19 +111,30 @@ function Login() {
           fullWidth
           className={classes.textField}
         />
-      </form>
-      <div>
         <Button
           id='SubmitButton'
           color='primary'
           variant='outlined'
           type='submit'
+          onClick={() => {
+            loading && (
+              <CircularProgress size={30} className={classes.progress} />
+            );
+          }}
         >
           Login
         </Button>
+      </form>
+
+      {axiosErrors.general && (
+        <Typography variant='body2' className={classes.customError}>
+          {axiosErrors.general}
+        </Typography>
+      )}
+      <div>
         <Button
           type='button'
-          id='SignupButton'
+          id='SubmitButton'
           color='primary'
           variant='outlined'
           onClick={() => {
@@ -107,13 +145,13 @@ function Login() {
           No Account? Click to Signup
         </Button>
       </div>
-    </SignupContainer>
+    </LoginContainer>
   );
 }
 
 export default Login;
 
-export const SignupContainer = styled.div`
+export const LoginContainer = styled.div`
   width: 480px;
   margin: auto;
   display: flex;

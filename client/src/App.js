@@ -5,29 +5,41 @@ import {
   BrowserRouter as Router,
   useHistory,
 } from 'react-router-dom';
-import Timeline from './components/pages/TimelineView/Timeline';
+import { connect } from 'react-redux';
 
-// import ContactView from './components/pages/ContactView/ContactView';
-import Home from './components/pages/Home';
-import Signup from './components/pages/Signup/Signup';
-import Login from './components/pages/Login/Login';
+// redux
+import { setCurrentUser } from './redux/user/user.actions';
+
+// styling
 import { GlobalStyles, Title } from './styles.js';
 
+// components
+import Timeline from './components/pages/TimelineView/Timeline';
+import Header from './components/header/Header';
+import Signup from './components/pages/Signup/Signup';
+import Login from './components/pages/Login/Login';
+
 function App() {
+  fetch('https://jsonplaceholder.typicode.com/users')
+    .then((response) => response.json())
+    .then((json) => console.log(json));
+
   let history = useHistory();
   return (
     <div className='App'>
       <GlobalStyles />
-      <Title>CRM</Title>
-      <Router>
-        <Switch>
-          <Route path='/home' component={Login} />
-          <Route path='/timeline' component={Timeline} />
-          <Route path='/signup' component={Signup} />
-        </Switch>
-      </Router>
+      <Header />
+
+      <Switch>
+        <Route exact path='/' component={Login} />
+        <Route path='/timeline' component={Timeline} />
+        <Route path='/signup' component={Signup} />
+      </Switch>
     </div>
   );
 }
 
-export default App;
+const mapDispatchToProps = (dispatch) => ({
+  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+});
+export default connect(null)(App);
