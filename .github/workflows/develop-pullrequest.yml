@@ -19,7 +19,6 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - run: cd /home/runner/work/crm-2/crm-2/client
     - name: Use Node.js ${{ matrix.node-version }}
       uses: actions/setup-node@v2
       with:
