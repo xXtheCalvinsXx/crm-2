@@ -1,13 +1,15 @@
-import React, { useState, useEffect } from 'react';
-// import { Formik } from 'formik';
+import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
-import AccessAlarmIcon from '@material-ui/icons/AccessAlarm';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { Title } from '../../../styles';
+import { createUserWithEmailAndPassword } from 'firebase/auth';
+import { auth } from '../../../firebase/firebaseUtils';
+import userSignUp from '../../../firebase/userSignUp';
+import Alert from '@mui/material/Alert';
 
 const textWidth = '25ch';
 const useStyles = makeStyles((theme) => ({
@@ -26,9 +28,14 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
     width: '52ch',
   },
+  alert: {
+    marginTop: theme.spacing(10),
+  },
 }));
 
 function Signup() {
+  const [signUpError, setSignUpError] = useState('');
+
   const classes = useStyles();
   const validationSchema = Yup.object({
     email: Yup.string('Enter your email')
@@ -57,8 +64,37 @@ function Signup() {
       password2: '',
     },
     validationSchema: validationSchema,
-    onSubmit: (values) => {
+    onSubmit: async (values) => {
       console.log(values);
+      setSignUpError('');
+
+      // creating user
+      try {
+        await createUserWithEmailAndPassword(
+          auth,
+          values.email,
+          values.password
+        )
+          .then(async (userCredentials) => {
+            console.log(userCredentials);
+
+            try {
+              await userSignUp(userCredentials, values);
+            } catch (error) {
+              console.log('Error calling signup user', error);
+            }
+          })
+          .catch((err) => {
+            console.error(err);
+            if (err.code === 'auth/email-already-in-use') {
+              setSignUpError('Email is already is use');
+            } else {
+              setSignUpError('Something went wrong, please try again');
+            }
+          });
+      } catch (error) {
+        console.log(error);
+      }
     },
   });
 
@@ -140,6 +176,13 @@ function Signup() {
           >
             Sign up
           </Button>
+          {signUpError ? (
+            <Alert severity='error' className={classes.alert}>
+              {signUpError}
+            </Alert>
+          ) : (
+            ''
+          )}
         </div>
       </form>
     </SignupContainer>
@@ -154,11 +197,12 @@ export const SignupContainer = styled.div`
   display: flex;
   flex-direction: column;
   #SubmitButton {
-    margin-top: 25px;
+    margin-top: 10px;
     align-items: flex-end;
     width: 20%;
     margin-left: auto;
     margin-right: 20px;
+    float: right;
   }
 
   height: 100%;
