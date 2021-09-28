@@ -12,12 +12,29 @@ import { setCurrentUser } from './redux/user/user.actions';
 
 // styling
 import { GlobalStyles, Title } from './styles.js';
+import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 
 // components
 import Timeline from './components/pages/TimelineView/Timeline';
 import Header from './components/header/Header';
 import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
+import DatabaseCard from './components/pages/DatabaseView/DatabaseCard';
+
+const theme = createMuiTheme({
+  typography: {
+    fontFamily: [
+      'Open Sans',
+      'old',
+    ].join(','),
+  },
+  palette: {
+    primary: {
+      main: '#cfd8dc'
+    }
+  }  
+});
+
 
 function App() {
   fetch('https://jsonplaceholder.typicode.com/users')
@@ -26,16 +43,19 @@ function App() {
 
   let history = useHistory();
   return (
-    <div className='App'>
-      <GlobalStyles />
-      <Header />
+    <ThemeProvider theme={theme}>
+      <div className='App'>
+        <GlobalStyles />
+        <Header />
 
-      <Switch>
-        <Route exact path='/' component={Login} />
-        <Route path='/timeline' component={Timeline} />
-        <Route path='/signup' component={Signup} />
-      </Switch>
-    </div>
+        <Switch>
+          <Route exact path='/' component={Login} />
+          <Route path='/timeline' component={Timeline} />
+          <Route path='/signup' component={Signup} />
+          <Route path='/databasecard' component={DatabaseCard} />
+        </Switch>
+      </div>
+    </ThemeProvider>
   );
 }
 
