@@ -1,15 +1,23 @@
 import React, { useState } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
+
+// styling
 import styled from 'styled-components';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { Title } from '../../../styles';
+import Alert from '@mui/material/Alert';
+
+// firebase
 import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../firebase/firebaseUtils';
 import userSignUp from '../../../firebase/userSignUp';
-import Alert from '@mui/material/Alert';
+
+// redux
+import { setCurrentUser } from '../../../redux/user/user.actions';
+import { connect } from 'react-redux';
 
 const textWidth = '25ch';
 const useStyles = makeStyles((theme) => ({
@@ -77,9 +85,9 @@ function Signup() {
         )
           .then(async (userCredentials) => {
             console.log(userCredentials);
-
             try {
               await userSignUp(userCredentials, values);
+              setCurrentUser(userCredentials);
             } catch (error) {
               console.log('Error calling signup user', error);
             }
@@ -189,7 +197,17 @@ function Signup() {
   );
 }
 
-export default Signup;
+// const mapStateToProps = ({ state }) => ({
+//   currentUser: state.currentUser,
+// });
+
+// const mapDispatchToProps = (dispatch) => ({
+//   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+// });
+
+export default connect()(Signup);
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Signup);
 
 export const SignupContainer = styled.div`
   width: 480px;
