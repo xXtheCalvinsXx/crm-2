@@ -23,20 +23,10 @@ import Login from './components/pages/Login/Login';
 
 // firebase
 import { auth } from './firebase/firebaseUtils';
-import { onAuthStateChanged } from 'firebase/auth';
+// import { onAuthStateChanged } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
-// firebase
-
 function App() {
-  // onAuthStateChanged(auth, (user) => {
-  //   if (user) {
-  //     const uid = user.uid;
-  //     // ...
-  //   } else {
-  //     <Redirect to='/signin' />;
-  //   }
-  // });
   const [user, loading, error] = useAuthState(auth);
 
   let history = useHistory();
@@ -46,10 +36,8 @@ function App() {
       <Header />
 
       <Switch>
-        {/* <Route exact path='/' component={Login} /> */}
         <PrivateRoute exact path='/' component={Timeline} />
-        {/* <Route path='/signup' component={Signup} />
-        <Route path='/signin' component={Login} /> */}
+
         <Route
           exact
           path='/signup'

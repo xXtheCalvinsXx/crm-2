@@ -60,7 +60,7 @@ function Login() {
         .then((userCredential) => {
           // Signed in
           console.log('signed in!', userCredential.user);
-          // setCurrentUser(userCredential.user);
+          setCurrentUser(userCredential.user);
           history.push('/timeline');
         })
         .catch((error) => {
