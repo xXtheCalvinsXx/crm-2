@@ -29,6 +29,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 function App() {
   const [user, loading, error] = useAuthState(auth);
 
+  console.log(user);
   let history = useHistory();
   return (
     <div className='App'>
