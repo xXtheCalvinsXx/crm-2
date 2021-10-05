@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
+import { userContext } from '../../../appContext/userContext';
+import { useContext } from 'react';
+
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
@@ -61,7 +64,7 @@ function Login() {
           // Signed in
           console.log('signed in!', userCredential.user);
           setCurrentUser(userCredential.user);
-          history.push('/timeline');
+          history.push('/');
         })
         .catch((error) => {
           setLoginError(error);
