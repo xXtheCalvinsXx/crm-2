@@ -22,7 +22,9 @@ const drawerWidth = 60;
 const useStyles = makeStyles((theme) => ({
   page: {
     background: '#f9f9f9',
-    width: '100%',
+    width: '100vw',
+    height: '100vh',
+    //width: '100%',
     padding: theme.spacing(3),
   },
   root: {
