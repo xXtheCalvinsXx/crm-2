@@ -75,30 +75,30 @@ function App() {
         <CircularProgress size={100} />
       </Box>
     );
-  }
-  return (
-    <div className='App'>
-      <GlobalStyles />
-      <Header />
+  } else
+    return (
+      <div className='App'>
+        <GlobalStyles />
+        <Header />
 
-      <userContext.Provider value={user}>
-        <Switch>
-          <PrivateRoute exact path='/' component={Timeline} />
+        <userContext.Provider value={user}>
+          <Switch>
+            <PrivateRoute exact path='/' component={Timeline} />
 
-          <Route
-            exact
-            path='/signup'
-            render={() => (user ? <Redirect to='/' /> : <Signup />)}
-          />
-          <Route
-            exact
-            path='/signin'
-            render={() => (user ? <Redirect to='/' /> : <Login />)}
-          />
-        </Switch>
-      </userContext.Provider>
-    </div>
-  );
+            <Route
+              exact
+              path='/signup'
+              render={() => (user ? <Redirect to='/' /> : <Signup />)}
+            />
+            <Route
+              exact
+              path='/signin'
+              render={() => (user ? <Redirect to='/' /> : <Login />)}
+            />
+          </Switch>
+        </userContext.Provider>
+      </div>
+    );
 }
 
 const mapStateToProps = ({ user }) => ({

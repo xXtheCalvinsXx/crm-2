@@ -44,6 +44,7 @@ const validationSchema = Yup.object({
 });
 
 function Login() {
+  console.log('login page');
   const history = useHistory();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
