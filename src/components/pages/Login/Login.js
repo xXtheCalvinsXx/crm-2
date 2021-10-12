@@ -1,8 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect, useHistory } from 'react-router-dom';
-import { userContext } from '../../../appContext/userContext';
-import { useContext } from 'react';
-
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import styled from 'styled-components';
@@ -44,7 +41,6 @@ const validationSchema = Yup.object({
 });
 
 function Login() {
-  console.log('login page');
   const history = useHistory();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -65,7 +61,7 @@ function Login() {
           // Signed in
           console.log('signed in!', userCredential.user);
           setCurrentUser(userCredential.user);
-          history.push('/');
+          history.push('/timeline');
         })
         .catch((error) => {
           setLoginError(error);

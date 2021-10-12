@@ -42,7 +42,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Signup() {
-  console.log('signup page');
   const [signUpError, setSignUpError] = useState('');
 
   const classes = useStyles();
