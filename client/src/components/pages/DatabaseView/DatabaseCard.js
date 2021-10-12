@@ -3,7 +3,7 @@ import React from 'react';
 function DatabaseCard() {
   return (
     <div>
-      <p>I am a page</p>;
+      <p>Database Card View!</p>
     </div>
   );
 }

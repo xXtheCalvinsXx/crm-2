@@ -14,6 +14,8 @@ import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom'
+import { Grid, Button, Divider } from '@material-ui/core';
+import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -115,6 +117,26 @@ export default function DatabaseList() {
   return (
     <Container>
       <div style={{ height: '90vh', width: '100%' }}>
+      <Grid
+        justifyContent="space-between"
+        container 
+        spacing={24}
+        >
+          <Grid item>
+            </Grid>
+          <Grid item>
+            <div>
+              <Button endIcon={<CalendarTodayIcon /> } raised color="accent" onClick={() => history.push('/card')}>
+                Change View
+              </Button>
+            </div>
+          </Grid>
+        </Grid>
+
+        <Divider/>
+        <br/>
+        <br/>
+
         <DataGrid
           components={{ Toolbar: QuickSearchToolbar }}
           rows={rows}

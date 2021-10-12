@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import Home from './components/pages/Home'
 import Contacts from './components/pages/DatabaseView/DatabaseList'
+import Card from './components/pages/DatabaseView/DatabaseCard'
 import View from './components/pages/ContactView/ContactView'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 import SideNavBar from './components/pages/SideNavBar/SideNavBar'
@@ -34,6 +35,9 @@ function App() {
             </Route>
             <Route path="/view">
               <View />
+            </Route>
+            <Route path="/card">
+              <Card />
             </Route>
           </Switch>
         </SideNavBar>

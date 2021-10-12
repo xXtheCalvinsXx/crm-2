@@ -1,8 +1,7 @@
 import React from 'react';
-import { Grid, Button, Divider, Typography } from '@material-ui/core';
+import { Divider, Typography } from '@material-ui/core';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { useHistory } from 'react-router';
 import { Container } from '@material-ui/core';
 
@@ -70,21 +69,6 @@ function Home() {
       <div className={classes.root}>
         
         <div className={classes.page}>
-          <Grid
-          justifyContent="space-between"
-          container 
-          spacing={24}
-          >
-            <Grid item>
-            </Grid>
-            <Grid item>
-              <div>
-                <Button endIcon={<CalendarTodayIcon /> } raised color="accent">
-                  Change View
-                </Button>
-              </div>
-            </Grid>
-          </Grid>
           <Divider/>
           <br/>
           <br/>
