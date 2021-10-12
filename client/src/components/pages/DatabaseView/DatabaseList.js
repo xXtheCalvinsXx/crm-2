@@ -119,7 +119,7 @@ export default function DatabaseList() {
           components={{ Toolbar: QuickSearchToolbar }}
           rows={rows}
           columns={data.columns}
-          onClick={() => history.push('/MyAccount')}
+          onCellClick={() => history.push('/view')} //Need to link to particular contact
           componentsProps={{
             toolbar: {
               value: searchText,

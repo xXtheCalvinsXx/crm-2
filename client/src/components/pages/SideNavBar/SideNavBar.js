@@ -8,7 +8,6 @@ import { useHistory, useLocation } from 'react-router-dom'
 import List from '@material-ui/core/List'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
-//import ListItemText from '@material-ui/core/ListItemText'
 import IconButton from '@material-ui/core/IconButton'
 import HomeIcon from '@material-ui/icons/Home';
 import ContactsIcon from '@material-ui/icons/Contacts';
@@ -21,7 +20,7 @@ const drawerWidth = 60;
 
 const useStyles = makeStyles((theme) => ({
   page: {
-    background: '#f9f9f9',
+    background: '#F9F9F9',
     width: '100vw',
     height: '100vh',
     //width: '100%',
