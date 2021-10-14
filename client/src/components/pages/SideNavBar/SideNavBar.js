@@ -1,14 +1,12 @@
 import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import Drawer from '@material-ui/core/Drawer';
-import AppBar from '@material-ui/core/AppBar';
-import Toolbar from '@material-ui/core/Toolbar';
-import Grid from '@material-ui/core/Grid';
-import { useHistory, useLocation } from 'react-router-dom'
-import List from '@material-ui/core/List'
-import ListItem from '@material-ui/core/ListItem'
-import ListItemIcon from '@material-ui/core/ListItemIcon'
-import IconButton from '@material-ui/core/IconButton'
+
+import { 
+  Drawer, AppBar, Toolbar,
+  Grid, List, ListItem, ListItemIcon,
+  IconButton } 
+  from '@material-ui/core';
+
 import HomeIcon from '@material-ui/icons/Home';
 import ContactsIcon from '@material-ui/icons/Contacts';
 import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
@@ -16,15 +14,16 @@ import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import AccountCircleIcon from '@material-ui/icons/AccountCircle';
 
+import { useHistory, useLocation } from 'react-router-dom'
+
 const drawerWidth = 60;
 
 const useStyles = makeStyles((theme) => ({
   page: {
-    background: '#F9F9F9',
+    background: 'white',
     width: '100vw',
     height: '100vh',
-    //width: '100%',
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
   },
   root: {
     display: 'flex',
@@ -35,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
   drawer: {
     width: drawerWidth,
-    flexShrink: 0,
+    flexShrink: 0,  
   },
   drawerPaper: {
     width: 60,
@@ -47,10 +46,10 @@ const useStyles = makeStyles((theme) => ({
   content: {
     flexGrow: 1,
     backgroundColor: theme.palette.background.default,
-    padding: theme.spacing(3),
+    padding: theme.spacing(1),
   },
   active : {
-    background : "#f4f4f4"
+    background : "#F4F4F4"
   }
 }));
 

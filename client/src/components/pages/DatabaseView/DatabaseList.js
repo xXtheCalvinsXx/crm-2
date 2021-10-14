@@ -1,20 +1,19 @@
-import * as React from 'react';
+import React, { useEffect } from 'react';
 import PropTypes from 'prop-types';
-import IconButton from '@material-ui/core/IconButton'
-import TextField from '@material-ui/core/TextField';
+import { 
+  Grid, Button, Divider, IconButton, TextField }
+   from '@material-ui/core';
 import {
   DataGrid,
-  GridToolbarDensitySelector,
   GridToolbarFilterButton,
 } from '@material-ui/data-grid';
-import { useDemoData } from '@material-ui/x-grid-data-generator';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
+import AddSharpIcon from '@material-ui/icons/AddSharp';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom'
-import { Grid, Button, Divider } from '@material-ui/core';
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 
 function escapeRegExp(value) {
@@ -32,10 +31,20 @@ const useStyles = makeStyles(
         alignItems: 'flex-start',
         flexWrap: 'wrap',
       },
-      textField: {
-        [theme.breakpoints.down('l')]: {
-          width: '100%',
+      grid: {
+        '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus': {
+          outline: 'none',
         },
+        border: 0,
+        overflow: "auto",
+        overflowX: 'hidden',
+      },
+      textField: {
+        //[theme.breakpoints.down('l')]: {
+          //width: '100%',
+        //},
+        width : "90%",
+        borderBottom : "none",
         margin: theme.spacing(1, 0.5, 1.5),
         '& .MuiSvgIcon-root': {
           marginRight: theme.spacing(0.5),
@@ -48,17 +57,24 @@ const useStyles = makeStyles(
   { defaultTheme },
 );
 
+const heading = [
+  { field: 'id', headerName: 'ID', width: 100 },
+  { field: "username", headerName: "Username", width: 200 },
+  { field: "name", headerName: "Name", width: 250 },
+  { field: "email", headerName: "Email", width: 300 },
+  { field: "phone", headerName: "Phone", width: 150 },
+  { field: 'website', headerName: "Web Link", width: 200 }
+]
+
 function QuickSearchToolbar(props) {
   const classes = useStyles();
 
   return (
     <div className={classes.root}>
-      <div>
-        <GridToolbarFilterButton />
-        <GridToolbarDensitySelector />
-      </div>
       <TextField
         variant="standard"
+        //fullWidth 
+        //id="fullWidth"
         value={props.value}
         onChange={props.onChange}
         placeholder="Search"
@@ -78,6 +94,11 @@ function QuickSearchToolbar(props) {
           ),
         }}
       />
+
+      <div>
+        <GridToolbarFilterButton />
+      </div>
+
     </div>
   );
 }
@@ -89,20 +110,25 @@ QuickSearchToolbar.propTypes = {
 };
 
 export default function DatabaseList() {
+  const classes = useStyles();
   const history = useHistory()
-  const { data } = useDemoData({
-    dataSet: 'Commodity',
-    rowLength: 100,
-    maxColumns: 6,
-  });
+
+  const [rows, setRows] = React.useState([]);
+
+  useEffect(() => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then(resp => resp.json())
+      .then(resp => {
+        setRows(resp)
+      })
+  }, [])
 
   const [searchText, setSearchText] = React.useState('');
-  const [rows, setRows] = React.useState(data.rows);
 
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-    const filteredRows = data.rows.filter((row) => {
+    const filteredRows = rows.filter((row) => {
       return Object.keys(row).some((field) => {
         return searchRegex.test(row[field].toString());
       });
@@ -111,23 +137,27 @@ export default function DatabaseList() {
   };
 
   React.useEffect(() => {
-    setRows(data.rows);
-  }, [data.rows]);
+    setRows(rows);
+  }, [rows]);
 
   return (
     <Container>
-      <div style={{ height: '90vh', width: '100%' }}>
-      <Grid
-        justifyContent="space-between"
-        container 
-        spacing={24}
-        >
+      <div style={{ height: '85vh', width: '100%' }}>
+        <Grid
+          justifyContent="space-between"
+          container 
+          spacing={24}
+          >
           <Grid item>
             </Grid>
           <Grid item>
             <div>
-              <Button endIcon={<CalendarTodayIcon /> } raised color="accent" onClick={() => history.push('/card')}>
+              <Button startIcon={<CalendarTodayIcon /> } raised color="accent" onClick={() => history.push('/card')}>
                 Change View
+              </Button>
+
+              <Button startIcon={<AddSharpIcon /> } raised color="accent">
+                Add Contact
               </Button>
             </div>
           </Grid>
@@ -138,9 +168,12 @@ export default function DatabaseList() {
         <br/>
 
         <DataGrid
+          className={classes.grid}
+          rowHeight={65}
+          //rowsPerPageOptions={[]}
           components={{ Toolbar: QuickSearchToolbar }}
           rows={rows}
-          columns={data.columns}
+          columns= {heading}
           onCellClick={() => history.push('/view')} //Need to link to particular contact
           componentsProps={{
             toolbar: {
