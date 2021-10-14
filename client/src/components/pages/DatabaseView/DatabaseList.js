@@ -61,8 +61,8 @@ const heading = [
   { field: 'id', headerName: 'ID', width: 100 },
   { field: "username", headerName: "Username", width: 200 },
   { field: "name", headerName: "Name", width: 250 },
-  { field: "email", headerName: "Email", width: 300 },
-  { field: "phone", headerName: "Phone", width: 150 },
+  { field: "email", headerName: "Email", width: 250 },
+  { field: "phone", headerName: "Phone", width: 200 },
   { field: 'website', headerName: "Web Link", width: 200 }
 ]
 
