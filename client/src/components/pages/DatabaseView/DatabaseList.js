@@ -121,6 +121,7 @@ export default function DatabaseList() {
       .then(resp => {
         setRows(resp)
       })
+      .catch(error => alert('Error! ' + error.message))
   }, [])
 
   const [searchText, setSearchText] = React.useState('');
