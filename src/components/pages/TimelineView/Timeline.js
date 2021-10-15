@@ -1,15 +1,12 @@
 import React from 'react';
-import { Drawer, AppBar, Toolbar, Grid, Button, IconButton, Divider, Typography } from '@material-ui/core';
+import { Drawer, AppBar, Toolbar, Grid, IconButton, Typography } from '@material-ui/core';
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import ContactsIcon from '@material-ui/icons/Contacts';
-import ArrowLeftIcon from '@material-ui/icons/ArrowLeft';
-import ArrowRightIcon from '@material-ui/icons/ArrowRight';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import TuneIcon from '@material-ui/icons/Tune';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import { useHistory } from 'react-router';
+import Layout from '../../layout/Layout';
 
 const drawerWidth = 40;
 
@@ -55,7 +52,10 @@ const useStyles = makeStyles((theme) => ({
   },
   cell: {
     borderBottom: 'none'
-  }
+  },
+  typography: {
+    color: '#b0bec5'
+  },
 }));
 
 function createData(date, name, description, notes) {
@@ -83,67 +83,9 @@ function Timeline() {
   const history = useHistory()
   return (
     <div className={classes.root}>
-      <AppBar position="fixed"
-        className={classes.appBar}
-        style={{
-          backgroundColor: "transparent",
-          color: "black",
-          boxShadow: "0px 0px 0px 0px"
-        }}>
-        <Toolbar>
-          <Grid
-            justifyContent ="space-between" // Add it here :)
-            container spacing={10}
-          >
-            <Grid item>
-              
-            </Grid>
-            <Grid item>
-              <div>
-                <IconButton>
-                  <MoreHorizIcon fontSize="small"/>
-                </IconButton>
-              </div>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-
-      <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
-      anchor="left">
-        <div className={classes.toolbar} />
-        <IconButton>
-          <HomeIcon style={{ fontSize: 30 }} />
-        </IconButton>
-        <IconButton>
-            <ContactsIcon style={{ fontSize: 30 }} />
-        </IconButton>
-      </Drawer>
+      <Layout />
       
-      <div className={classes.page}>
-        <Grid
-        justifyContent="space-between"
-        container 
-        spacing={24}
-        >
-          <Grid item>
-          </Grid>
-          <Grid item>
-            <div>
-              <Button endIcon={<CalendarTodayIcon /> } raised color="accent">
-                Change View
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
-        <Divider/>
-        <br/>
-        <br/>
+      <div className={classes.page}>  
         <Typography gutterBottom variant='h4'>
           Upcoming this Week
         </Typography>
@@ -152,16 +94,16 @@ function Timeline() {
           <TableHead> 
             <TableRow>
               <TableCell className={classes.cell}>
-                <Typography> Date </Typography>
+                <Typography className={classes.typography}> Date </Typography>
               </TableCell>
               <TableCell className={classes.cell} align="left">
-                <Typography> Name </Typography>
+                <Typography className={classes.typography}> Name </Typography>
               </TableCell>
               <TableCell className={classes.cell} align="left">
-                <Typography> Description </Typography>
+                <Typography className={classes.typography}> Description </Typography>
               </TableCell>
               <TableCell className={classes.cell} align="left">
-                <Typography> Notes </Typography>
+                <Typography className={classes.typography}> Notes </Typography>
               </TableCell>
             </TableRow>
           </TableHead>
@@ -194,16 +136,16 @@ function Timeline() {
           <TableHead>
             <TableRow>
               <TableCell className={classes.cell}>
-                <Typography> Date </Typography>
+                <Typography className={classes.typography}> Date </Typography>
               </TableCell>
               <TableCell className={classes.cell} align="left">
-                <Typography> Name </Typography>
+                <Typography className={classes.typography}> Name </Typography>
               </TableCell>
               <TableCell className={classes.cell} align="left">
-                <Typography> Description </Typography>
+                <Typography className={classes.typography}> Description </Typography>
               </TableCell>
               <TableCell className={classes.cell} align="left">
-                <Typography> Notes </Typography>
+                <Typography className={classes.typography}> Notes </Typography>
               </TableCell>
             </TableRow>
           </TableHead>

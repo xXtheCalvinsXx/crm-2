@@ -15,7 +15,6 @@ const useStyles = makeStyles((theme) => ({
         color: '#b0bec5',
         marginLeft: 30,
         marginRight: 30,
-        
     },
     typographyInfo: {
         marginLeft: 30,
@@ -30,7 +29,9 @@ export default function ContactCard() {
       <div>
         <Card className={classes.card}>
           
-          <Grid container>
+          <Grid 
+          justifyContent="space-evenly"
+          container>
             <Grid item>
               <Avatar className={classes.sizeAvatar} variant='square'/>
               
