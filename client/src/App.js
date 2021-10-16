@@ -2,7 +2,7 @@ import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
 import { createTheme, ThemeProvider } from '@material-ui/core'
 
 // Components
-import SideNavBar from './components/pages/SideNavBar/SideNavBar'
+import Header from './components/pages/header/Header'
 import Home from './components/pages/Home'
 import Contacts from './components/pages/DatabaseView/DatabaseList'
 import Card from './components/pages/DatabaseView/DatabaseCard'
@@ -27,7 +27,7 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <Router>
-        <SideNavBar>
+        <Header>
           <Switch>
             <Route exact path="/">
               <Home />
@@ -42,7 +42,7 @@ function App() {
               <Card />
             </Route>
           </Switch>
-        </SideNavBar>
+        </Header>
       </Router>
     </ThemeProvider>
   );

@@ -53,7 +53,7 @@ const useStyles = makeStyles((theme) => ({
   }
 }));
 
-export default function SideNavBar({ children }) {
+export default function Header({ children }) {
   const classes = useStyles();
 
   const menuItems = [

@@ -1,12 +1,16 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { 
-  Grid, Button, Divider, IconButton, TextField }
+  Grid, Button, Divider, IconButton, TextField, Typography }
    from '@material-ui/core';
 import {
   DataGrid,
-  GridToolbarFilterButton,
+  GridToolbarFilterButton
+  //GridApi,
+  //GridCellValue,
+  //GridCellParams
 } from '@material-ui/data-grid';
+import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import AddSharpIcon from '@material-ui/icons/AddSharp';
@@ -15,6 +19,16 @@ import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom'
 import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogContentText,
+  DialogActions
+} from "@material-ui/core";
+import { 
+  Table, TableBody, TableCell, TableContainer, TableHead, TableRow } 
+  from '@material-ui/core';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -40,9 +54,6 @@ const useStyles = makeStyles(
         overflowX: 'hidden',
       },
       textField: {
-        //[theme.breakpoints.down('l')]: {
-          //width: '100%',
-        //},
         width : "90%",
         borderBottom : "none",
         margin: theme.spacing(1, 0.5, 1.5),
@@ -53,6 +64,18 @@ const useStyles = makeStyles(
           borderBottom: `1px solid ${theme.palette.divider}`,
         },
       },
+      dialogCustomizedWidth: {
+        "max-width": "80%",
+        minHeight: '80vh',
+        maxHeight: '80vh',
+      },
+      table: {
+        minWidth: 500,
+        border: 0,
+      },
+      cell: {
+        borderBottom: 'none'
+      }
     }),
   { defaultTheme },
 );
@@ -65,6 +88,24 @@ const heading = [
   { field: "phone", headerName: "Phone", width: 200 },
   { field: 'website', headerName: "Web Link", width: 200 }
 ]
+
+function createData(date, name, description, notes) {
+  return { date, name, description, notes };
+}
+
+const rows1 = [
+  createData('Mon 13 Aug', 'Calvin Shen', 'Coffee Catchup', '...'),
+  createData('Thurs 16 Aug', 'Nimit Agrawal', 'Coffee Catchup', '...'),
+];
+
+type User = {
+  id: number;
+  username: string;
+  name: string;
+  email: string;
+  phone: string;
+  website: string;
+};
 
 function QuickSearchToolbar(props) {
   const classes = useStyles();
@@ -141,6 +182,16 @@ export default function DatabaseList() {
     setRows(rows);
   }, [rows]);
 
+  const [open, setOpen] = React.useState(false);
+
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
   return (
     <Container>
       <div style={{ height: '85vh', width: '100%' }}>
@@ -175,7 +226,8 @@ export default function DatabaseList() {
           components={{ Toolbar: QuickSearchToolbar }}
           rows={rows}
           columns= {heading}
-          onCellClick={() => history.push('/view')} //Need to link to particular contact
+          onCellClick= {handleClickOpen}//{() => history.push('/view')} 
+          autoHeight={true}
           componentsProps={{
             toolbar: {
               value: searchText,
@@ -184,6 +236,160 @@ export default function DatabaseList() {
             },
           }}
         />
+      </div>
+      <div className={classes.root}>
+        <Dialog
+            fullWidth
+            classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
+            open={open}
+            onClose={handleClose}
+          >
+            <Grid
+              justifyContent="space-between"
+              container 
+              spacing={12}
+              >
+              <Grid item>
+                </Grid>
+              <Grid item>
+                  <div>
+                    <DialogActions>
+                      <Button onClick={handleClose}>Edit</Button>
+                
+                      <Button onClick={handleClose}>Close</Button>
+                    </DialogActions>
+                  </div>
+              </Grid>
+            </Grid>
+
+            <Divider/>
+
+            <DialogTitle>
+                <PersonOutlineIcon style={{ fontSize: 90 }} />
+                <Typography gutterBottom variant='h4'>
+                  Leanne Graham
+                </Typography>
+            </DialogTitle>
+            
+            <DialogContent>
+              
+              <Typography gutterBottom variant='h5'>
+                Future Interactions
+              </Typography>
+            
+              <DialogContentText>
+                <TableContainer>
+                  <Table className={classes.table}>
+                    <TableHead> 
+                      <TableRow>
+                        <TableCell className={classes.cell}>
+                          <Typography> Date </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align="left">
+                          <Typography> Name </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align="left">
+                          <Typography> Description </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align="left">
+                          <Typography> Notes </Typography>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody onClick={() => history.push('/view')}>
+                      {rows1.map((row) => (
+                        <TableRow className={classes.row} key={row.date}>
+                          <TableCell className={classes.cell} component="th" scope="row">
+                            <Typography> {row.date} </Typography>
+                          </TableCell>
+                          <TableCell className={classes.cell} align="left">
+                            <Typography> {row.name} </Typography>
+                          </TableCell>
+                          <TableCell className={classes.cell} align="left">
+                          <Typography> {row.description} </Typography>
+                          </TableCell>
+                          <TableCell className={classes.cell} align="left">
+                          <Typography> {row.notes} </Typography>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </DialogContentText>
+
+              <br/>
+            
+              <Typography gutterBottom variant='h5'>
+                Details
+              </Typography>
+
+              <DialogContentText>
+                Api
+              </DialogContentText>
+            
+              <br/>
+         
+              <Typography gutterBottom variant='h5'>
+                Notes
+              </Typography>
+
+              <DialogContentText>
+                Api
+              </DialogContentText>
+            
+              <br/>
+            
+              <Typography gutterBottom variant='h5'>
+                Past Interactions
+              </Typography>
+
+              <DialogContentText>
+                <TableContainer>
+                  <Table className={classes.table}>
+                    <TableHead> 
+                      <TableRow>
+                        <TableCell className={classes.cell}>
+                          <Typography> Date </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align="left">
+                          <Typography> Name </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align="left">
+                          <Typography> Description </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align="left">
+                          <Typography> Notes </Typography>
+                        </TableCell>
+                      </TableRow>
+                    </TableHead>
+                    <TableBody onClick={() => history.push('/view')}>
+                      {rows1.map((row) => (
+                        <TableRow className={classes.row} key={row.date}>
+                          <TableCell className={classes.cell} component="th" scope="row">
+                            <Typography> {row.date} </Typography>
+                          </TableCell>
+                          <TableCell className={classes.cell} align="left">
+                            <Typography> {row.name} </Typography>
+                          </TableCell>
+                          <TableCell className={classes.cell} align="left">
+                          <Typography> {row.description} </Typography>
+                          </TableCell>
+                          <TableCell className={classes.cell} align="left">
+                          <Typography> {row.notes} </Typography>
+                          </TableCell>
+                        </TableRow>
+                      ))}
+                    </TableBody>
+                  </Table>
+                </TableContainer>
+              </DialogContentText>
+            </DialogContent>
+
+              <br/>
+
+          </Dialog>
+        
       </div>
     </Container>
   );
