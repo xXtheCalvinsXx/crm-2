@@ -14,7 +14,7 @@ import { connect, useSelector } from 'react-redux';
 
 // styling
 import { GlobalStyles, Title } from './styles.js';
-import { ThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
@@ -23,6 +23,7 @@ import Timeline from './components/pages/TimelineView/Timeline';
 import Header from './components/header/Header';
 import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
+import DatabaseCard from './components/pages/DatabaseView/DatabaseCard';
 
 // firebase
 import { auth } from './firebase/firebaseUtils';
@@ -35,7 +36,7 @@ import axios from 'axios';
 // user context
 import { userContext } from './appContext/userContext';
 
-const theme = createMuiTheme({
+const theme = createTheme({
   typography: {
     fontFamily: [
       'Open Sans',
@@ -110,7 +111,12 @@ function App() {
                 exact
                 path='/signin'
                 render={() => (user ? <Redirect to='/' /> : <Login />)}
-              />      
+              />
+              <PrivateRoute
+                exact
+                path='/databasecard'
+                component={DatabaseCard}
+              />
             </Switch>
           </userContext.Provider>
         </ThemeProvider>

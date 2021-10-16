@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, AppBar, Toolbar, Grid, IconButton, Typography } from '@material-ui/core';
+import { Drawer, AppBar, Toolbar, Grid, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import HomeIcon from '@material-ui/icons/Home';
 import ContactsIcon from '@material-ui/icons/Contacts';
@@ -27,9 +27,6 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerPaper: {
     width: 60,
-  },
-  title: {
-    padding: theme.spacing(3),
   },
   toolbar: theme.mixins.toolbar,
   content: {
@@ -61,8 +58,8 @@ export default function Layout() {
             </Grid>
             <Grid item>
               <div>
-                <IconButton>
-                  <MoreHorizIcon fontSize="small"/>
+                <IconButton disableRipple={true}>
+                  <MoreHorizIcon fontSize="medium" />
                 </IconButton>
               </div>
             </Grid>
@@ -77,14 +74,16 @@ export default function Layout() {
       }}
       anchor="left">
         <div className={classes.toolbar} />
-        <IconButton>
+        <IconButton 
+        onClick={() => history.push('/')}
+        >
           <HomeIcon 
-          onClick={() => history.push('/timeline')}
           style={{ fontSize: 30 }} />
         </IconButton>
-        <IconButton>
+        <IconButton 
+        onClick={() => history.push('/databasecard')}
+        >
             <ContactsIcon 
-            onClick={() => history.push('/databasecard')}
             style={{ fontSize: 30 }} />
         </IconButton>
       </Drawer>
