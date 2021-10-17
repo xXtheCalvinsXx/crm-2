@@ -83,6 +83,9 @@ const useStyles = makeStyles(
         border: 0,
         overflow: "auto",
         overflowX: 'hidden',
+        '&.MuiDataGrid-root .MuiDataGrid-columnHeaderTitle' : {
+          color: '#b0bec5'
+        }
       },
       textField: {
         width : "90%",
@@ -369,7 +372,7 @@ export default function DatabaseList() {
             rowsPerPageOptions={[]}
             components={{ Toolbar: QuickSearchToolbar }}
             rows={contacts}
-            columns= {heading}
+            columns={heading}
             getRowId={(row) => row.contactId}
             onCellClick= {handleClickOpen}//{() => history.push('/view')} 
             autoHeight={true}
