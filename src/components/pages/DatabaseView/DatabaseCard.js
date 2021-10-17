@@ -185,7 +185,7 @@ function DatabaseCard() {
             </Grid>
             <Grid item>
               <div>
-                <Button endIcon={<ListAltIcon /> } raised color="accent" onClick={() => history.push('/databaselist')}>
+                <Button startIcon={<ListAltIcon /> } raised color="accent" onClick={() => history.push('/databaselist')}>
                   Change View
                 </Button>
               </div>

@@ -15,12 +15,12 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import ListAltIcon from '@material-ui/icons/ListAlt';
 import AddSharpIcon from '@material-ui/icons/AddSharp';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
-import CalendarTodayIcon from '@material-ui/icons/CalendarToday';
 import {
   Dialog,
   DialogTitle,
@@ -350,7 +350,7 @@ export default function DatabaseList() {
             </Grid>
             <Grid item>
               <div>
-                <Button startIcon={<CalendarTodayIcon /> } raised color="accent" onClick={() => history.push('/databasecard')}>
+                <Button startIcon={<ListAltIcon /> } raised color="accent" onClick={() => history.push('/databasecard')}>
                   Change View
                 </Button>
               </div>
