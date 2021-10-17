@@ -15,7 +15,7 @@ import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import ListAltIcon from '@material-ui/icons/ListAlt';
+import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 import AddSharpIcon from '@material-ui/icons/AddSharp';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
@@ -350,7 +350,9 @@ export default function DatabaseList() {
             </Grid>
             <Grid item>
               <div>
-                <Button startIcon={<ListAltIcon /> } raised color="accent" onClick={() => history.push('/databasecard')}>
+                <Button startIcon={
+                  <AppsOutlinedIcon /> } raised color="accent" onClick={() => history.push('/databasecard')}
+                  >
                   Change View
                 </Button>
               </div>
@@ -409,15 +411,15 @@ export default function DatabaseList() {
               <Divider/>
 
               <DialogTitle>
-                  <PersonOutlineIcon style={{ fontSize: 90 }} />
-                  <Typography gutterBottom variant='h4'>
+                  <PersonOutlineIcon style={{ fontSize: 100 }} />
+                  <Typography gutterBottom variant='h3'>
                     Leanne Graham
                   </Typography>
               </DialogTitle>
               
               <DialogContent>
                 
-                <Typography gutterBottom variant='h5'>
+                <Typography gutterBottom variant='h4'>
                   Future Interactions
                 </Typography>
               
@@ -427,16 +429,16 @@ export default function DatabaseList() {
                       <TableHead> 
                         <TableRow>
                           <TableCell className={classes.cell}>
-                            <Typography> Date </Typography>
+                            <Typography variant='h6'  className={classes.typography}> Date </Typography>
                           </TableCell>
                           <TableCell className={classes.cell} align="left">
-                            <Typography> Name </Typography>
+                            <Typography variant='h6' className={classes.typography}> Name </Typography>
                           </TableCell>
                           <TableCell className={classes.cell} align="left">
-                            <Typography> Description </Typography>
+                            <Typography variant='h6' className={classes.typography}> Description </Typography>
                           </TableCell>
                           <TableCell className={classes.cell} align="left">
-                            <Typography> Notes </Typography>
+                            <Typography variant='h6' className={classes.typography}> Notes </Typography>
                           </TableCell>
                         </TableRow>
                       </TableHead>
@@ -464,7 +466,7 @@ export default function DatabaseList() {
 
                 <br/>
               
-                <Typography gutterBottom variant='h5'>
+                <Typography gutterBottom variant='h4'>
                   Details
                 </Typography>
 
@@ -660,7 +662,7 @@ export default function DatabaseList() {
               
                 <br/>
           
-                <Typography gutterBottom variant='h5'>
+                <Typography gutterBottom variant='h4'>
                   Notes
                 </Typography>
 
@@ -670,7 +672,7 @@ export default function DatabaseList() {
               
                 <br/>
               
-                <Typography gutterBottom variant='h5'>
+                <Typography gutterBottom variant='h4'>
                   Past Interactions
                 </Typography>
 
@@ -680,16 +682,16 @@ export default function DatabaseList() {
                       <TableHead> 
                         <TableRow>
                           <TableCell className={classes.cell}>
-                            <Typography> Date </Typography>
+                            <Typography variant='h6'  className={classes.typography}> Date </Typography>
                           </TableCell>
                           <TableCell className={classes.cell} align="left">
-                            <Typography> Name </Typography>
+                            <Typography variant='h6' className={classes.typography}> Name </Typography>
                           </TableCell>
                           <TableCell className={classes.cell} align="left">
-                            <Typography> Description </Typography>
+                            <Typography variant='h6' className={classes.typography}> Description </Typography>
                           </TableCell>
                           <TableCell className={classes.cell} align="left">
-                            <Typography> Notes </Typography>
+                            <Typography variant='h6' className={classes.typography}> Notes </Typography>
                           </TableCell>
                         </TableRow>
                       </TableHead>
@@ -716,7 +718,7 @@ export default function DatabaseList() {
                 </DialogContentText>
               </DialogContent>
 
-                <br/>
+              <br/>
 
             </Dialog>
           
