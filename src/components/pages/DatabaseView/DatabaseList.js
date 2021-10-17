@@ -84,7 +84,8 @@ const useStyles = makeStyles(
         overflow: "auto",
         overflowX: 'hidden',
         '&.MuiDataGrid-root .MuiDataGrid-columnHeaderTitle' : {
-          color: '#b0bec5'
+          //color: '#b0bec5'
+          color: '#808080'
         }
       },
       textField: {
