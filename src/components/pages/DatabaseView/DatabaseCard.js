@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 // firebase
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -56,7 +57,7 @@ const useStyles = makeStyles((theme) => ({
 
 function DatabaseCard() {
   const classes = useStyles();
-  
+  const history = useHistory()
   
   // const [user, loading, error] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
@@ -184,7 +185,7 @@ function DatabaseCard() {
             </Grid>
             <Grid item>
               <div>
-                <Button endIcon={<ListAltIcon /> } raised color="accent">
+                <Button endIcon={<ListAltIcon /> } raised color="accent" onClick={() => history.push('/databaselist')}>
                   Change View
                 </Button>
               </div>

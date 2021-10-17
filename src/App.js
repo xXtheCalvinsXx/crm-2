@@ -24,6 +24,7 @@ import Header from './components/header/Header';
 import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
 import DatabaseCard from './components/pages/DatabaseView/DatabaseCard';
+import DatabaseList from './components/pages/DatabaseView/DatabaseList';
 
 // firebase
 import { auth } from './firebase/firebaseUtils';
@@ -111,6 +112,11 @@ function App() {
                 exact
                 path='/signin'
                 render={() => (user ? <Redirect to='/' /> : <Login />)}
+              />
+              <PrivateRoute
+                exact
+                path='/databaselist'
+                component={DatabaseList}
               />
               <PrivateRoute
                 exact

@@ -81,7 +81,7 @@ export default function Layout() {
           style={{ fontSize: 30 }} />
         </IconButton>
         <IconButton 
-        onClick={() => history.push('/databasecard')}
+        onClick={() => history.push('/databaselist')}
         >
             <ContactsIcon 
             style={{ fontSize: 30 }} />
