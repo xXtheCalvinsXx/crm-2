@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // firebase
 import { useAuthState } from 'react-firebase-hooks/auth';
@@ -57,40 +57,67 @@ const useStyles = makeStyles((theme) => ({
 function DatabaseCard() {
   const classes = useStyles();
   
-  
   // const [user, loading, error] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const [fetched, setFetched] = useState(false);
-  let data;
+  const [contacts, setContacts] = useState([]);
+  const [events, setEvents] = useState([]);
+
+  const currentDate = new Date()
+  const
   
   const user = useContext(userContext);  
 
   console.log('user = ', user);
 
-  const getData = async (user) => {
-    if (user) {
-      const token = await user.getIdToken();
-      const headers = await {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ` + token,
-      };
-      setLoading(true);
+  useEffect(() => {
+    const getDataContacts = async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        const headers = await {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        };
+        setLoading(true);
 
-      await axios
-        .get('contacts', { headers })
-        .then((response) => {
-          
-          setLoading(false);
-          setFetched(true);
-          data = response.data;
-          console.log(response.data);
-          console.log(data)
-        })
-        .catch((error) => {
-          console.log(error);
-        });
-    }
-  };
+        await axios
+          .get('contacts', { headers })
+          .then((response) => {
+            
+            setLoading(false);
+            setContacts(response.data)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    };
+    const getDataEvents = async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        const headers = await {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        };
+        setLoading(true);
+
+        await axios
+          .get('events', { headers })
+          .then((response) => {
+            
+            setLoading(false);
+            setEvents(response.data)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    };
+  getDataContacts(user);
+  getDataEvents(user);
+  }, [user])
+  
+  console.log(events)
+  console.log(contacts)
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -109,8 +136,6 @@ function DatabaseCard() {
       return 'sign out failure';
     }
   };
-
-  if (!fetched) getData(user);
 
   if (loading) {
     return (
@@ -184,7 +209,7 @@ function DatabaseCard() {
             </Grid>
             <Grid item>
               <div>
-                <Button endIcon={<ListAltIcon /> } raised color="accent">
+                <Button style={{textTransform: 'none'}} endIcon={<ListAltIcon /> } raised color="accent">
                   Change View
                 </Button>
               </div>
@@ -194,44 +219,13 @@ function DatabaseCard() {
           <br/>
           <br/>
           <Grid container spacing={3}>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid><Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
-            <Grid item xs={12} sm={6} md={4}>
-              <ContactCard />
-            </Grid>
+            {contacts.map(contacts => (
+              <Grid item xs={12} sm={6} md={4}>
+                <ContactCard contacts={contacts} events={events}/>
+              </Grid>
+            ))}
+            
+            
           </Grid>
         </div>
       </div>

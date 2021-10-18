@@ -22,15 +22,43 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function ContactCard() {
+export default function ContactCard({ contacts, events }) {
     const classes = useStyles();
+    const contactEvents = [];
+    var current = new Date();
+    var date = `${current.getDate()}/${current.getMonth()+1}/${current.getFullYear()}`;
+    var currentDate = new Date(date);
+    var mostRecent = null;
+    var closestNext = null;
+    for (let i = 0; i < events.length; i++) {
+      if (events[i].RelevantContact == contacts.Email) {
+        contactEvents.push(events[i])
+      }
+    }
+    for (let j = 0; j < contactEvents.length; j++) {
+      var thisDate = new Date(contactEvents[0].Date)
+      if (thisDate.getTime() - currentDate.getTime() < 0) {
+        if (mostRecent == null) {
+          mostRecent = thisDate;
+        } else if (mostRecent.getTime < thisDate.getTime) {
+          mostRecent = thisDate;
+        }
+      }
+      else {
+        if (closestNext == null) {
+          closestNext = thisDate;
+        } else if (closestNext.getTime < thisDate.getTime) {
+          closestNext = thisDate;
+        }
+      }
+    }
   
     return (
       <div>
-        <Card className={classes.card}>
+        <Card className={classes.card} >
           
           <Grid 
-          justifyContent="space-evenly"
+          justifyContent="space-between"
           container>
             <Grid item>
               <Avatar className={classes.sizeAvatar} variant='square'/>
@@ -41,13 +69,13 @@ export default function ContactCard() {
                 Name
               </Typography>
               <Typography className={classes.typographyInfo}>
-                Calvin Shen
+                {contacts.Name}
               </Typography>
               <Typography className={classes.typography}>
                 Company
               </Typography>
               <Typography className={classes.typographyInfo}>
-                Amazon
+                {contacts.Company}
               </Typography>
               <Typography className={classes.typography}>
                 Last
@@ -61,19 +89,19 @@ export default function ContactCard() {
                 Location
               </Typography>
               <Typography className={classes.typographyInfo}>
-                Melbourne
+                {contacts.Location}
               </Typography>
               <Typography className={classes.typography}>
                 Position
               </Typography>
               <Typography className={classes.typographyInfo}>
-                Graduate
+                {contacts.Position}
               </Typography>
               <Typography className={classes.typography}>
                 Next
               </Typography>
               <Typography className={classes.typographyInfo}>
-              27/09/2021
+                27/09/2021
               </Typography>
             </Grid>
           </Grid>

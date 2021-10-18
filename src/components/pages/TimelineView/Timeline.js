@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 // firebase
 import { auth } from '../../../firebase/firebaseUtils';
@@ -55,40 +55,23 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function createData(date, name, description, notes) {
-  return { date, name, description, notes };
-}
-
-const rows1 = [
-  createData('Mon 13 Aug', 'Calvin Shen', 'Coffee Catchup', '...'),
-  createData('Tues 14 Aug', 'Andrew Zhang', 'Birthday', '...'),
-  createData('Tues 14 Aug', 'Joe Chen ', 'Meeting', '...'),
-  createData('Wed 15 Aug', 'Johnny Qian', 'Casual', '...'),
-  createData('Thurs 16 Aug', 'Nimit Agrawal', 'Coffee Catchup', '...'),
-];
-
-const rows2 = [
-  createData('Mon 20 Aug', 'Calvin Shen', 'Coffee Catchup', '...'),
-  createData('Mon 20 Aug', 'Andrew Zhang', 'Birthday', '...'),
-  createData('Mon 20 Aug', 'Joe Chen ', 'Meeting', '...'),
-  createData('Mon 20 Aug', 'Johnny Qian', 'Casual', '...'),
-  createData('Thurs 16 Aug', 'Nimit Agrawal', 'Coffee Catchup', '...'),
-];
-
 function Timeline() {
   const classes = useStyles();
   const history = useHistory();
   console.log('timeline');
   // const [user, loading, error] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
-  const [fetched, setFetched] = useState(false);
-  const [allEvents, setAllEvents] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [eventContacts, setEventContacts] = useState([]);
+  const [count, setCount] = useState(0)
   
   const user = useContext(userContext);
 
   console.log('user = ', user);
 
-  const getData = async (user) => {
+
+  useEffect(() => {
+    const getDataEvents = async (user) => {
     if (user) {
       const token = await user.getIdToken();
       const headers = await {
@@ -100,17 +83,47 @@ function Timeline() {
       await axios
         .get('events', { headers })
         .then((response) => {
-          
-          setLoading(false);
-          setFetched(true);
-          setAllEvents(response.data)
-          console.log(allEvents);
+          setEvents(response.data)
+          console.log(events)
         })
         .catch((error) => {
           console.log(error);
-        });
+        })
     }
   };
+  const getDataContacts = async (user) => {
+    if (user) {
+      const token = await user.getIdToken();
+      const headers = await {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ` + token,
+      };
+      setLoading(true);
+      const dataEvents = []
+      for (const eventContact of events) {
+        await axios
+        .get('contact/' + eventContact.RelevantContact, { headers })
+        .then((response) => {
+          
+          setLoading(false);
+          dataEvents.push(response.data[0])
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+      }
+      
+      setEventContacts(dataEvents)
+      console.log(eventContacts)
+    }
+  };
+  getDataEvents(user);
+  getDataContacts(user);
+  }, [user])
+
+  console.log(events)
+  console.log(eventContacts)
+  
 
   const signOut = async () => {
     try {
@@ -129,8 +142,6 @@ function Timeline() {
   const moreMenuClose = () => {
     setAnchorEl(null);
   }
-
-  // if (!fetched) getData(user);
 
   if (loading) {
     return (
@@ -159,7 +170,7 @@ function Timeline() {
           }}>
             <Toolbar>
               <Grid
-                justifyContent ="space-between" // Add it here :)
+                justifyContent ="space-between"
                 container spacing={10}
               >
                 <Grid item>
@@ -217,24 +228,7 @@ function Timeline() {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody onClick={() => history.push('/timeline')}>
-                {rows1.map((row) => (
-                  <TableRow className={classes.row} key={row.date}>
-                    <TableCell className={classes.cell} component="th" scope="row">
-                      <Typography> {row.date} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                      <Typography> {row.name} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                    <Typography> {row.description} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                    <Typography> {row.notes} </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
-              </TableBody>
+              
             </Table>
             </TableContainer>
             <br/>
@@ -260,19 +254,19 @@ function Timeline() {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows2.map((row) => (
-                  <TableRow className={classes.row} key={row.date}>
+                {events.map((value, index) => (
+                  <TableRow className={classes.row}>
                     <TableCell className={classes.cell} component="th" scope="row">
-                      <Typography> {row.date} </Typography>
+                      <Typography> {value.Date} </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell} component="th" scope="row">
+                      <Typography > {eventContacts[index].Name} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
-                      <Typography> {row.name} </Typography>
+                    <Typography> {value.Occasion} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
-                    <Typography> {row.description} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                    <Typography> {row.notes} </Typography>
+                    <Typography> {value.Description} </Typography>
                     </TableCell>
                   </TableRow>
                 ))}
