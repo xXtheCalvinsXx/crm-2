@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { 
-  Grid, Button, Divider, IconButton, TextField, Typography,
-   AppBar, Toolbar, Menu, MenuItem, Box, CircularProgress }
+  Grid, Button, Divider, IconButton, TextField,
+   AppBar, Toolbar, Menu, MenuItem }
    from '@material-ui/core';
 import {
   DataGrid,
@@ -21,7 +21,6 @@ import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
-import AddSharpIcon from '@material-ui/icons/AddSharp';
 
 // Componenta
 import Layout from '../../layout/Layout';
@@ -37,7 +36,6 @@ import { userContext } from '../../../appContext/userContext';
 
 // firebase
 import { auth } from '../../../firebase/firebaseUtils';
-import { useAuthState } from 'react-firebase-hooks/auth';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -72,7 +70,6 @@ const useStyles = makeStyles(
         flexWrap: 'wrap',
       },
       grid: {
-        //"MuiToolbar-root MuiToolbar-regular MuiTablePagination-toolbar MuiToolbar-gutters" : {color: 'white'},
         '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus, &.MuiDataGrid-root .MuiDataGrid-cell': {
           outline: 'none',
           border: 0,
@@ -82,7 +79,6 @@ const useStyles = makeStyles(
         overflow: "auto",
         overflowX: 'hidden',
         '&.MuiDataGrid-root .MuiDataGrid-columnHeaderTitle' : {
-          //color: '#b0bec5'
           color: '#808080'
         }
       },
@@ -107,19 +103,11 @@ const useStyles = makeStyles(
 );
 
 const heading = [
-  //{ field: "contactId", headerName: 'ID', width: 200 },
-  //{ field: "DateAdded", headerName: "DateAdded", width: 100 },
   { field: "Name", headerName: "Name", width: 300 },
-  //{ field: "Location", headerName: "Location", width: 100 },
   { field: "Position", headerName: "Position", width: 200 },
   { field: "Company", headerName: "Company", width: 200 },
-  //{ field: "Birthday", headerName: "Birthday", width: 100 },
-  //{ field: "Industry", headerName: "Industry", width: 100 },
   { field: "Email", headerName: "Email", width: 300 },
-  //{ field: "Education", headerName: "Education", width: 100 },
   { field: "Phone_Number", headerName: "Phone Number", width: 250 },
-  //{ field: "imageUrl", headerName: "imageUrl", width: 100 }
-  //{ field: "RelevantUser", headerName: "RelevantUser", width: 100 }
 ]
 
 function QuickSearchToolbar(props) {
@@ -129,8 +117,6 @@ function QuickSearchToolbar(props) {
     <div className={classes.root}>
       <TextField
         variant="standard"
-        //fullWidth 
-        //id="fullWidth"
         value={props.value}
         onChange={props.onChange}
         placeholder="Search"
@@ -170,18 +156,15 @@ export default function DatabaseList() {
   const history = useHistory()
 
   const [loading, setLoading] = useState(false);
-  const [contacts, setContacts] = useState([]);
-  //const [fetched, setFetched] = useState(false);
-  // const [user, loading, error] = useAuthState(auth);
-  const [contact, setContact] = useState({});
-
-  //let contact;
-
   const [selectionModel, setSelectionModel] = React.useState([]);
-  console.log(selectionModel);
-  
+  const [contacts, setContacts] = useState([]);
+  const [events, setEvents] = useState([]);
+  const [currEvents, setEvent] = useState([]);
+  const [contact, setContact] = useState({});
+  //const [fetched, setFetched] = useState(false);
+
+  // Gets the user contacts and events
   const user = useContext(userContext);  
-  //console.log('user = ', user);
   useEffect(() => {
     const getDataContacts = async (user) => {
       if (user) {
@@ -203,9 +186,32 @@ export default function DatabaseList() {
           })
       }
     };
+
+    const getDataEvents = async (user) => {
+      if (user) {
+        const token = await user.getIdToken();
+        const headers = await {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ` + token,
+        };
+        setLoading(true);
+        await axios
+          .get('events', { headers })
+          .then((response) => {
+            
+            setLoading(false);
+            setEvents(response.data)
+          })
+          .catch((error) => {
+            console.log(error);
+          })
+      }
+    };
   getDataContacts(user);
+  getDataEvents(user);
   }, [user])
 
+  // Search Functionality
   const [searchText, setSearchText] = React.useState('');
 
   const requestSearch = (searchValue) => {
@@ -223,6 +229,7 @@ export default function DatabaseList() {
     setContacts(contacts);
   }, [contacts]);
 
+  // Dialog Open and Close
   const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
@@ -232,7 +239,8 @@ export default function DatabaseList() {
   const handleClose = () => {
     setOpen(false);
   };
-
+  
+  // Sign Out Functionality (with Open and Close)
   const [anchorEl, setAnchorEl] = React.useState(null);
   const openLog = Boolean(anchorEl);
   const moreMenuClick = (event) => {
@@ -251,14 +259,19 @@ export default function DatabaseList() {
     }
   };
 
+  // Gets particular contact and it's events
   useEffect(() => {
     const getContact = (selectionModel) => {
       const currContact = contacts.filter(contact => contact.Email == selectionModel)
-      //console.log(currContact)
       setContact(currContact)
-      //console.log(contact)
+    };
+
+    const getEvent = (selectionModel) => {
+      const currEvent = events.filter(event => event.RelevantContact == selectionModel)
+      setEvent(currEvent)
     };
     getContact(selectionModel);
+    getEvent(selectionModel);
   }, [selectionModel])
 
   return (
@@ -332,7 +345,7 @@ export default function DatabaseList() {
         <Divider/>
         <br/>
         <br/>
-
+        
         <DataGrid
           className={classes.grid}
           rowHeight={45}
@@ -343,10 +356,8 @@ export default function DatabaseList() {
           getRowId={(row) => row.contactId}
           onSelectionModelChange={(newSelectionModel) => {
             setSelectionModel(newSelectionModel);
-            //console.log(selectionModel);
           }}
-          //selectionModel={selectionModel}
-          onCellClick= {handleClickOpen}//{() => history.push('/view')} 
+          onCellClick= {handleClickOpen}
           autoHeight={true}
           componentsProps={{
             toolbar: {
@@ -381,7 +392,7 @@ export default function DatabaseList() {
             </div>
           </Grid>
         </Grid>
-            <ContactView contact={contact} />
+            <ContactView contact={contact} currEvents={currEvents} />
         </Dialog>
       </div>
     </div>

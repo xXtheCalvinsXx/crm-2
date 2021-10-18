@@ -10,7 +10,6 @@ import {
 import { 
   Table, TableBody, TableCell, TableContainer, TableHead, TableRow } 
   from '@material-ui/core';
-import { useHistory } from 'react-router-dom';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles(
@@ -65,18 +64,10 @@ const useStyles = makeStyles(
     }),
 );
 
-function createData(date, description, notes) {
-  return { date, description, notes };
-}
-
-const rows1 = [
-  createData('Mon 13 Aug', 'Coffee Catchup', '...'),
-  createData('Thurs 16 Aug', 'Meetup', '...'),
-];
-
-export default function ContactView({ contact }) {
+export default function ContactView({ contact, currEvents }) {
   const classes = useStyles();
-  const history = useHistory()
+
+  let currEvent = currEvents;
 
   return (
     <div>
@@ -122,16 +113,16 @@ export default function ContactView({ contact }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows1.map((row) => (
+                {currEvent.map((row) => (
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
-                      <Typography> {row.date} </Typography>
+                      <Typography> {row.Date} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
-                    <Typography> {row.description} </Typography>
+                    <Typography> {row.Occasion} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
-                    <Typography> {row.notes} </Typography>
+                    <Typography> {row.Description} </Typography>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -290,16 +281,16 @@ export default function ContactView({ contact }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {rows1.map((row) => (
+                {currEvent.map((row) => (
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
-                      <Typography> {row.date} </Typography>
+                      <Typography> {row.Date} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
-                    <Typography> {row.description} </Typography>
+                    <Typography> {row.Occasion} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
-                    <Typography> {row.notes} </Typography>
+                    <Typography> {row.Description} </Typography>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -308,9 +299,6 @@ export default function ContactView({ contact }) {
           </TableContainer>
         </DialogContentText>
       </DialogContent>
-
-      <br/>
-       
     </div>
   );
 }
