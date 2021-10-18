@@ -1,19 +1,27 @@
 import {useState, useRef, useEffect } from 'react';
-import { Button, Grid, Dialog, DialogActions, DialogContent, DialogContentText, Typography, TextField, makeStyles, IconButton } from '@material-ui/core';
+import { Button, Grid, Dialog, DialogActions, DialogContent, DialogContentText, Typography, TextField, makeStyles, IconButton, Avatar } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
 import DeleteOutline from '@material-ui/icons/DeleteOutline';
+import {styled} from '@mui/material/styles';
+
+
+// axios
+import axios from 'axios';
+
+// context
+import { useContext } from 'react';
+import { userContext } from '../../../appContext/userContext';
 
 const initialContactValues = {
-  id: 0,
-  fullName: '',
-  location: '',
-  company: '',
-  position: '',
-  birthday: '',
-  education: '',
-  industry: '',
-  email: '',
-  phoneNumber: '',
+  Name: '',
+  Location: '',
+  Company: '',
+  Position: '',
+  Birthday: '',
+  Education: '',
+  Industry: '',
+  Email: '',
+  Phone_Number: '',
 }
 
 const useStyle = makeStyles(theme => ({
@@ -43,13 +51,27 @@ const useStyle = makeStyles(theme => ({
   },
   addButton: {
     marginLeft: theme.spacing(2.5)
-  }
+  },
+  upload: {
+    marginLeft: theme.spacing(9)
+  },
+  sizeAvatar: {
+    height: theme.spacing(23),
+    width: theme.spacing(23),
+    margin: theme.spacing(3)
+},
 }))
 
+const Input = styled('input')({
+  display: 'none',
+});
+
 export default function AddContact() {
+  const user = useContext(userContext);
   const [open, setOpen] = useState(false);
   const [scroll, setScroll] = useState('paper');
   const [values, setValues] = useState(initialContactValues);
+  const [myImage, setMyImage] = useState('https://commons.wikimedia.org/wiki/File:Breezeicons-actions-22-im-user.svg')
   const [eventFieldPast, setEventFieldPast] = useState([
     {date: '', description: '', notes: ''},
   ])
@@ -65,6 +87,10 @@ export default function AddContact() {
 
   const handleClose = () => {
     setOpen(false);
+    setMyImage('https://commons.wikimedia.org/wiki/File:Breezeicons-actions-22-im-user.svg')
+    setValues(initialContactValues)
+    setEventFieldPast([{Occasion: '', Date: '', Description: '', RelevantContact: ''},])
+    setEventFieldFuture([{Occasion: '', Date: '', Description: '', RelevantContact: ''},])
   };
 
   const handleInputChangeContact = e => {
@@ -89,16 +115,34 @@ export default function AddContact() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(myImage)
     console.log(values)
     console.log(eventFieldPast)
     console.log(eventFieldFuture)
+    if (user) {
+      const token = user.getIdToken();
+      const headers = {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ` + token,
+      };
+
+      axios
+        .post('contact', { headers }, values)
+        .then((response) => {
+          console.log('yay contact posted')
+        })
+        .catch((error) => {
+          console.log(error);
+        })
+    }
+    handleClose()
   }
 
   const handleAddFieldPast = () => {
-    setEventFieldPast([...eventFieldPast, {date: '', description: '', notes: ''}])
+    setEventFieldPast([...eventFieldPast, {Occasion: '', Date: '', Description: ''}])
   }
   const handleAddFieldFuture = () => {
-    setEventFieldFuture([...eventFieldFuture, {date: '', description: '', notes: ''}])
+    setEventFieldFuture([...eventFieldFuture, {Occasion: '', Date: '', Description: ''}])
   }
 
   const handleRemoveFieldPast = (index) => {
@@ -110,6 +154,16 @@ export default function AddContact() {
     const values = [...eventFieldFuture]
     values.splice(index, 1)
     setEventFieldFuture(values)
+  }
+
+  const imageHandler = (e) => {
+    const reader = new FileReader();
+    reader.onload = () => {
+      if (reader.readyState === 2) {
+        setMyImage(reader.result)
+      }
+    }
+    reader.readAsDataURL(e.target.files[0])
   }
 
   const descriptionElementRef = useRef(null);
@@ -126,7 +180,7 @@ export default function AddContact() {
     <div>
       <Button 
       startIcon={<AddIcon />} 
-      raised color="accent" 
+      raised color="accent" style={{textTransform: 'none'}}
       onClick={handleClickOpen('paper')}
       >
         Add Contact
@@ -144,11 +198,18 @@ export default function AddContact() {
             ref={descriptionElementRef}
             tabIndex={-1}
           >
-            
+            <Avatar className={classes.sizeAvatar} src={myImage}/>
+            <label htmlFor="input">
+              <Input accept="image/*" id="input" multiple type="file" onChange={imageHandler}/>
+              <Button className={classes.upload} variant="contained" component="span" style={{textTransform: 'none'}}>
+                <Typography>Upload</Typography>
+              </Button>
+            </label>
+            <br/>
+            <br/>
             <Typography className={classes.typographyTitle} variant='h4'>
               Basic Details
             </Typography>
-            <br/>
             <Grid container>
               <Grid item xs={2}>
                 <br/>
@@ -156,14 +217,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Name
+                  Name *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='fullName'
+                name='Name'
                 placeholder='e.g. John Smith'
-                value={values.fullName}
+                value={values.Name}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 className={classes.textField}
@@ -176,14 +237,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Email
+                  Email *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='email'
+                name='Email'
                 placeholder='e.g. johnsmith@gmail.com'
-                value={values.email}
+                value={values.Email}
                 fullWidth
                 onChange={handleInputChangeContact}
                 variant='standard'
@@ -197,14 +258,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Birthday
+                  Birthday *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='birthday'
+                name='Birthday'
                 placeholder='YYYY/MM/DD'
-                value={values.birthday}
+                value={values.Birthday}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 className={classes.textField}
@@ -216,14 +277,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Phone Number
+                  Phone Number *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='phoneNumber'
+                name='Phone_Number'
                 placeholder='e.g. 1234567890'
-                value={values.phoneNumber}
+                value={values.Phone_Number}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 fullWidth
@@ -238,14 +299,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Location
+                  Location *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='location'
+                name='Location'
                 placeholder='e.g. Melbourne'
-                value={values.location}
+                value={values.Location}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 className={classes.textField}
@@ -257,14 +318,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Education
+                  Education *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='education'
+                name='Education'
                 placeholder='e.g. University of Melbourne'
-                value={values.education}
+                value={values.Education}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 fullWidth
@@ -280,14 +341,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Industry
+                  Industry *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='industry'
+                name='Industry'
                 placeholder='e.g. Tech'
-                value={values.industry}
+                value={values.Industry}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 className={classes.textField}
@@ -298,7 +359,6 @@ export default function AddContact() {
             <Typography className={classes.typographyTitle} variant='h4'>
               Work Details
             </Typography>
-            <br/>
             <Grid container>
               
               <Grid item xs={2}>
@@ -307,14 +367,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Company
+                  Company *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='company'
+                name='Company'
                 placeholder='e.g. Google'
-                value={values.company}
+                value={values.Company}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 className={classes.textField}
@@ -326,14 +386,14 @@ export default function AddContact() {
                 variant='h6' 
                 className={classes.typography}
                 >
-                  Position
+                  Position *
                 </Typography>
               </Grid>
               <Grid item xs={3}>
                 <TextField 
-                name='position'
+                name='Position'
                 placeholder='e.g. CEO'
-                value={values.position}
+                value={values.Position}
                 onChange={handleInputChangeContact}
                 variant='standard'
                 fullWidth
@@ -371,9 +431,9 @@ export default function AddContact() {
                 <Grid container justifyContent='space-between'>
                   <Grid item xs={2}>
                   <TextField 
-                    name='date'
+                    name='Date'
                     placeholder='YYYY/MM/DD'
-                    value={eventFieldPast.date}
+                    value={eventFieldPast.Date}
                     onChange={event => handleInputChangeEventPast(index, event)}
                     variant='standard'
                     className={classes.textField}
@@ -381,9 +441,9 @@ export default function AddContact() {
                   </Grid>
                   <Grid item xs={3}>
                   <TextField 
-                    name='description'
+                    name='Occasion'
                     placeholder='e.g. Coffee catchup'
-                    value={eventFieldPast.description}
+                    value={eventFieldPast.Occasion}
                     onChange={event => handleInputChangeEventPast(index, event)}
                     variant='standard'
                     className={classes.textField}
@@ -391,9 +451,9 @@ export default function AddContact() {
                   </Grid>
                   <Grid item xs={5}>
                   <TextField 
-                    name='notes'
+                    name='Description'
                     placeholder='e.g. Make sure to look presentable'
-                    value={eventFieldPast.notes}
+                    value={eventFieldPast.Description}
                     onChange={event => handleInputChangeEventPast(index, event)}
                     variant='standard'
                     fullWidth
@@ -411,6 +471,7 @@ export default function AddContact() {
                 </Grid>
               </div>
             ))}
+            <br/>
             <Button
               onClick={() => handleAddFieldPast()}
               startIcon={<AddIcon/>}
@@ -450,9 +511,9 @@ export default function AddContact() {
                 <Grid container>
                   <Grid item xs={2}>
                   <TextField 
-                    name='date'
+                    name='Date'
                     placeholder='YYYY/MM/DD'
-                    value={eventFieldFuture.date}
+                    value={eventFieldFuture.Date}
                     onChange={event => handleInputChangeEventFuture(index, event)}
                     variant='standard'
                     className={classes.textField}
@@ -460,9 +521,9 @@ export default function AddContact() {
                   </Grid>
                   <Grid item xs={3}>
                   <TextField 
-                    name='description'
+                    name='Occasion'
                     placeholder='e.g. Coffee catchup'
-                    value={eventFieldFuture.description}
+                    value={eventFieldFuture.Occasion}
                     onChange={event => handleInputChangeEventFuture(index, event)}
                     variant='standard'
                     className={classes.textField}
@@ -470,9 +531,9 @@ export default function AddContact() {
                   </Grid>
                   <Grid item xs={5}>
                   <TextField 
-                    name='notes'
+                    name='Description'
                     placeholder='e.g. Make sure to look presentable'
-                    value={eventFieldFuture.notes}
+                    value={eventFieldFuture.Description}
                     onChange={event => handleInputChangeEventFuture(index, event)}
                     variant='standard'
                     fullWidth
@@ -490,6 +551,7 @@ export default function AddContact() {
                 </Grid>
               </div>
             ))}
+            <br/>
             <Button
               onClick={() => handleAddFieldFuture()}
               startIcon={<AddIcon/>}
@@ -503,7 +565,7 @@ export default function AddContact() {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleSubmit, handleClose}>Save</Button>
+          <Button style={{textTransform: 'none'}} onClick={handleSubmit}>Save</Button>
         </DialogActions>
       </Dialog>
     </div>

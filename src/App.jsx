@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import {
   Switch,
   Route,
@@ -25,6 +25,7 @@ import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
 import DatabaseCard from './components/pages/DatabaseView/DatabaseCard';
 import DatabaseList from './components/pages/DatabaseView/DatabaseList';
+import temp from './components/pages/temp';
 
 // firebase
 import { auth } from './firebase/firebaseUtils';
@@ -33,26 +34,31 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 // axios
 import axios from 'axios';
+import getContacts from './axios/getContacts';
+import getEvents from './axios/getEvents';
 
 // user context
 import { userContext } from './appContext/userContext';
 
 const theme = createTheme({
   typography: {
-    fontFamily: [
-      'Open Sans',
-      'old',
-    ].join(','),
+    fontFamily: ['Open Sans', 'old'].join(','),
   },
   palette: {
     primary: {
-      main: '#cfd8dc'
-    }
-  }  
+      main: '#cfd8dc',
+      secondary: '#344955',
+    },
+  },
 });
 
 function App() {
   const [user, loading, error] = useAuthState(auth);
+  const [queryLoading, setQueryLoading] = useState(true);
+  const [contacts, setContacts] = useState([]);
+  const [events, setEvents] = useState([]);
+  const contactEventData = useRef([]);
+
   axios.defaults.baseURL =
     'https://australia-southeast1-xxthecalvinsxx.cloudfunctions.net/api/';
 
@@ -76,12 +82,30 @@ function App() {
     }
   });
 
-  console.log(user);
+  // let data;
+  // let events;
+
+  useEffect(() => {
+    const getData = async () => {
+      if (!setContacts[0] && user) {
+        const contacts = await getContacts(user);
+        const events = await getEvents(user);
+        setContacts(contacts);
+        setEvents(events);
+        // setQueryLoading(false);
+      }
+    };
+    // setQueryLoading(true);
+    getData();
+    setQueryLoading(false);
+
+    // to add error handling
+  }, [user]);
 
   let history = useHistory();
-    
+  console.log('loading = ', !loading && !queryLoading);
 
-  if (loading) {
+  if (loading || queryLoading) {
     return (
       <Box
         display='flex'
@@ -101,7 +125,17 @@ function App() {
 
           <userContext.Provider value={user}>
             <Switch>
-              <PrivateRoute exact path='/' component={Timeline} />
+              <PrivateRoute
+                exact
+                path='/'
+                component={temp}
+                props={{
+                  contacts: contacts,
+                  events: events,
+                  queryLoading: { queryLoading },
+                  contactEventData: { contactEventData },
+                }}
+              />
 
               <Route
                 exact
