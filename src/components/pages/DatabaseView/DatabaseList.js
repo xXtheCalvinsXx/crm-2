@@ -7,7 +7,7 @@ import {
 import {
   DataGrid,
   GridToolbarFilterButton
-} from '@material-ui/data-grid';
+} from '@mui/x-data-grid';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 import { useHistory } from 'react-router-dom';
@@ -22,7 +22,7 @@ import SearchIcon from '@material-ui/icons/Search';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 
-// Componenta
+// Components
 import Layout from '../../layout/Layout';
 import AddContact from '../AddContact/AddContact';
 import ContactView from '../ContactView/ContactView';

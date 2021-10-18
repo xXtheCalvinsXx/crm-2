@@ -69,6 +69,10 @@ export default function ContactView({ contact, currEvents }) {
 
   let currEvent = currEvents;
 
+  const currDate = new Date();
+
+  console.log(currDate)
+
   return (
     <div>
         
@@ -113,7 +117,9 @@ export default function ContactView({ contact, currEvents }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currEvent.map((row) => (
+                {currEvent.map((row) => 
+                  { Date.parse(row.Date) < Date.parse(currDate) &&
+                    
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
                       <Typography> {row.Date} </Typography>
@@ -125,7 +131,8 @@ export default function ContactView({ contact, currEvents }) {
                     <Typography> {row.Description} </Typography>
                     </TableCell>
                   </TableRow>
-                ))}
+                  }
+                )}
               </TableBody>
             </Table>
           </TableContainer>
@@ -281,19 +288,21 @@ export default function ContactView({ contact, currEvents }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currEvent.map((row) => (
-                  <TableRow className={classes.row} key={row.date}>
-                    <TableCell className={classes.cell} component="th" scope="row">
-                      <Typography> {row.Date} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                    <Typography> {row.Occasion} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                    <Typography> {row.Description} </Typography>
-                    </TableCell>
-                  </TableRow>
-                ))}
+                {currEvent.map((row) => 
+                  { row.Date < currDate &&
+                    <TableRow className={classes.row} key={row.date}>
+                      <TableCell className={classes.cell} component="th" scope="row">
+                        <Typography> {row.Date} </Typography>
+                      </TableCell>
+                      <TableCell className={classes.cell} align="left">
+                      <Typography> {row.Occasion} </Typography>
+                      </TableCell>
+                      <TableCell className={classes.cell} align="left">
+                      <Typography> {row.Description} </Typography>
+                      </TableCell>
+                    </TableRow>
+                  }
+                )}
               </TableBody>
             </Table>
           </TableContainer>
