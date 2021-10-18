@@ -98,16 +98,9 @@ const useStyles = makeStyles(
         },
       },
       dialogCustomizedWidth: {
-        "max-width": "80%",
-        minHeight: '80vh',
-        maxHeight: '80vh',
-      },
-      table: {
-        minWidth: 500,
-        border: 0,
-      },
-      cell: {
-        borderBottom: 'none'
+        "max-width": "90%",
+        minHeight: '90vh',
+        maxHeight: '90vh',
       }
     }),
   { defaultTheme },
@@ -388,7 +381,6 @@ export default function DatabaseList() {
             </div>
           </Grid>
         </Grid>
-        {console.log(contact)}
             <ContactView contact={contact} />
         </Dialog>
       </div>

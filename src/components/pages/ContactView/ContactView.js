@@ -27,14 +27,15 @@ const useStyles = makeStyles(
         margin: theme.spacing(3.5)
       },
       fieldnew: {
-        margin: theme.spacing(4)
+        margin: theme.spacing(4),
+        color: 'black',
       },
       typography: {
         marginLeft: theme.spacing(3.3),
         marginRight: theme.spacing(.5),
         marginTop: theme.spacing(.5),
         marginBottom: theme.spacing(.5),
-        color: '#b0bec5',
+        color: 'gray',
       },
       root: {
         padding: theme.spacing(0.5, 0.5, 0),
@@ -54,11 +55,6 @@ const useStyles = makeStyles(
           borderBottom: `1px solid ${theme.palette.divider}`,
         },
       },
-      dialogCustomizedWidth: {
-        "max-width": "80%",
-        minHeight: '80vh',
-        maxHeight: '80vh',
-      },
       table: {
         minWidth: 500,
         border: 0,
@@ -69,7 +65,7 @@ const useStyles = makeStyles(
     }),
 );
 
-function createData(date, name, description, notes) {
+function createData(date, description, notes) {
   return { date, description, notes };
 }
 
@@ -92,7 +88,7 @@ export default function ContactView({ contact }) {
             <Avatar 
               src= {contact[0].imageUrl}
               style={{
-                margin: "10px",
+                margin: "5px",
                 width: "110px",
                 height: "110px",
               }} 
@@ -130,9 +126,6 @@ export default function ContactView({ contact }) {
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
                       <Typography> {row.date} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                      <Typography> {row.name} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
                     <Typography> {row.description} </Typography>
@@ -301,9 +294,6 @@ export default function ContactView({ contact }) {
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
                       <Typography> {row.date} </Typography>
-                    </TableCell>
-                    <TableCell className={classes.cell} align="left">
-                      <Typography> {row.name} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align="left">
                     <Typography> {row.description} </Typography>
