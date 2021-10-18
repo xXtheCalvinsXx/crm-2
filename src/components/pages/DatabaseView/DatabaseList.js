@@ -7,27 +7,16 @@ import {
 import {
   DataGrid,
   GridToolbarFilterButton
-  //GridApi,
-  //GridCellValue,
-  //GridCellParams
 } from '@material-ui/data-grid';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { Container } from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import {
   Dialog,
-  DialogTitle,
-  DialogContent,
-  DialogContentText,
   DialogActions
 } from "@material-ui/core";
-import { 
-  Table, TableBody, TableCell, TableContainer, TableHead, TableRow } 
-  from '@material-ui/core';
 
 // Icons
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';

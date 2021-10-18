@@ -70,12 +70,12 @@ const useStyles = makeStyles(
 );
 
 function createData(date, name, description, notes) {
-  return { date, name, description, notes };
+  return { date, description, notes };
 }
 
 const rows1 = [
-  createData('Mon 13 Aug', 'Calvin Shen', 'Coffee Catchup', '...'),
-  createData('Thurs 16 Aug', 'Nimit Agrawal', 'Coffee Catchup', '...'),
+  createData('Mon 13 Aug', 'Coffee Catchup', '...'),
+  createData('Thurs 16 Aug', 'Meetup', '...'),
 ];
 
 export default function ContactView({ contact }) {
@@ -118,9 +118,6 @@ export default function ContactView({ contact }) {
                     <Typography variant='h6'  className={classes.typography}> Date </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align="left">
-                    <Typography variant='h6' className={classes.typography}> Name </Typography>
-                  </TableCell>
-                  <TableCell className={classes.cell} align="left">
                     <Typography variant='h6' className={classes.typography}> Description </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align="left">
@@ -128,7 +125,7 @@ export default function ContactView({ contact }) {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody onClick={() => history.push('/view')}>
+              <TableBody>
                 {rows1.map((row) => (
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
@@ -157,7 +154,6 @@ export default function ContactView({ contact }) {
         </Typography>
 
         <DialogContentText>
-          <br/>
           <Grid container>
             <Grid item xs={2}>
               <br/>
@@ -293,9 +289,6 @@ export default function ContactView({ contact }) {
                     <Typography variant='h6'  className={classes.typography}> Date </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align="left">
-                    <Typography variant='h6' className={classes.typography}> Name </Typography>
-                  </TableCell>
-                  <TableCell className={classes.cell} align="left">
                     <Typography variant='h6' className={classes.typography}> Description </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align="left">
@@ -303,7 +296,7 @@ export default function ContactView({ contact }) {
                   </TableCell>
                 </TableRow>
               </TableHead>
-              <TableBody onClick={() => history.push('/view')}>
+              <TableBody>
                 {rows1.map((row) => (
                   <TableRow className={classes.row} key={row.date}>
                     <TableCell className={classes.cell} component="th" scope="row">
