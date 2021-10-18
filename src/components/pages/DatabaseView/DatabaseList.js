@@ -191,9 +191,9 @@ export default function DatabaseList() {
   const [contacts, setContacts] = useState([]);
   //const [fetched, setFetched] = useState(false);
   // const [user, loading, error] = useAuthState(auth);
-  //const [contact, setContact] = useState();
+  const [contact, setContact] = useState({});
 
-  let contact;
+  //let contact;
 
   const [selectionModel, setSelectionModel] = React.useState([]);
   console.log(selectionModel);
@@ -271,10 +271,10 @@ export default function DatabaseList() {
 
   useEffect(() => {
     const getContact = (selectionModel) => {
-      const contact = contacts.filter(contact => contact.Email == selectionModel)
+      const currContact = contacts.filter(contact => contact.Email == selectionModel)
       //console.log(currContact)
-      //setContact(currContact)
-      console.log(contact)
+      setContact(currContact)
+      //console.log(contact)
     };
     getContact(selectionModel);
   }, [selectionModel])
@@ -291,7 +291,7 @@ export default function DatabaseList() {
       }}>
         <Toolbar>
           <Grid
-            justifyContent ="space-between" // Add it here :)
+            justifyContent ="space-between" 
             container spacing={10}
           >
             <Grid item>
@@ -400,6 +400,7 @@ export default function DatabaseList() {
             </div>
           </Grid>
         </Grid>
+        {console.log(contact)}
             <ContactView contact={contact} />
         </Dialog>
       </div>

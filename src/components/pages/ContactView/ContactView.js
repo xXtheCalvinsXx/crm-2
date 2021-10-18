@@ -113,7 +113,7 @@ export default function ContactView({ contact }) {
       <DialogTitle>
           <PersonOutlineIcon style={{ fontSize: 100 }} />
           <Typography gutterBottom variant='h3'>
-            
+            { contact.contactId }
           </Typography>
       </DialogTitle>
       
