@@ -35,11 +35,12 @@ function assignEvents(contactId, events) {
       if (eventDate < today) {
         pastEvents.push(events[i]);
       } else {
-        upcomingEvents.push(events[i]);
+        upcomingEvents.unshift(events[i]);
       }
       eventCount++;
     }
   }
+
   return [pastEvents, upcomingEvents, eventCount];
 }
 
