@@ -10,7 +10,18 @@ import axios from 'axios';
 import { useContext } from 'react';
 import { userContext } from '../../../appContext/userContext';
 
-import { AppBar, Toolbar, Grid, IconButton, Button, Divider, Menu, MenuItem, Box, CircularProgress } from '@material-ui/core';
+import {
+  AppBar,
+  Toolbar,
+  Grid,
+  IconButton,
+  Button,
+  Divider,
+  Menu,
+  MenuItem,
+  Box,
+  CircularProgress,
+} from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
@@ -54,18 +65,17 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function DatabaseCard() {
+function DatabaseCard(props) {
   const classes = useStyles();
-  
+
   // const [user, loading, error] = useAuthState(auth);
   const [loading, setLoading] = useState(false);
   const [contacts, setContacts] = useState([]);
   const [events, setEvents] = useState([]);
 
-  const currentDate = new Date()
-  const
-  
-  const user = useContext(userContext);  
+  const currentDate = new Date();
+
+  const user = useContext(userContext);
 
   console.log('user = ', user);
 
@@ -82,13 +92,12 @@ function DatabaseCard() {
         await axios
           .get('contacts', { headers })
           .then((response) => {
-            
             setLoading(false);
-            setContacts(response.data)
+            setContacts(response.data);
           })
           .catch((error) => {
             console.log(error);
-          })
+          });
       }
     };
     const getDataEvents = async (user) => {
@@ -103,21 +112,17 @@ function DatabaseCard() {
         await axios
           .get('events', { headers })
           .then((response) => {
-            
             setLoading(false);
-            setEvents(response.data)
+            setEvents(response.data);
           })
           .catch((error) => {
             console.log(error);
-          })
+          });
       }
     };
-  getDataContacts(user);
-  getDataEvents(user);
-  }, [user])
-  
-  console.log(events)
-  console.log(contacts)
+    getDataContacts(user);
+    getDataEvents(user);
+  }, [user]);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -154,78 +159,83 @@ function DatabaseCard() {
     return (
       <div className={classes.root}>
         <Layout />
-        <AppBar position="fixed"
-        className={classes.appBar}
-        style={{
-          backgroundColor: "transparent",
-          color: "black",
-          boxShadow: "0px 0px 0px 0px"
-        }}>
+        <AppBar
+          position='fixed'
+          className={classes.appBar}
+          style={{
+            backgroundColor: 'transparent',
+            color: 'black',
+            boxShadow: '0px 0px 0px 0px',
+          }}
+        >
           <Toolbar>
             <Grid
-              justifyContent ="space-between" // Add it here :)
-              container spacing={10}
+              justifyContent='space-between' // Add it here :)
+              container
+              spacing={10}
             >
-              <Grid item>
-              </Grid>
+              <Grid item></Grid>
               <Grid item>
                 <div>
                   <IconButton onClick={moreMenuClick} disableRipple={true}>
-                    <MoreHorizIcon fontSize="medium"/>
+                    <MoreHorizIcon fontSize='medium' />
                   </IconButton>
                   <Menu
-                      id="basic-menu"
-                      anchorEl={anchorEl}
-                      open={open}
-                      onClose={moreMenuClose}
-                      PaperProps={{
-                        elevation: 0,
-                        sx: {
-                          overflow: 'visible',
-                          filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                          mt: 1.5,
-                        },
+                    id='basic-menu'
+                    anchorEl={anchorEl}
+                    open={open}
+                    onClose={moreMenuClose}
+                    PaperProps={{
+                      elevation: 0,
+                      sx: {
+                        overflow: 'visible',
+                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+                        mt: 1.5,
+                      },
+                    }}
+                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+                  >
+                    <MenuItem
+                      onClick={() => {
+                        signOut();
                       }}
-                      transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                      anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
                     >
-                      <MenuItem onClick={() => {signOut();}}>
-                        Logout
-                      </MenuItem>
-                    </Menu>
+                      Logout
+                    </MenuItem>
+                  </Menu>
                 </div>
               </Grid>
             </Grid>
           </Toolbar>
         </AppBar>
         <div className={classes.page}>
-          <Grid
-          justifyContent="space-between"
-          container 
-          spacing={24}
-          >
+          <Grid justifyContent='space-between' container spacing={24}>
             <Grid item>
               <AddContact />
             </Grid>
             <Grid item>
               <div>
-                <Button style={{textTransform: 'none'}} endIcon={<ListAltIcon /> } raised color="accent">
+                <Button
+                  style={{ textTransform: 'none' }}
+                  endIcon={<ListAltIcon />}
+                  raised
+                  color='accent'
+                >
                   Change View
                 </Button>
               </div>
             </Grid>
           </Grid>
-          <Divider/>
-          <br/>
-          <br/>
+          <Divider />
+          <br />
+          <br />
           <Grid container spacing={3}>
-            {contacts.map(contacts => (
+            {contacts.map((contacts) => (
               <Grid item xs={12} sm={6} md={4}>
-                <ContactCard contacts={contacts} events={events}/>
+                <ContactCard contacts={contacts} events={events} />
               </Grid>
             ))}
-            
-            
           </Grid>
         </div>
       </div>
