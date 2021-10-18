@@ -29,6 +29,9 @@ const useStyles = makeStyles(
       field: {
         margin: theme.spacing(3.5)
       },
+      fieldnew: {
+        margin: theme.spacing(4)
+      },
       typography: {
         marginLeft: theme.spacing(3.3),
         marginRight: theme.spacing(.5),
@@ -113,7 +116,7 @@ export default function ContactView({ contact }) {
       <DialogTitle>
           <PersonOutlineIcon style={{ fontSize: 100 }} />
           <Typography gutterBottom variant='h3'>
-            { contact.contactId }
+            { contact[0].Name }
           </Typography>
       </DialogTitle>
       
@@ -182,16 +185,8 @@ export default function ContactView({ contact }) {
                 Name
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='fullName'
-              placeholder='e.g. John Smith'
-              value={values.fullName}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              className={classes.field}
-              />
-              
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Name }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -202,15 +197,8 @@ export default function ContactView({ contact }) {
                 Email
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='email'
-              placeholder='e.g. johnsmith@gmail.com'
-              value={values.email}
-              fullWidth
-              onChange={handleInputChangeContact}
-              variant='standard'
-              className={classes.field}/>
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Email }
             </Grid>
           </Grid>
           <Grid container>
@@ -223,15 +211,8 @@ export default function ContactView({ contact }) {
                 Birthday
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='birthday'
-              placeholder='YYYY/MM/DD'
-              value={values.birthday}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Birthday }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -242,16 +223,8 @@ export default function ContactView({ contact }) {
                 Phone Number
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='phoneNumber'
-              placeholder='e.g. 1234567890'
-              value={values.phoneNumber}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              fullWidth
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Phone_Number }
             </Grid>
           </Grid>
           <Grid container>
@@ -264,15 +237,8 @@ export default function ContactView({ contact }) {
                 Location
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='location'
-              placeholder='e.g. Melbourne'
-              value={values.location}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Location }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -283,18 +249,9 @@ export default function ContactView({ contact }) {
                 Education
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='education'
-              placeholder='e.g. University of Melbourne'
-              value={values.education}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              fullWidth
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Education }
             </Grid>
-            
           </Grid>
           <Grid container>
             <Grid item xs={2}>
@@ -306,15 +263,8 @@ export default function ContactView({ contact }) {
                 Industry
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='industry'
-              placeholder='e.g. Tech'
-              value={values.industry}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Industry }
             </Grid>
           </Grid>
           <Grid container>
@@ -327,15 +277,8 @@ export default function ContactView({ contact }) {
                 Company
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='company'
-              placeholder='e.g. Google'
-              value={values.company}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Company }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -346,16 +289,8 @@ export default function ContactView({ contact }) {
                 Position
               </Typography>
             </Grid>
-            <Grid item xs={3}>
-              <TextField 
-              name='position'
-              placeholder='e.g. CEO'
-              value={values.position}
-              onChange={handleInputChangeContact}
-              variant='standard'
-              fullWidth
-              className={classes.field}
-              />
+            <Grid item xs={3} className={classes.fieldnew}>
+              { contact[0].Position }
             </Grid>
           </Grid>
         </DialogContentText>

@@ -83,7 +83,7 @@ const useStyles = makeStyles(
         flexWrap: 'wrap',
       },
       grid: {
-        // class="MuiToolbar-root MuiToolbar-regular MuiTablePagination-toolbar MuiToolbar-gutters"
+        //"MuiToolbar-root MuiToolbar-regular MuiTablePagination-toolbar MuiToolbar-gutters" : {color: 'white'},
         '&.MuiDataGrid-root .MuiDataGrid-columnHeader:focus, &.MuiDataGrid-root .MuiDataGrid-cell:focus, &.MuiDataGrid-root .MuiDataGrid-cell': {
           outline: 'none',
           border: 0,
@@ -375,7 +375,6 @@ export default function DatabaseList() {
           }}
         />
       </div>
-      
       <div className={classes.root}>
         <Dialog
           fullWidth
