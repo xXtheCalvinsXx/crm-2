@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { 
-  Grid, Button, Divider, TextField, Typography,
+  Grid, Divider, Typography, IconButton, Avatar
     } from '@material-ui/core';
 import {
-  //Dialog,
   DialogTitle,
   DialogContent,
   DialogContentText
@@ -13,8 +12,6 @@ import {
   from '@material-ui/core';
 import { useHistory } from 'react-router-dom';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-// Icons
-import PersonOutlineIcon from '@material-ui/icons/PersonOutline';
 
 const useStyles = makeStyles(
   (theme) =>
@@ -81,32 +78,9 @@ const rows1 = [
   createData('Thurs 16 Aug', 'Nimit Agrawal', 'Coffee Catchup', '...'),
 ];
 
-const initialContactValues = {
-  id: 0,
-  fullName: '',
-  location: '',
-  company: '',
-  position: '',
-  birthday: '',
-  education: '',
-  industry: '',
-  email: '',
-  phoneNumber: '',
-}
-
 export default function ContactView({ contact }) {
   const classes = useStyles();
   const history = useHistory()
-
-  const [values, setValues] = useState(initialContactValues);
-
-  const handleInputChangeContact = e => {
-    const {name, value} = e.target
-    setValues({
-      ...values,
-      [name]:value
-    })
-  }
 
   return (
     <div>
@@ -114,7 +88,16 @@ export default function ContactView({ contact }) {
       <Divider/>
 
       <DialogTitle>
-          <PersonOutlineIcon style={{ fontSize: 100 }} />
+          <IconButton>
+            <Avatar 
+              src= {contact[0].imageUrl}
+              style={{
+                margin: "10px",
+                width: "110px",
+                height: "110px",
+              }} 
+            />
+            </IconButton>
           <Typography gutterBottom variant='h3'>
             { contact[0].Name }
           </Typography>
@@ -293,16 +276,6 @@ export default function ContactView({ contact }) {
               { contact[0].Position }
             </Grid>
           </Grid>
-        </DialogContentText>
-      
-        <br/>
-
-        <Typography gutterBottom variant='h4'>
-          Notes
-        </Typography>
-
-        <DialogContentText>
-          Api
         </DialogContentText>
       
         <br/>
