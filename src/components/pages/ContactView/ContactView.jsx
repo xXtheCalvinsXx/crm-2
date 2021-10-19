@@ -64,14 +64,13 @@ const useStyles = makeStyles(
     }),
 );
 
-export default function ContactView({ contact, currEvents }) {
+export default function ContactView({ contact }) {
   const classes = useStyles();
 
-  let currEvent = currEvents;
 
   const currDate = new Date();
 
-  console.log(currDate)
+  console.log(contact)
 
   return (
     <div>
@@ -81,7 +80,7 @@ export default function ContactView({ contact, currEvents }) {
       <DialogTitle>
           <IconButton>
             <Avatar 
-              src= {contact[0].imageUrl}
+              src= {contact.contact.imageUrl}
               style={{
                 margin: "5px",
                 width: "110px",
@@ -90,7 +89,7 @@ export default function ContactView({ contact, currEvents }) {
             />
             </IconButton>
           <Typography gutterBottom variant='h3'>
-            { contact[0].Name }
+            { contact.contact.Name }
           </Typography>
       </DialogTitle>
       
@@ -117,7 +116,7 @@ export default function ContactView({ contact, currEvents }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currEvent.map((row) => 
+                {contact.upcomingEvents.map((row) => 
                   { Date.parse(row.Date) < Date.parse(currDate) &&
                     
                   <TableRow className={classes.row} key={row.date}>
@@ -156,7 +155,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Name }
+              { contact.contact.Name }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -168,7 +167,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Email }
+              { contact.contact.Email }
             </Grid>
           </Grid>
           <Grid container>
@@ -182,7 +181,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Birthday }
+              { contact.contact.Birthday }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -194,7 +193,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Phone_Number }
+              { contact.contact.Phone_Number }
             </Grid>
           </Grid>
           <Grid container>
@@ -208,7 +207,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Location }
+              { contact.contact.Location }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -220,7 +219,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Education }
+              { contact.contact.Education }
             </Grid>
           </Grid>
           <Grid container>
@@ -234,7 +233,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Industry }
+              { contact.contact.Industry }
             </Grid>
           </Grid>
           <Grid container>
@@ -248,7 +247,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Company }
+              { contact.contact.Company }
             </Grid>
             <Grid item xs={2}>
               <br/>
@@ -260,7 +259,7 @@ export default function ContactView({ contact, currEvents }) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              { contact[0].Position }
+              { contact.contact.Position }
             </Grid>
           </Grid>
         </DialogContentText>
@@ -288,8 +287,7 @@ export default function ContactView({ contact, currEvents }) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {currEvent.map((row) => 
-                  { row.Date < currDate &&
+                {contact.pastEvents.map((row) => 
                     <TableRow className={classes.row} key={row.date}>
                       <TableCell className={classes.cell} component="th" scope="row">
                         <Typography> {row.Date} </Typography>
@@ -301,7 +299,6 @@ export default function ContactView({ contact, currEvents }) {
                       <Typography> {row.Description} </Typography>
                       </TableCell>
                     </TableRow>
-                  }
                 )}
               </TableBody>
             </Table>

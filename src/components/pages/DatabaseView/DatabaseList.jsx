@@ -50,7 +50,6 @@ const useStyles = makeStyles(
       },
       page: {
         width: '100%',
-        padding: theme.spacing(10),
       },
       field: {
         margin: theme.spacing(3.5)
@@ -104,10 +103,12 @@ const useStyles = makeStyles(
 
 const heading = [
   { field: "Name", headerName: "Name", width: 300 },
-  { field: "Position", headerName: "Position", width: 200 },
-  { field: "Company", headerName: "Company", width: 200 },
-  { field: "Email", headerName: "Email", width: 300 },
-  { field: "Phone_Number", headerName: "Phone Number", width: 250 },
+  { field: "Position", headerName: "Position", width: 250 },
+  { field: "Company", headerName: "Company", width: 300 },
+  { field: "Email", headerName: "Email", width: 400 },
+  { field: "Phone_Number", headerName: "Phone Number", width: 300 },
+  { field: "Education", headerName: "Education", width: 250},
+  { field: "Location", headerName: "Location", width: 300},
 ]
 
 function QuickSearchToolbar(props) {
@@ -151,65 +152,17 @@ QuickSearchToolbar.propTypes = {
   value: PropTypes.string.isRequired,
 };
 
-export default function DatabaseList() {
+export default function DatabaseList(props) {
   const classes = useStyles();
   const history = useHistory()
 
   const [loading, setLoading] = useState(false);
   const [selectionModel, setSelectionModel] = React.useState([]);
-  const [contacts, setContacts] = useState([]);
-  const [events, setEvents] = useState([]);
+  const [contacts, setContacts] = useState(props.props.props.contacts.data);
+  const [events, setEvents] = useState(props.props.props.events.data);
+  const [contactEventData, setContactEventData] = useState(props.props.props.contactEventData.contactEventData.current)
   const [currEvents, setEvent] = useState([]);
   const [contact, setContact] = useState({});
-  //const [fetched, setFetched] = useState(false);
-
-  // Gets the user contacts and events
-  const user = useContext(userContext);  
-  useEffect(() => {
-    const getDataContacts = async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        const headers = await {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        };
-        setLoading(true);
-        await axios
-          .get('contacts', { headers })
-          .then((response) => {
-            
-            setLoading(false);
-            setContacts(response.data)
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      }
-    };
-
-    const getDataEvents = async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        const headers = await {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        };
-        setLoading(true);
-        await axios
-          .get('events', { headers })
-          .then((response) => {
-            
-            setLoading(false);
-            setEvents(response.data)
-          })
-          .catch((error) => {
-            console.log(error);
-          })
-      }
-    };
-  getDataContacts(user);
-  getDataEvents(user);
-  }, [user])
 
   // Search Functionality
   const [searchText, setSearchText] = React.useState('');
@@ -225,7 +178,7 @@ export default function DatabaseList() {
     setContacts(filteredRows);
   };
 
-  React.useEffect(() => {
+  useEffect(() => {
     setContacts(contacts);
   }, [contacts]);
 
@@ -234,117 +187,36 @@ export default function DatabaseList() {
 
   const handleClickOpen = () => {
     setOpen(true);
+    
   };
 
   const handleClose = () => {
     setOpen(false);
   };
-  
-  // Sign Out Functionality (with Open and Close)
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const openLog = Boolean(anchorEl);
-  const moreMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const moreMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const signOut = async () => {
-    try {
-      await auth.signOut();
-      return 'sign out success';
-    } catch (error) {
-      return 'sign out failure';
-    }
-  };
 
   // Gets particular contact and it's events
   useEffect(() => {
     const getContact = (selectionModel) => {
-      const currContact = contacts.filter(contact => contact.Email == selectionModel)
-      setContact(currContact)
-    };
 
-    const getEvent = (selectionModel) => {
-      const currEvent = events.filter(event => event.RelevantContact == selectionModel)
-      setEvent(currEvent)
+      for (const contact of contactEventData) {
+        console.log(contact.contact.Email)
+        console.log(selectionModel[0])
+        if (contact.contact.Email == selectionModel[0]) {
+          console.log('yay')
+          setContact(contact)
+          console.log(contact)
+        }
+      }
     };
+    
     getContact(selectionModel);
-    getEvent(selectionModel);
+    console.log(contact)
   }, [selectionModel])
 
   return (
-    <div className={classes.main}>
-      <Layout />
-      <AppBar position="fixed"
-      className={classes.appBar}
-      style={{
-        backgroundColor: "transparent",
-        color: "black",
-        boxShadow: "0px 0px 0px 0px"
-      }}>
-        <Toolbar>
-          <Grid
-            justifyContent ="space-between" 
-            container spacing={10}
-          >
-            <Grid item>
-            </Grid>
-            <Grid item>
-              <div>
-                <IconButton onClick={moreMenuClick} disableRipple={true}>
-                  <MoreHorizIcon fontSize="medium"/>
-                </IconButton>
-                <Menu
-                    id="basic-menu"
-                    anchorEl={anchorEl}
-                    open={openLog}
-                    onClose={moreMenuClose}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                      },
-                    }}
-                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  >
-                    <MenuItem onClick={() => {signOut();}}>
-                      Logout
-                    </MenuItem>
-                  </Menu>
-              </div>
-            </Grid>
-          </Grid>
-        </Toolbar>
-      </AppBar>
-    
+    <div className={classes.main}>    
       <div className={classes.page} style={{ height: '85vh', width: '100%' }}>
-        <Grid
-          justifyContent="space-between"
-          container 
-          spacing={24}
-          >
-          <Grid item>
-            <AddContact />
-          </Grid>
-          <Grid item>
-            <div>
-              <Button startIcon={
-                <AppsOutlinedIcon /> } raised color="accent" onClick={() => history.push('/databasecard')}
-                >
-                Change View
-              </Button>
-            </div>
-          </Grid>
-        </Grid>
-
-        <Divider/>
-        <br/>
-        <br/>
+        
         
         <DataGrid
           className={classes.grid}
@@ -392,7 +264,7 @@ export default function DatabaseList() {
             </div>
           </Grid>
         </Grid>
-            <ContactView contact={contact} currEvents={currEvents} />
+            <ContactView contact={contact} />
         </Dialog>
       </div>
     </div>

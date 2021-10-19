@@ -23,8 +23,7 @@ import Timeline from './components/pages/TimelineView/Timeline';
 import Header from './components/header/Header';
 import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
-import DatabaseCard from './components/pages/DatabaseView/DatabaseCard';
-import DatabaseList from './components/pages/DatabaseView/DatabaseList';
+import Database from './components/pages/DatabaseView/Database';
 import temp from './components/pages/temp';
 
 // firebase
@@ -87,11 +86,16 @@ function App() {
 
   useEffect(() => {
     const getData = async () => {
-      if (!setContacts[0] && user) {
+      console.log(contacts)
+      console.log(user)
+      console.log(events)
+      if (user && !events.length) {
+        console.log(user)
         const contacts = await getContacts(user);
         const events = await getEvents(user);
         setContacts(contacts);
         setEvents(events);
+        console.log(contacts)
         // setQueryLoading(false);
       }
     };
@@ -103,7 +107,7 @@ function App() {
   }, [user]);
 
   let history = useHistory();
-  console.log('loading = ', !loading && !queryLoading);
+  console.log('loading = ', queryLoading);
 
   if (loading || queryLoading) {
     return (
@@ -128,7 +132,7 @@ function App() {
               <PrivateRoute
                 exact
                 path='/'
-                component={temp}
+                component={Timeline}
                 props={{
                   contacts: contacts,
                   events: events,
@@ -149,13 +153,14 @@ function App() {
               />
               <PrivateRoute
                 exact
-                path='/databaselist'
-                component={DatabaseList}
-              />
-              <PrivateRoute
-                exact
-                path='/databasecard'
-                component={DatabaseCard}
+                path='/database'
+                component={Database}
+                props={{
+                  contacts: contacts,
+                  events: events,
+                  queryLoading: { queryLoading },
+                  contactEventData: { contactEventData },
+                }}
               />
             </Switch>
           </userContext.Provider>
