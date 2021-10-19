@@ -70,7 +70,7 @@ function Database(props) {
   const classes = useStyles();
 
   // const [user, loading, error] = useAuthState(auth);
-  const [cardView, setCardView] = useState(true);
+  const [cardView, setCardView] = useState(false);
 
   const user = useContext(userContext);
 
