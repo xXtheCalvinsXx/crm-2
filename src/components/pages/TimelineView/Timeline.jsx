@@ -14,6 +14,7 @@ import { userContext } from '../../../appContext/userContext';
 // layout
 import { useHistory } from 'react-router';
 import Layout from '../../layout/Layout';
+import createContactData from '../../../util/createContactData';
 
 // styling
 import {
@@ -81,7 +82,6 @@ function Timeline(props) {
   const history = useHistory();
   console.log('timeline');
   // const [user, loading, error] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
   const [events, setEvents] = useState([]);
   const [eventContacts, setEventContacts] = useState([]);
   const [count, setCount] = useState(0);
@@ -89,56 +89,6 @@ function Timeline(props) {
   const user = useContext(userContext);
 
   // console.log('user = ', user);
-
-  useEffect(() => {
-    const getDataEvents = async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        const headers = await {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        };
-        setLoading(true);
-
-        await axios
-          .get('events', { headers })
-          .then((response) => {
-            setEvents(response.data);
-            console.log(events);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-    const getDataContacts = async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        const headers = await {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        };
-        setLoading(true);
-        const dataEvents = [];
-        for (const eventContact of events) {
-          await axios
-            .get('contact/' + eventContact.RelevantContact, { headers })
-            .then((response) => {
-              setLoading(false);
-              dataEvents.push(response.data[0]);
-            })
-            .catch((error) => {
-              console.log(error);
-            });
-        }
-
-        setEventContacts(dataEvents);
-        console.log(eventContacts);
-      }
-    };
-    getDataEvents(user);
-    getDataContacts(user);
-  }, [user]);
 
   console.log(events);
   console.log(events);
@@ -161,20 +111,29 @@ function Timeline(props) {
     setAnchorEl(null);
   };
 
-  if (loading) {
+  const loading = props.props.queryLoading.queryLoading;
+  if (loading || !props.props.contacts.data || !props.props.events.data) {
     return (
-      <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        minHeight='100vh'
-      >
-        <CircularProgress size={100} />
-      </Box>
+      <React.Fragment>
+        <Box
+          display='flex'
+          justifyContent='center'
+          alignItems='center'
+          minHeight='100vh'
+        >
+          <CircularProgress size={100} />
+        </Box>
+      </React.Fragment>
     );
-  }
+  } else {
+    const data = createContactData(
+      props.props.contacts.data,
+      props.props.events.data
+    );
 
-  if (!loading)
+    props.props.contactEventData.contactEventData.current = data;
+    console.log(props.props.contactEventData.contactEventData.current);
+
     return (
       <React.Fragment>
         <div className={classes.root}>
@@ -327,6 +286,10 @@ function Timeline(props) {
         </div>
       </React.Fragment>
     );
+  }
 }
+
+ 
+
 
 export default Timeline;

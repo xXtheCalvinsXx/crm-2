@@ -18,12 +18,12 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='name'
-            name='name'
+            id='Name'
+            name='Name'
             type='text'
             placeholder='e.g. John Smith'
             value={formik.values.name}
-            onChange={formik.handleChange}
+            onChange={() => formik.handleChange}
             error={formik.touched.name && Boolean(formik.errors.name)}
             helperText={formik.touched.name && formik.errors.name}
             variant='standard'
@@ -39,8 +39,8 @@ function ContactDetails(props) {
         <Grid item xs={3}>
           <TextField
             fullWidth
-            id='email'
-            name='email'
+            id='Email'
+            name='Email'
             type='email'
             placeholder='e.g. johnsmith@gmail.com'
             value={formik.values.email}
@@ -61,8 +61,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='birthday'
-            name='birthday'
+            id='Birthday'
+            name='Birthday'
             placeholder='YYYY/MM/DD'
             value={formik.values.birthday}
             onChange={formik.handleChange}
@@ -80,8 +80,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='phoneNumber'
-            name='phoneNumber'
+            id='PhoneNumber'
+            name='PhoneNumber'
             type='number'
             placeholder='e.g. 1234567890'
             value={formik.values.phoneNumber}
@@ -105,8 +105,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='location'
-            name='location'
+            id='Location'
+            name='Location'
             placeholder='e.g. Melbourne'
             value={formik.values.location}
             onChange={formik.handleChange}
@@ -124,8 +124,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='education'
-            name='education'
+            id='Education'
+            name='Education'
             placeholder='e.g. University of Melbourne'
             value={formik.values.education}
             onChange={formik.handleChange}
@@ -146,8 +146,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='industry'
-            name='industry'
+            id='Industry'
+            name='Industry'
             placeholder='e.g. Tech'
             value={formik.values.industry}
             onChange={formik.handleChange}
@@ -171,8 +171,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='company'
-            name='company'
+            id='Company'
+            name='Company'
             placeholder='e.g. Google'
             value={formik.values.company}
             onChange={formik.handleChange}
@@ -190,8 +190,8 @@ function ContactDetails(props) {
         </Grid>
         <Grid item xs={3}>
           <TextField
-            id='position'
-            name='position'
+            id='Position'
+            name='Position'
             placeholder='e.g. CEO'
             value={formik.values.position}
             onChange={formik.handleChange}

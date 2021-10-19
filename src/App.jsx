@@ -23,7 +23,7 @@ import Timeline from './components/pages/TimelineView/Timeline';
 import Header from './components/header/Header';
 import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
-import DatabaseCard from './components/pages/DatabaseView/DatabaseCard';
+import Database from './components/pages/DatabaseView/Database';
 import temp from './components/pages/temp';
 
 // firebase
@@ -91,6 +91,7 @@ function App() {
         const events = await getEvents(user);
         setContacts(contacts);
         setEvents(events);
+        console.log(contacts);
         // setQueryLoading(false);
       }
     };
@@ -102,7 +103,7 @@ function App() {
   }, [user]);
 
   let history = useHistory();
-  console.log('loading = ', !loading && !queryLoading);
+  console.log('loading = ', queryLoading);
 
   if (loading || queryLoading) {
     return (
@@ -127,7 +128,7 @@ function App() {
               <PrivateRoute
                 exact
                 path='/'
-                component={temp}
+                component={Timeline}
                 props={{
                   contacts: contacts,
                   events: events,
@@ -148,8 +149,14 @@ function App() {
               />
               <PrivateRoute
                 exact
-                path='/databasecard'
-                component={DatabaseCard}
+                path='/contacts'
+                component={Database}
+                props={{
+                  contacts: contacts,
+                  events: events,
+                  queryLoading: { queryLoading },
+                  contactEventData: { contactEventData },
+                }}
               />
             </Switch>
           </userContext.Provider>

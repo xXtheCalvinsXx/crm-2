@@ -1,8 +1,8 @@
 import React from 'react';
 import { Drawer, AppBar, Toolbar, Grid, IconButton } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import HomeIcon from '@material-ui/icons/Home';
-import ContactsIcon from '@material-ui/icons/Contacts';
+import HomeOutlinedIcon from '@material-ui/icons/HomeOutlined';
+import ContactsOutlinedIcon from '@material-ui/icons/ContactsOutlined';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { useHistory } from 'react-router';
 
@@ -38,28 +38,30 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Layout() {
   const classes = useStyles();
-  const history = useHistory()
+  const history = useHistory();
 
   return (
     <div className={classes.root}>
-      <AppBar position="fixed"
-      className={classes.appBar}
-      style={{
-        backgroundColor: "transparent",
-        color: "black",
-        boxShadow: "0px 0px 0px 0px"
-      }}>
+      <AppBar
+        position='fixed'
+        className={classes.appBar}
+        style={{
+          backgroundColor: 'transparent',
+          color: 'black',
+          boxShadow: '0px 0px 0px 0px',
+        }}
+      >
         <Toolbar>
           <Grid
-            justifyContent ="space-between" // Add it here :)
-            container spacing={10}
+            justifyContent='space-between' // Add it here :)
+            container
+            spacing={10}
           >
-            <Grid item>
-            </Grid>
+            <Grid item></Grid>
             <Grid item>
               <div>
                 <IconButton disableRipple={true}>
-                  <MoreHorizIcon fontSize="medium" />
+                  <MoreHorizIcon fontSize='medium' />
                 </IconButton>
               </div>
             </Grid>
@@ -67,26 +69,21 @@ export default function Layout() {
         </Toolbar>
       </AppBar>
       <Drawer
-      className={classes.drawer}
-      variant="permanent"
-      classes={{
-        paper: classes.drawerPaper,
-      }}
-      anchor="left">
+        className={classes.drawer}
+        variant='permanent'
+        classes={{
+          paper: classes.drawerPaper,
+        }}
+        anchor='left'
+      >
         <div className={classes.toolbar} />
-        <IconButton 
-        onClick={() => history.push('/')}
-        >
-          <HomeIcon 
-          style={{ fontSize: 30 }} />
+        <IconButton onClick={() => history.push('/')}>
+          <HomeOutlinedIcon style={{ fontSize: 35, color: 'black' }} />
         </IconButton>
-        <IconButton 
-        onClick={() => history.push('/databasecard')}
-        >
-            <ContactsIcon 
-            style={{ fontSize: 30 }} />
+        <IconButton onClick={() => history.push('/contacts')}>
+          <ContactsOutlinedIcon style={{ fontSize: 35, color: 'black' }} />
         </IconButton>
       </Drawer>
     </div>
-    )
+  );
 }

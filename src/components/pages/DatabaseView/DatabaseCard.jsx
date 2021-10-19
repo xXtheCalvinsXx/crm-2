@@ -14,6 +14,9 @@ import {
   AppBar,
   Toolbar,
   Grid,
+  Card,
+  Avatar,
+  Typography,
   IconButton,
   Button,
   Divider,
@@ -21,18 +24,18 @@ import {
   MenuItem,
   Box,
   CircularProgress,
+  Dialog,
+  DialogActions,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
 import ListAltIcon from '@material-ui/icons/ListAlt';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import ContactCard from '../../card/ContactCard';
 import AddContact from '../AddContact/AddContact';
 import Layout from '../../layout/Layout';
+import ContactView from '../ContactView/ContactView';
 
 // firebase
 import { auth } from '../../../firebase/firebaseUtils';
-
-import AddContact2 from '../AddContact/AddContact2';
 
 const drawerWidth = 40;
 
@@ -65,184 +68,124 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.default,
     padding: theme.spacing(3),
   },
+  card: {
+    display: 'flex',
+    padding: 25,
+  },
+  sizeAvatar: {
+    height: theme.spacing(21),
+    width: theme.spacing(21),
+  },
+  typography: {
+    color: '#b0bec5',
+    marginLeft: 30,
+    marginRight: 30,
+  },
+  typographyInfo: {
+    marginLeft: 30,
+    marginBottom: 10,
+  },
 }));
 
 function DatabaseCard(props) {
   const classes = useStyles();
 
-  // const [user, loading, error] = useAuthState(auth);
-  const [loading, setLoading] = useState(false);
-  const [contacts, setContacts] = useState([]);
-  const [events, setEvents] = useState([]);
+  // Dialog Open and Close
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [clickedContact, setClickedContact] = useState([]);
 
-  const currentDate = new Date();
-
-  const user = useContext(userContext);
-
-  console.log('user = ', user);
-
-  useEffect(() => {
-    const getDataContacts = async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        const headers = await {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        };
-        setLoading(true);
-
-        await axios
-          .get('contacts', { headers })
-          .then((response) => {
-            setLoading(false);
-            setContacts(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-    const getDataEvents = async (user) => {
-      if (user) {
-        const token = await user.getIdToken();
-        const headers = await {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ` + token,
-        };
-        setLoading(true);
-
-        await axios
-          .get('events', { headers })
-          .then((response) => {
-            setLoading(false);
-            setEvents(response.data);
-          })
-          .catch((error) => {
-            console.log(error);
-          });
-      }
-    };
-    getDataContacts(user);
-    getDataEvents(user);
-  }, [user]);
-
-  const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
-  const moreMenuClick = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-  const moreMenuClose = () => {
-    setAnchorEl(null);
+  const handleClickOpen = () => {
+    setOpen(true);
+    console.log('yay');
   };
 
-  const signOut = async () => {
-    try {
-      await auth.signOut();
-      return 'sign out success';
-    } catch (error) {
-      return 'sign out failure';
-    }
+  const handleClose = () => {
+    setOpen(false);
+  };
+  const handleEditOpen = () => {
+    setOpen(true);
+  };
+  const handleEditClose = () => {
+    setOpen(false);
   };
 
-  if (loading) {
-    return (
-      <Box
-        display='flex'
-        justifyContent='center'
-        alignItems='center'
-        minHeight='100vh'
+  const contactEventData =
+    props.props.props.contactEventData.contactEventData.current;
+  return (
+    <div>
+      <Grid container spacing={3}>
+        {contactEventData.map((contacts) => (
+          <Grid item xs={12} sm={6} md={4}>
+            <Card className={classes.card} onClick={handleClickOpen}>
+              <Grid justifyContent='space-between' container>
+                <Grid item>
+                  <Avatar className={classes.sizeAvatar} variant='square' />
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.typography}>Name</Typography>
+                  <Typography className={classes.typographyInfo}>
+                    {contacts.contact.Name}
+                  </Typography>
+                  <Typography className={classes.typography}>
+                    Company
+                  </Typography>
+                  <Typography className={classes.typographyInfo}>
+                    {contacts.contact.Company}
+                  </Typography>
+                  <Typography className={classes.typography}>Last</Typography>
+                  <Typography className={classes.typographyInfo}>
+                    {contacts.pastEvents.length > 1
+                      ? contacts.pastEvents[0].Date
+                      : 'Empty'}
+                  </Typography>
+                </Grid>
+                <Grid item>
+                  <Typography className={classes.typography}>
+                    Location
+                  </Typography>
+                  <Typography className={classes.typographyInfo}>
+                    {contacts.contact.Location}
+                  </Typography>
+                  <Typography className={classes.typography}>
+                    Position
+                  </Typography>
+                  <Typography className={classes.typographyInfo}>
+                    {contacts.contact.Position}
+                  </Typography>
+                  <Typography className={classes.typography}>Next</Typography>
+                  <Typography className={classes.typographyInfo}>
+                    {contacts.upcomingEvents.length > 1
+                      ? contacts.upcomingEvents[0].Date
+                      : 'Empty'}
+                  </Typography>
+                </Grid>
+              </Grid>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+      <Dialog
+        fullWidth
+        classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
+        open={open}
+        onClose={handleClose}
       >
-        <CircularProgress size={100} />
-      </Box>
-    );
-  }
+        <Grid justifyContent='space-between' container spacing={12}>
+          <Grid item></Grid>
+          <Grid item>
+            <div>
+              <DialogActions>
+                <Button onClick={handleClose}>Edit</Button>
 
-  if (!loading)
-    return (
-      <div className={classes.root}>
-        <Layout />
-        <AppBar
-          position='fixed'
-          className={classes.appBar}
-          style={{
-            backgroundColor: 'transparent',
-            color: 'black',
-            boxShadow: '0px 0px 0px 0px',
-          }}
-        >
-          <Toolbar>
-            <Grid
-              justifyContent='space-between' // Add it here :)
-              container
-              spacing={10}
-            >
-              <Grid item></Grid>
-              <Grid item>
-                <div>
-                  <IconButton onClick={moreMenuClick} disableRipple={true}>
-                    <MoreHorizIcon fontSize='medium' />
-                  </IconButton>
-                  <Menu
-                    id='basic-menu'
-                    anchorEl={anchorEl}
-                    open={open}
-                    onClose={moreMenuClose}
-                    PaperProps={{
-                      elevation: 0,
-                      sx: {
-                        overflow: 'visible',
-                        filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
-                        mt: 1.5,
-                      },
-                    }}
-                    transformOrigin={{ horizontal: 'right', vertical: 'top' }}
-                    anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
-                  >
-                    <MenuItem
-                      onClick={() => {
-                        signOut();
-                      }}
-                    >
-                      Logout
-                    </MenuItem>
-                  </Menu>
-                </div>
-              </Grid>
-            </Grid>
-          </Toolbar>
-        </AppBar>
-        <div className={classes.page}>
-          <Grid justifyContent='space-between' container spacing={24}>
-            <Grid item>
-              {/* <AddContact /> */}
-              <AddContact2 />
-            </Grid>
-            <Grid item>
-              <div>
-                <Button
-                  style={{ textTransform: 'none' }}
-                  endIcon={<ListAltIcon />}
-                  raised
-                  color='accent'
-                >
-                  Change View
-                </Button>
-              </div>
-            </Grid>
+                <Button onClick={handleClose}>Close</Button>
+              </DialogActions>
+            </div>
           </Grid>
-          <Divider />
-          <br />
-          <br />
-          <Grid container spacing={3}>
-            {contacts.map((contacts) => (
-              <Grid item xs={12} sm={6} md={4}>
-                <ContactCard contacts={contacts} events={events} />
-              </Grid>
-            ))}
-          </Grid>
-        </div>
-      </div>
-    );
+        </Grid>
+      </Dialog>
+    </div>
+  );
 }
 
 export default DatabaseCard;

@@ -8,8 +8,8 @@ const Input = styled('input')({
 });
 
 function AddContactImage(props) {
-  const { classes } = props;
-  const [myImage, setMyImage] = useState(defaultAvatar);
+  const { classes, avatar } = props;
+  const [myImage, setMyImage] = useState(avatar ? avatar : defaultAvatar);
 
   const imageHandler = (e) => {
     const reader = new FileReader();
