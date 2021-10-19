@@ -67,10 +67,10 @@ const useStyle = makeStyles((theme) => ({
 }));
 
 function AddContactDialogueContent(props) {
-  const { editContact, avatar, futureEvents, pastEvents } = props.editContact;
-  const contact = props.contact.contact;
+  const { editContact, avatar, futureEvents, pastEvents } = props;
+  const contact = props?.contact?.contact;
 
-  console.log('edit contact = ', editContact, 'name = ', contact.Name);
+  console.log('edit contact = ', editContact);
   const classes = useStyle();
   const [eventFieldFuture, setEventFieldFuture] = useState([
     { Date: '', Occasion: '', Description: '' },
@@ -81,9 +81,19 @@ function AddContactDialogueContent(props) {
   ]);
   const { descriptionElementRef, scroll } = props;
 
+  useEffect(() => {
+    if (editContact) {
+      initialiseEvents(setEventFieldFuture, futureEvents, contact.contactId);
+      initialiseEvents(setEventFieldPast, pastEvents, contact.contactId);
+    }
+
+    console.log('fe = ', eventFieldFuture);
+  }, [futureEvents]);
+
   //   const initialFutureEvents = futureEvents.length > 0 ? :
-  //   initialiseEvents(setEventFieldFuture, futureEvents, contact.contactId);
-  //   initialiseEvents(setEventFieldPast, pastEvents, contact.contactId);
+
+  const phoneRegExp =
+    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   const validationSchema = Yup.object({
     Name: Yup.string('Please enter contact name').required(),
@@ -94,9 +104,7 @@ function AddContactDialogueContent(props) {
     Education: Yup.string('Enter education'),
     Industry: Yup.string('Enter industry'),
     Email: Yup.string('Enter email').email('Enter a valid email').required(),
-    PhoneNumber: Yup.number('Enter phone number')
-      .min(10, 'Please enter a valid phone number')
-      .max(10, 'Please enter a valid phone number'),
+    PhoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   });
 
   const formik = useFormik({
@@ -109,15 +117,15 @@ function AddContactDialogueContent(props) {
       Education: editContact ? contact.Education : '',
       Industry: editContact ? contact.Industry : '',
       Email: editContact ? contact.Email : '',
-      PhoneNumber: editContact ? contact.PhoneNumber : '',
+      PhoneNumber: editContact ? contact.Phone_Number : '',
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log(values);
+      console.log('hihihi', values);
+      console.log(eventFieldFuture);
     },
   });
-
-  console.log('initial values = ', formik.initialValues);
+  console.log(formik.initialValues);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -162,6 +170,8 @@ function initialiseEvents(setEvents, data, contactID) {
       RelevantContact: contactID,
     });
   }
+
+  console.log('data = ', data);
 
   setEvents(arr);
 }

@@ -28,6 +28,7 @@ function AddContactDialogue(props) {
         <AddContactDialogueContent
           scroll={scroll}
           descriptionElementRef={descriptionElementRef}
+          editContact={false}
         />
       </Dialog>
     </React.Fragment>

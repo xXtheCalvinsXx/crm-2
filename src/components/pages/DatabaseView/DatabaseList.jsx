@@ -204,19 +204,19 @@ export default function DatabaseList(props) {
   useEffect(() => {
     const getContact = (selectionModel) => {
       for (const contact of contactEventData) {
-        console.log(contact.contact.Email);
-        console.log(selectionModel[0]);
         if (contact.contact.Email == selectionModel[0]) {
-          console.log('yay');
           setContact(contact);
-          console.log(contact);
         }
       }
     };
 
     getContact(selectionModel);
-    console.log(contact);
   }, [selectionModel]);
+
+  const contactData = props.contactEventData.contactEventData.current;
+  console.log('contact data = ', contactData);
+
+  console.log('contacts  = ', contacts);
 
   return (
     <div className={classes.main}>

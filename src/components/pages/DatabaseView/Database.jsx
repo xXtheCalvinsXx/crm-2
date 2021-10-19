@@ -33,7 +33,6 @@ import ListAltIcon from '@material-ui/icons/ListAlt';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import AddContact from '../AddContact/AddContact';
 
-
 const drawerWidth = 40;
 
 const useStyles = makeStyles((theme) => ({
@@ -71,7 +70,7 @@ function Database(props) {
   const classes = useStyles();
 
   // const [user, loading, error] = useAuthState(auth);
-  const [cardView, setCardView] = useState(true)
+  const [cardView, setCardView] = useState(true);
 
   const user = useContext(userContext);
 
@@ -110,7 +109,6 @@ function Database(props) {
       </React.Fragment>
     );
   } else {
-
     const data = createContactData(
       props.props.contacts.data,
       props.props.events.data
@@ -118,7 +116,7 @@ function Database(props) {
 
     props.props.contactEventData.contactEventData.current = data;
     console.log(props.props.contactEventData.contactEventData.current);
-    console.log(props)
+    console.log(props);
 
     return (
       <div className={classes.root}>
@@ -195,16 +193,22 @@ function Database(props) {
           <Divider />
           <br />
           <br />
-          {console.log(props)}
-          {cardView ? <DatabaseCard props={props}/> : <DatabaseList props={props}/>}
+          {console.log('db screen: ', props.props.contactEventData)}
+          {cardView ? (
+            <DatabaseCard
+              props={props}
+              // contactEventData={props.props.contactEventData}
+            />
+          ) : (
+            <DatabaseList
+              props={props}
+              contactEventData={props.props.contactEventData}
+            />
+          )}
         </div>
-    </div>
+      </div>
     );
-  }          
+  }
 }
-
-
-    
-
 
 export default Database;

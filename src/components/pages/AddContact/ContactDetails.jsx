@@ -22,10 +22,10 @@ function ContactDetails(props) {
             name='Name'
             type='text'
             placeholder='e.g. John Smith'
-            value={formik.values.name}
-            onChange={() => formik.handleChange}
-            error={formik.touched.name && Boolean(formik.errors.name)}
-            helperText={formik.touched.name && formik.errors.name}
+            value={formik.values.Name}
+            onChange={formik.handleChange}
+            error={formik.touched.Name && Boolean(formik.errors.Name)}
+            helperText={formik.touched.Name && formik.errors.Name}
             variant='standard'
             className={classes.textField}
           />
@@ -43,10 +43,10 @@ function ContactDetails(props) {
             name='Email'
             type='email'
             placeholder='e.g. johnsmith@gmail.com'
-            value={formik.values.email}
+            value={formik.values.Email}
             onChange={formik.handleChange}
-            error={formik.touched.email && Boolean(formik.errors.email)}
-            helperText={formik.touched.nemailame && formik.errors.email}
+            error={formik.touched.Email && Boolean(formik.errors.Email)}
+            helperText={formik.touched.Email && formik.errors.Email}
             variant='standard'
             className={classes.textField}
           />
@@ -64,10 +64,10 @@ function ContactDetails(props) {
             id='Birthday'
             name='Birthday'
             placeholder='YYYY/MM/DD'
-            value={formik.values.birthday}
+            value={formik.values.Birthday}
             onChange={formik.handleChange}
-            error={formik.touched.birthday && Boolean(formik.errors.birthday)}
-            helperText={formik.touched.birthday && formik.errors.birthday}
+            error={formik.touched.Birthday && Boolean(formik.errors.Birthday)}
+            helperText={formik.touched.Birthday && formik.errors.Birthday}
             variant='standard'
             className={classes.textField}
           />
@@ -82,14 +82,13 @@ function ContactDetails(props) {
           <TextField
             id='PhoneNumber'
             name='PhoneNumber'
-            type='number'
             placeholder='e.g. 1234567890'
-            value={formik.values.phoneNumber}
+            value={formik.values.PhoneNumber}
             onChange={formik.handleChange}
             error={
-              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+              formik.touched.PhoneNumber && Boolean(formik.errors.PhoneNumber)
             }
-            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+            helperText={formik.touched.PhoneNumber && formik.errors.PhoneNumber}
             variant='standard'
             fullWidth
             className={classes.textField}
@@ -108,10 +107,10 @@ function ContactDetails(props) {
             id='Location'
             name='Location'
             placeholder='e.g. Melbourne'
-            value={formik.values.location}
+            value={formik.values.Location}
             onChange={formik.handleChange}
-            error={formik.touched.location && Boolean(formik.errors.location)}
-            helperText={formik.touched.location && formik.errors.location}
+            error={formik.touched.Location && Boolean(formik.errors.Location)}
+            helperText={formik.touched.Location && formik.errors.Location}
             variant='standard'
             className={classes.textField}
           />
@@ -127,10 +126,10 @@ function ContactDetails(props) {
             id='Education'
             name='Education'
             placeholder='e.g. University of Melbourne'
-            value={formik.values.education}
+            value={formik.values.Education}
             onChange={formik.handleChange}
-            error={formik.touched.education && Boolean(formik.errors.education)}
-            helperText={formik.touched.education && formik.errors.education}
+            error={formik.touched.Education && Boolean(formik.errors.Education)}
+            helperText={formik.touched.Education && formik.errors.Education}
             variant='standard'
             fullWidth
             className={classes.textField}
@@ -149,10 +148,10 @@ function ContactDetails(props) {
             id='Industry'
             name='Industry'
             placeholder='e.g. Tech'
-            value={formik.values.industry}
+            value={formik.values.Industry}
             onChange={formik.handleChange}
-            error={formik.touched.industry && Boolean(formik.errors.industry)}
-            helperText={formik.touched.industry && formik.errors.industry}
+            error={formik.touched.Industry && Boolean(formik.errors.Industry)}
+            helperText={formik.touched.Industry && formik.errors.Industry}
             variant='standard'
             className={classes.textField}
           />
@@ -174,10 +173,10 @@ function ContactDetails(props) {
             id='Company'
             name='Company'
             placeholder='e.g. Google'
-            value={formik.values.company}
+            value={formik.values.Company}
             onChange={formik.handleChange}
-            error={formik.touched.company && Boolean(formik.errors.company)}
-            helperText={formik.touched.company && formik.errors.company}
+            error={formik.touched.Company && Boolean(formik.errors.Company)}
+            helperText={formik.touched.Company && formik.errors.Company}
             variant='standard'
             className={classes.textField}
           />
@@ -193,10 +192,10 @@ function ContactDetails(props) {
             id='Position'
             name='Position'
             placeholder='e.g. CEO'
-            value={formik.values.position}
+            value={formik.values.Position}
             onChange={formik.handleChange}
-            error={formik.touched.position && Boolean(formik.errors.position)}
-            helperText={formik.touched.position && formik.errors.position}
+            error={formik.touched.Position && Boolean(formik.errors.Position)}
+            helperText={formik.touched.Position && formik.errors.Position}
             variant='standard'
             fullWidth
             className={classes.textField}
