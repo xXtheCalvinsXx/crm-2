@@ -18,6 +18,7 @@ function temp(props) {
   };
 
   const loading = props.props.queryLoading.queryLoading;
+
   if (loading || !props.props.contacts.data || !props.props.events.data) {
     return (
       <React.Fragment>

@@ -86,7 +86,7 @@ function App() {
 
   useEffect(() => {
     const getData = async () => {
-      if (!setContacts[0] && user) {
+      if (!events.length && user) {
         const contacts = await getContacts(user);
         const events = await getEvents(user);
         setContacts(contacts);

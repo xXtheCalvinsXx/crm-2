@@ -32,6 +32,8 @@ import Layout from '../../layout/Layout';
 // firebase
 import { auth } from '../../../firebase/firebaseUtils';
 
+import AddContact2 from '../AddContact/AddContact2';
+
 const drawerWidth = 40;
 
 const useStyles = makeStyles((theme) => ({
@@ -212,7 +214,8 @@ function DatabaseCard(props) {
         <div className={classes.page}>
           <Grid justifyContent='space-between' container spacing={24}>
             <Grid item>
-              <AddContact />
+              {/* <AddContact /> */}
+              <AddContact2 />
             </Grid>
             <Grid item>
               <div>
