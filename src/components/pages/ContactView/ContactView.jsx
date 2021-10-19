@@ -60,7 +60,12 @@ const useStyles = makeStyles(
       },
       cell: {
         borderBottom: 'none'
-      }
+      },
+      sizeAvatar: {
+        height: theme.spacing(23),
+        width: theme.spacing(23),
+        margin: theme.spacing(3)
+    },
     }),
 );
 
@@ -78,16 +83,10 @@ export default function ContactView({ contact }) {
       <Divider/>
 
       <DialogTitle>
-          <IconButton>
             <Avatar 
-              src= {contact.contact.imageUrl}
-              style={{
-                margin: "5px",
-                width: "110px",
-                height: "110px",
-              }} 
+              src= {'https://commons.wikimedia.org/wiki/File:Breezeicons-actions-22-im-user.svg'}
+              className={classes.sizeAvatar}
             />
-            </IconButton>
           <Typography gutterBottom variant='h3'>
             { contact.contact.Name }
           </Typography>
