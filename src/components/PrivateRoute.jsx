@@ -14,11 +14,13 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
 
-const PrivateRoute = ({ component: Component, ...rest }) => {
-  // const [user, loading, error] = useAuthState(auth);
+const PrivateRoute = ({ component: Component, props, ...rest }) => {
+  const user1 = useContext(userContext);
+  const [user, loading, error] = useAuthState(auth);
+  const parentProps = props;
+  console.log(parentProps);
   console.log('redirected');
 
-  const user = useContext(userContext);
   // if (loading) {
   //   return (
   //     <Box
@@ -36,7 +38,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) => {
-        if (!user) {
+        if (!user || !user1) {
           console.log('not user @@@@@@');
           // not logged in so redirect to login page with the return url
 
@@ -48,7 +50,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
         }
 
         // authorized so return component
-        return <Component {...props} />;
+        return <Component {...props} props={parentProps} />;
       }}
     />
   );

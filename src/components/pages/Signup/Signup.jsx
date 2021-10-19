@@ -56,12 +56,8 @@ function Signup() {
     password2: Yup.string()
       .oneOf([Yup.ref('password'), null], 'Passwords must match.')
       .required('Password confirmation is required'),
-    firstName: Yup.string('Enter your first name')
-      .matches(/[a-zA-Z]/, 'Password can only contain alphabetical letters.')
-      .required(),
-    lastName: Yup.string('Enter your first name')
-      .matches(/[a-zA-Z]/, 'Password can only contain alphabetical letters.')
-      .required(),
+    firstName: Yup.string('Enter your first name').required(),
+    lastName: Yup.string('Enter your first name').required(),
   });
 
   const formik = useFormik({

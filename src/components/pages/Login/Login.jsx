@@ -34,6 +34,9 @@ const useStyles = makeStyles((theme) => ({
     fontSize: '0.8rem',
     marginTop: 10,
   },
+  submitButton: {
+    // color: 'red',
+  },
 }));
 
 const validationSchema = Yup.object({
@@ -44,7 +47,6 @@ const validationSchema = Yup.object({
 });
 
 function Login() {
-  console.log('login page');
   const history = useHistory();
   const classes = useStyles();
   const [loading, setLoading] = useState(false);
@@ -116,8 +118,9 @@ function Login() {
           className={classes.textField}
         />
         <Button
+          className={classes.submitButton}
           id='SubmitButton'
-          color='primary'
+          // color='primary'
           variant='outlined'
           type='submit'
           onClick={() => {
@@ -138,7 +141,7 @@ function Login() {
       <div>
         <Button
           type='button'
-          id='SubmitButton'
+          id='SignupButton'
           color='primary'
           variant='outlined'
           onClick={() => {
