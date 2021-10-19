@@ -137,7 +137,7 @@ function DatabaseCard(props) {
                     Last
                   </Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.pastEvents.length > 1 ? contacts.pastEvents[0].Date : 'Empty'}
+                    {contacts.pastEvents.length > 0 ? contacts.pastEvents[0].Date : 'Empty'}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -157,7 +157,7 @@ function DatabaseCard(props) {
                     Next
                   </Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.upcomingEvents.length > 1 ? contacts.upcomingEvents[0].Date : 'Empty'}
+                    {contacts.upcomingEvents.length > 0 ? contacts.upcomingEvents[0].Date : 'Empty'}
                   </Typography>
                 </Grid>
               </Grid>

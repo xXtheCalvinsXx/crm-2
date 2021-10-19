@@ -229,6 +229,7 @@ function Timeline(props) {
                     <TableRow className={classes.row}>
                       <TableCell
                         className={classes.cell}
+                        style={{ width:250 }}
                         component='th'
                         scope='row'
                       >
@@ -236,6 +237,7 @@ function Timeline(props) {
                       </TableCell>
                       <TableCell
                         className={classes.cell}
+                        style={{ width:300 }}
                         component='th'
                         scope='row'
                       >
@@ -243,7 +245,7 @@ function Timeline(props) {
                           <Typography> {matchingContact.Name} </Typography>
                         ))}
                       </TableCell>
-                      <TableCell className={classes.cell} align='left'>
+                      <TableCell className={classes.cell} style={{ width:350 }} align='left'>
                         <Typography> {value.Occasion} </Typography>
                       </TableCell>
                       <TableCell className={classes.cell} align='left'>
@@ -289,6 +291,7 @@ function Timeline(props) {
                     <TableRow className={classes.row}>
                       <TableCell
                         className={classes.cell}
+                        style={{ width:250 }}
                         component='th'
                         scope='row'
                       >
@@ -296,6 +299,7 @@ function Timeline(props) {
                       </TableCell>
                       <TableCell
                         className={classes.cell}
+                        style={{ width:300 }}
                         component='th'
                         scope='row'
                       >
@@ -303,7 +307,7 @@ function Timeline(props) {
                           <Typography> {matchingContact.Name} </Typography>
                         ))}
                       </TableCell>
-                      <TableCell className={classes.cell} align='left'>
+                      <TableCell className={classes.cell} style={{ width:350 }} align='left'>
                         <Typography> {value.Occasion} </Typography>
                       </TableCell>
                       <TableCell className={classes.cell} align='left'>
