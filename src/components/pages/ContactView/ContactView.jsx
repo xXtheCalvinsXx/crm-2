@@ -91,12 +91,7 @@ export default function ContactView(props) {
       <Divider />
 
       <DialogTitle>
-        <Avatar
-          src={
-            'https://commons.wikimedia.org/wiki/File:Breezeicons-actions-22-im-user.svg'
-          }
-          className={classes.sizeAvatar}
-        />
+        <Avatar src={contact.contact.imageUrl} className={classes.sizeAvatar} />
         <Typography gutterBottom variant='h3'>
           {contact.contact.Name}
         </Typography>
