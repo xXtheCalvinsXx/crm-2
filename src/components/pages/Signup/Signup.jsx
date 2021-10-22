@@ -17,7 +17,6 @@ import userSignUp from '../../../firebase/userSignUp';
 
 // redux
 import { setCurrentUser } from '../../../redux/user/user.actions';
-import { connect } from 'react-redux';
 
 const textWidth = '25ch';
 const useStyles = makeStyles((theme) => ({
@@ -202,7 +201,7 @@ function Signup() {
 //   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
 // });
 
-export default connect()(Signup);
+export default Signup;
 
 // export default connect(mapStateToProps, mapDispatchToProps)(Signup);
 
