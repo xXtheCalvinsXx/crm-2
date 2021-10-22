@@ -17,7 +17,7 @@ import { Title } from '../../../styles';
 
 // redux
 import { connect } from 'react-redux';
-import { setCurrentUser } from '../../../redux/user/user.actions';
+// import { setCurrentUser } from '../../../redux/user/user.actions';
 
 const textWidth = '25ch';
 
@@ -65,8 +65,8 @@ function Login() {
       signInWithEmailAndPassword(auth, values.email, values.password)
         .then((userCredential) => {
           // Signed in
-          console.log('signed in!', userCredential.user);
-          setCurrentUser(userCredential.user);
+          // console.log('signed in!', userCredential.user);
+          // setCurrentUser(userCredential.user);
           history.push('/');
         })
         .catch((error) => {
@@ -156,15 +156,15 @@ function Login() {
   );
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
-});
+// const mapStateToProps = ({ user }) => ({
+//   currentUser: user.currentUser,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-});
+// const mapDispatchToProps = (dispatch) => ({
+//   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+// });
 
-export default connect(mapStateToProps, mapDispatchToProps)(Login);
+export default Login;
 
 export const LoginContainer = styled.div`
   width: 480px;

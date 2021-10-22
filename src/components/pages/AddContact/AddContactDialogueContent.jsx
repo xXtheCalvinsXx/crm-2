@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useContext, useEffect } from 'react';
 
 // styling
 import {
@@ -27,6 +27,9 @@ import AddContactImage from './AddContactImage';
 import FutureEvents from './FutureEvents';
 import PastEvents from './PastEvents';
 import ContactDetails from './ContactDetails';
+import postUpdateContact from '../../../axios/postUpdateContact';
+
+import { userContext } from '../../../appContext/userContext';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -68,7 +71,9 @@ const useStyle = makeStyles((theme) => ({
 
 function AddContactDialogueContent(props) {
   const { editContact, avatar, futureEvents, pastEvents } = props;
-  const contact = props?.contact?.contact;
+  let contact = props?.contact?.contact;
+  const user = useContext(userContext);
+  // const avatar = contact.
 
   console.log('edit contact = ', editContact);
   const classes = useStyle();
@@ -123,6 +128,28 @@ function AddContactDialogueContent(props) {
     onSubmit: async (values) => {
       console.log('hihihi', values);
       console.log(eventFieldFuture);
+      const requestBody = {
+        Name: formik.values.Name,
+        Location: formik.values.Location,
+        Company: formik.values.Company,
+        Position: formik.values.Position,
+        Birthday: formik.values.Birthday,
+        Education: formik.values.Education,
+        Industry: formik.values.Industry,
+        Email: formik.values.Email,
+        Phone_Number: formik.values.PhoneNumber,
+      };
+
+      contact.Name = formik.values.name;
+      contact.Location = formik.values.Location;
+      contact.Company = formik.values.Company;
+      contact.Position = formik.values.Position;
+      contact.Birthday = formik.values.Birthday;
+      contact.Education = formik.values.Education;
+      contact.Industry = formik.values.Industry;
+      contact.Email = formik.values.Email;
+      contact.Phone_Number = formik.values.PhoneNumber;
+      postUpdateContact(user, contact.contactId, requestBody);
     },
   });
   console.log(formik.initialValues);

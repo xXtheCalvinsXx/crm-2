@@ -264,7 +264,11 @@ export default function DatabaseList(props) {
           </Grid>
           {!editOpen && open && <ContactView contact={contact} />}
           {editOpen && (
-            <AddContactDialogueContent contact={contact} editContact={true} />
+            <AddContactDialogueContent
+              contact={contact}
+              editContact={true}
+              avatar={contact.imageUrl}
+            />
           )}
         </Dialog>
       </div>
