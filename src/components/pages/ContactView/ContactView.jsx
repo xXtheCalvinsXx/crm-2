@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  Grid,
-  Divider,
-  Typography,
-  IconButton,
-  Avatar,
-} from '@material-ui/core';
+import { Grid, Divider, Typography, Avatar } from '@material-ui/core';
 import {
   DialogTitle,
   DialogContent,
@@ -20,7 +14,6 @@ import {
   TableRow,
 } from '@material-ui/core';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import AddContact from '../AddContact/AddContact';
 
 const useStyles = makeStyles((theme) =>
   createStyles({
@@ -81,19 +74,18 @@ const useStyles = makeStyles((theme) =>
 export default function ContactView(props) {
   const classes = useStyles();
   const contact = props.contact;
-
   const currDate = new Date();
 
-  console.log(contact);
-
+  console.log('upcoming : ', contact.upcomingEvents);
+  console.log('props = ', props);
   return (
     <div>
       <Divider />
 
       <DialogTitle>
-        <Avatar src={contact.contact.imageUrl} className={classes.sizeAvatar} />
+        <Avatar src={contact.imageUrl} className={classes.sizeAvatar} />
         <Typography gutterBottom variant='h3'>
-          {contact.contact.Name}
+          {contact.Name}
         </Typography>
       </DialogTitle>
 
@@ -128,25 +120,23 @@ export default function ContactView(props) {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {contact.upcomingEvents.map((row) => {
-                  Date.parse(row.Date) < Date.parse(currDate) && (
-                    <TableRow className={classes.row} key={row.date}>
-                      <TableCell
-                        className={classes.cell}
-                        component='th'
-                        scope='row'
-                      >
-                        <Typography> {row.Date} </Typography>
-                      </TableCell>
-                      <TableCell className={classes.cell} align='left'>
-                        <Typography> {row.Occasion} </Typography>
-                      </TableCell>
-                      <TableCell className={classes.cell} align='left'>
-                        <Typography> {row.Description} </Typography>
-                      </TableCell>
-                    </TableRow>
-                  );
-                })}
+                {contact.upcomingEvents.map((row) => (
+                  <TableRow className={classes.row} key={row.date}>
+                    <TableCell
+                      className={classes.cell}
+                      component='th'
+                      scope='row'
+                    >
+                      <Typography> {row.Date} </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell} align='left'>
+                      <Typography> {row.Occasion} </Typography>
+                    </TableCell>
+                    <TableCell className={classes.cell} align='left'>
+                      <Typography> {row.Description} </Typography>
+                    </TableCell>
+                  </TableRow>
+                ))}
               </TableBody>
             </Table>
           </TableContainer>
@@ -167,7 +157,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Name}
+              {contact.Name}
             </Grid>
             <Grid item xs={2}>
               <br />
@@ -176,7 +166,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Email}
+              {contact.Email}
             </Grid>
           </Grid>
           <Grid container>
@@ -187,7 +177,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Birthday}
+              {contact.Birthday}
             </Grid>
             <Grid item xs={2}>
               <br />
@@ -196,7 +186,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Phone_Number}
+              {contact.Phone_Number}
             </Grid>
           </Grid>
           <Grid container>
@@ -207,7 +197,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Location}
+              {contact.Location}
             </Grid>
             <Grid item xs={2}>
               <br />
@@ -216,7 +206,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Education}
+              {contact.Education}
             </Grid>
           </Grid>
           <Grid container>
@@ -227,7 +217,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Industry}
+              {contact.Industry}
             </Grid>
           </Grid>
           <Grid container>
@@ -238,7 +228,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Company}
+              {contact.Company}
             </Grid>
             <Grid item xs={2}>
               <br />
@@ -247,7 +237,7 @@ export default function ContactView(props) {
               </Typography>
             </Grid>
             <Grid item xs={3} className={classes.fieldnew}>
-              {contact.contact.Position}
+              {contact.Position}
             </Grid>
           </Grid>
         </DialogContentText>

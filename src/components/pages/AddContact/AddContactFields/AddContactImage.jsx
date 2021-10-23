@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Button, Typography, Avatar } from '@material-ui/core';
 import { styled } from '@mui/material/styles';
-import defaultAvatar from '../../../public/images/defaultAvatar.png';
+import defaultAvatar from '../../../../public/images/defaultAvatar.png';
 
 const Input = styled('input')({
   display: 'none',

@@ -1,7 +1,7 @@
 import React from 'react';
 import axios from 'axios';
 
-async function postUpdateContact(user, contactId, requestBody) {
+async function postAddContact(user, requestBody) {
   if (user) {
     const token = await user.getIdToken();
     const headers = await {
@@ -9,10 +9,11 @@ async function postUpdateContact(user, contactId, requestBody) {
       Authorization: `Bearer ` + token,
     };
 
+    console.log('rq body = ', requestBody);
     await axios
-      .put(`/contact/${contactId}`, requestBody, { headers })
+      .post(`/contact`, requestBody, { headers })
       .then((response) => {
-        console.log('success', response);
+        console.log('added contact', response);
       })
       .catch((error) => {
         console.log(error);
@@ -23,4 +24,4 @@ async function postUpdateContact(user, contactId, requestBody) {
   return;
 }
 
-export default postUpdateContact;
+export default postAddContact;

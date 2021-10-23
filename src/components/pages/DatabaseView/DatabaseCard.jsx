@@ -1,41 +1,17 @@
 import React, { useState, useEffect } from 'react';
 
-// firebase
-import { useAuthState } from 'react-firebase-hooks/auth';
-
-// axios
-import axios from 'axios';
-
-// context
-import { useContext } from 'react';
-import { userContext } from '../../../appContext/userContext';
+import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 
 import {
-  AppBar,
-  Toolbar,
   Grid,
   Card,
   Avatar,
   Typography,
-  IconButton,
   Button,
-  Divider,
-  Menu,
-  MenuItem,
-  Box,
-  CircularProgress,
   Dialog,
   DialogActions,
 } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
-import ListAltIcon from '@material-ui/icons/ListAlt';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import AddContact from '../AddContact/AddContact';
-import Layout from '../../layout/Layout';
-import ContactView from '../ContactView/ContactView';
-
-// firebase
-import { auth } from '../../../firebase/firebaseUtils';
 
 const drawerWidth = 40;
 
@@ -85,6 +61,11 @@ const useStyles = makeStyles((theme) => ({
     marginLeft: 30,
     marginBottom: 10,
   },
+  dialogCustomizedWidth: {
+    'max-width': '90%',
+    minHeight: '90vh',
+    maxHeight: '90vh',
+  },
 }));
 
 function DatabaseCard(props) {
@@ -95,29 +76,34 @@ function DatabaseCard(props) {
   const [editOpen, setEditOpen] = useState(false);
   const [clickedContact, setClickedContact] = useState([]);
 
-  const handleClickOpen = () => {
+  const handleClickOpen = (contact) => {
     setOpen(true);
+    setClickedContact(contact);
     console.log('yay');
   };
 
   const handleClose = () => {
     setOpen(false);
+    setEditOpen(false);
   };
   const handleEditOpen = () => {
-    setOpen(true);
-  };
-  const handleEditClose = () => {
-    setOpen(false);
+    setEditOpen(true);
   };
 
-  const contactEventData =
-    props.props.props.contactEventData.contactEventData.current;
+  console.log('props -= ', props);
+  const contacts = props.props.props.contactEventData.contactEventData.current;
   return (
     <div>
       <Grid container spacing={3}>
-        {contactEventData.map((contacts) => (
+        {contacts.map((contact) => (
           <Grid item xs={12} sm={6} md={4}>
-            <Card className={classes.card} onClick={handleClickOpen}>
+            <Card
+              className={classes.card}
+              onClick={() => {
+                handleClickOpen(contact);
+                console.log('contact is  = ', contact);
+              }}
+            >
               <Grid justifyContent='space-between' container>
                 <Grid item>
                   <Avatar className={classes.sizeAvatar} variant='square' />
@@ -125,19 +111,19 @@ function DatabaseCard(props) {
                 <Grid item>
                   <Typography className={classes.typography}>Name</Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.contact.Name}
+                    {contact.Name}
                   </Typography>
                   <Typography className={classes.typography}>
                     Company
                   </Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.contact.Company}
+                    {contact.Company}
                   </Typography>
                   <Typography className={classes.typography}>Last</Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.pastEvents.length > 1
-                      ? contacts.pastEvents[0].Date
-                      : 'Empty'}
+                    {contact.pastEvents.length > 1
+                      ? contact.pastEvents[0].Date
+                      : '-'}
                   </Typography>
                 </Grid>
                 <Grid item>
@@ -145,19 +131,19 @@ function DatabaseCard(props) {
                     Location
                   </Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.contact.Location}
+                    {contact.Location}
                   </Typography>
                   <Typography className={classes.typography}>
                     Position
                   </Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.contact.Position}
+                    {contact.Position}
                   </Typography>
                   <Typography className={classes.typography}>Next</Typography>
                   <Typography className={classes.typographyInfo}>
-                    {contacts.upcomingEvents.length > 1
-                      ? contacts.upcomingEvents[0].Date
-                      : 'Empty'}
+                    {contact.upcomingEvents.length > 1
+                      ? contact.upcomingEvents[0].Date
+                      : '-'}
                   </Typography>
                 </Grid>
               </Grid>
@@ -174,13 +160,14 @@ function DatabaseCard(props) {
         <Grid justifyContent='space-between' container spacing={12}>
           <Grid item></Grid>
           <Grid item>
-            <div>
-              <DialogActions>
-                <Button onClick={handleClose}>Edit</Button>
-
-                <Button onClick={handleClose}>Close</Button>
-              </DialogActions>
-            </div>
+            <ContactViewDialogue
+              classes={classes}
+              handleEditOpen={handleEditOpen}
+              editOpen={editOpen}
+              open={open}
+              contact={clickedContact}
+              handleClose={handleClose}
+            />
           </Grid>
         </Grid>
       </Dialog>

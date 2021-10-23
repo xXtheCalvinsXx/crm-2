@@ -74,8 +74,6 @@ function Database(props) {
 
   const user = useContext(userContext);
 
-  console.log('user = ', user);
-
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const moreMenuClick = (event) => {
@@ -115,8 +113,8 @@ function Database(props) {
     );
 
     props.props.contactEventData.contactEventData.current = data;
-    console.log(props.props.contactEventData.contactEventData.current);
-    console.log(props);
+    // console.log(props.props.contactEventData.contactEventData.current);
+    // console.log(props);
 
     return (
       <div className={classes.root}>
@@ -193,7 +191,7 @@ function Database(props) {
           <Divider />
           <br />
           <br />
-          {console.log('db screen: ', props.props.contactEventData)}
+          {/* {console.log('db screen: ', props.props.contactEventData)} */}
           {cardView ? (
             <DatabaseCard
               props={props}

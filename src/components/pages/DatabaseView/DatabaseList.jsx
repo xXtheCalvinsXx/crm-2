@@ -1,43 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import {
-  Grid,
-  Button,
-  Divider,
-  IconButton,
-  TextField,
-  AppBar,
-  Toolbar,
-  Menu,
-  MenuItem,
-} from '@material-ui/core';
+import { Grid, Button, IconButton, TextField } from '@material-ui/core';
 import { DataGrid, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { useHistory } from 'react-router-dom';
 import { Dialog, DialogActions } from '@material-ui/core';
 
 // Icons
 import ClearIcon from '@material-ui/icons/Clear';
 import SearchIcon from '@material-ui/icons/Search';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import AppsOutlinedIcon from '@material-ui/icons/AppsOutlined';
 
 // Components
-import Layout from '../../layout/Layout';
-import AddContactDialogue from '../AddContact/AddContactDialogue';
-import ContactView from '../ContactView/ContactView';
-import AddContactDialogueContent from '../AddContact/AddContactDialogueContent';
-
-// axios
-import axios from 'axios';
-
-// context
-import { useContext } from 'react';
-import { userContext } from '../../../appContext/userContext';
-
-// firebase
-import { auth } from '../../../firebase/firebaseUtils';
+import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
@@ -155,14 +129,14 @@ QuickSearchToolbar.propTypes = {
 };
 
 export default function DatabaseList(props) {
-  console.log('list props = ', props);
+  // console.log('list props = ', props);
   const classes = useStyles();
 
   const [selectionModel, setSelectionModel] = React.useState([]);
-  const [contacts, setContacts] = useState(props.props.props.contacts.data);
-  const [contactEventData, setContactEventData] = useState(
-    props.props.props.contactEventData.contactEventData.current
+  const [contacts, setContacts] = useState(
+    props.contactEventData.contactEventData.current
   );
+
   const [contact, setContact] = useState({});
 
   // Search Functionality
@@ -203,8 +177,8 @@ export default function DatabaseList(props) {
   // Gets particular contact and it's events
   useEffect(() => {
     const getContact = (selectionModel) => {
-      for (const contact of contactEventData) {
-        if (contact.contact.Email == selectionModel[0]) {
+      for (const contact of contacts) {
+        if (contact.Email == selectionModel[0]) {
           setContact(contact);
         }
       }
@@ -212,11 +186,6 @@ export default function DatabaseList(props) {
 
     getContact(selectionModel);
   }, [selectionModel]);
-
-  const contactData = props.contactEventData.contactEventData.current;
-  console.log('contact data = ', contactData);
-
-  console.log('contacts  = ', contacts);
 
   return (
     <div className={classes.main}>
@@ -243,35 +212,16 @@ export default function DatabaseList(props) {
           }}
         />
       </div>
-      <div className={classes.root}>
-        <Dialog
-          fullWidth
-          classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
-          open={open}
-          onClose={handleClose}
-        >
-          <Grid justifyContent='space-between' container spacing={12}>
-            <Grid item></Grid>
-            <Grid item>
-              <div>
-                <DialogActions>
-                  {!editOpen && <Button onClick={handleEditOpen}>Edit</Button>}
-
-                  <Button onClick={handleClose}>Close</Button>
-                </DialogActions>
-              </div>
-            </Grid>
-          </Grid>
-          {!editOpen && open && <ContactView contact={contact} />}
-          {editOpen && (
-            <AddContactDialogueContent
-              contact={contact}
-              editContact={true}
-              avatar={contact.imageUrl}
-            />
-          )}
-        </Dialog>
-      </div>
+      {/* <div className={classes.root}> */}
+      <ContactViewDialogue
+        classes={classes}
+        handleEditOpen={handleEditOpen}
+        editOpen={editOpen}
+        open={open}
+        contact={contact}
+        handleClose={handleClose}
+      />
+      {/* </div> */}
     </div>
   );
 }

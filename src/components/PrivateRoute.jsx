@@ -18,8 +18,7 @@ const PrivateRoute = ({ component: Component, props, ...rest }) => {
   const user1 = useContext(userContext);
   const [user, loading, error] = useAuthState(auth);
   const parentProps = props;
-  console.log(parentProps);
-  console.log('redirected');
+  // console.log(parentProps);
 
   // if (loading) {
   //   return (
@@ -39,7 +38,6 @@ const PrivateRoute = ({ component: Component, props, ...rest }) => {
       {...rest}
       render={(props) => {
         if (!user || !user1) {
-          console.log('not user @@@@@@');
           // not logged in so redirect to login page with the return url
 
           return (

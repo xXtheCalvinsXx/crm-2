@@ -1,35 +1,32 @@
 import React, { useState, useContext, useEffect } from 'react';
+import { userContext } from '../../../appContext/userContext';
 
 // styling
 import {
   Button,
-  Grid,
-  Dialog,
   DialogActions,
   DialogContent,
-  DialogContentText,
-  Typography,
-  TextField,
   makeStyles,
-  IconButton,
-  Avatar,
 } from '@material-ui/core';
 
 // formik
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 
-// axios
-import axios from 'axios';
-
 // components
-import AddContactImage from './AddContactImage';
-import FutureEvents from './FutureEvents';
-import PastEvents from './PastEvents';
-import ContactDetails from './ContactDetails';
-import postUpdateContact from '../../../axios/postUpdateContact';
+import AddContactImage from './AddContactFields/AddContactImage';
+import FutureEvents from './AddContactFields/FutureEvents';
+import PastEvents from './AddContactFields/PastEvents';
+import ContactDetails from './AddContactFields/ContactDetails';
 
-import { userContext } from '../../../appContext/userContext';
+// Axios
+import postAddContact from '../../../axios/postAddContact';
+import putUpdateContact from '../../../axios/putUpdateContact';
+import postAddNewEvent from '../../../axios/postAddNewEvent';
+
+// util
+import addContactIdToEvent from '../../../util/addContactIdToEvent';
+import addNewEvents from '../../../util/addNewEvents';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -69,36 +66,35 @@ const useStyle = makeStyles((theme) => ({
   },
 }));
 
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
 function AddContactDialogueContent(props) {
-  const { editContact, avatar, futureEvents, pastEvents } = props;
-  let contact = props?.contact?.contact;
+  const { editContact } = props;
+  const contact = props?.contact;
   const user = useContext(userContext);
-  // const avatar = contact.
-
-  console.log('edit contact = ', editContact);
+  const futureEvents = contact?.upcomingEvents;
+  const pastEvents = contact?.pastEvents;
+  const avatar = contact?.imageUrl;
   const classes = useStyle();
-  const [eventFieldFuture, setEventFieldFuture] = useState([
-    { Date: '', Occasion: '', Description: '' },
-  ]);
 
-  const [eventFieldPast, setEventFieldPast] = useState([
-    { Date: '', Occasion: '', Description: '' },
-  ]);
-  const { descriptionElementRef, scroll } = props;
+  const [eventFieldFuture, setEventFieldFuture] = useState(
+    futureEvents ? futureEvents : [{ Date: '', Occasion: '', Description: '' }]
+  );
 
-  useEffect(() => {
-    if (editContact) {
-      initialiseEvents(setEventFieldFuture, futureEvents, contact.contactId);
-      initialiseEvents(setEventFieldPast, pastEvents, contact.contactId);
-    }
+  const [eventFieldPast, setEventFieldPast] = useState(
+    pastEvents ? pastEvents : [{ Date: '', Occasion: '', Description: '' }]
+  );
+  const { scroll } = props;
 
-    console.log('fe = ', eventFieldFuture);
-  }, [futureEvents]);
+  // useEffect(() => {
+  //   if (editContact) {
+  //     initialiseEvents(setEventFieldFuture, futureEvents, contact.contactId);
+  //     initialiseEvents(setEventFieldPast, pastEvents, contact.contactId);
+  //   }
+  // }, []);
 
   //   const initialFutureEvents = futureEvents.length > 0 ? :
-
-  const phoneRegExp =
-    /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
   const validationSchema = Yup.object({
     Name: Yup.string('Please enter contact name').required(),
@@ -126,33 +122,59 @@ function AddContactDialogueContent(props) {
     },
     validationSchema: validationSchema,
     onSubmit: async (values) => {
-      console.log('hihihi', values);
-      console.log(eventFieldFuture);
+      const {
+        Name,
+        Location,
+        Company,
+        Position,
+        Birthday,
+        Education,
+        Industry,
+        Email,
+      } = formik.values;
+
       const requestBody = {
-        Name: formik.values.Name,
-        Location: formik.values.Location,
-        Company: formik.values.Company,
-        Position: formik.values.Position,
-        Birthday: formik.values.Birthday,
-        Education: formik.values.Education,
-        Industry: formik.values.Industry,
-        Email: formik.values.Email,
+        Name: Name,
+        Location: Location,
+        Company: Company,
+        Position: Position,
+        Birthday: Birthday,
+        Education: Education,
+        Industry: Industry,
+        Email: Email,
         Phone_Number: formik.values.PhoneNumber,
       };
+      if (editContact) {
+        contact.Name = Name;
+        contact.Location = Location;
+        contact.Company = Company;
+        contact.Position = Position;
+        contact.Birthday = Birthday;
+        contact.Education = Education;
+        contact.Industry = Industry;
+        contact.Email = Email;
+        contact.Phone_Number = formik.values.PhoneNumber;
+        putUpdateContact(user, contact.contactId, requestBody);
+      } else {
+        postAddContact(user, requestBody);
+      }
 
-      contact.Name = formik.values.name;
-      contact.Location = formik.values.Location;
-      contact.Company = formik.values.Company;
-      contact.Position = formik.values.Position;
-      contact.Birthday = formik.values.Birthday;
-      contact.Education = formik.values.Education;
-      contact.Industry = formik.values.Industry;
-      contact.Email = formik.values.Email;
-      contact.Phone_Number = formik.values.PhoneNumber;
-      postUpdateContact(user, contact.contactId, requestBody);
+      addNewEvents(
+        user,
+        Email,
+        eventFieldPast,
+        addContactIdToEvent,
+        postAddNewEvent
+      );
+      addNewEvents(
+        user,
+        Email,
+        eventFieldFuture,
+        addContactIdToEvent,
+        postAddNewEvent
+      );
     },
   });
-  console.log(formik.initialValues);
 
   return (
     <form onSubmit={formik.handleSubmit}>
@@ -189,17 +211,16 @@ function AddContactDialogueContent(props) {
 
 function initialiseEvents(setEvents, data, contactID) {
   var arr = [];
-  for (var event in data) {
+  const n = data.length;
+  for (var i = 0; i < n; i++) {
     arr.push({
-      Date: event.Date,
-      Occasion: event.Occasion,
-      Description: event.Description,
+      Date: data[i].Date,
+      Occasion: data[i].Occasion,
+      Description: data[i].Description,
       RelevantContact: contactID,
+      eventId: data[i].eventId,
     });
   }
-
-  console.log('data = ', data);
-
   setEvents(arr);
 }
 export default AddContactDialogueContent;

@@ -77,31 +77,17 @@ const useStyles = makeStyles((theme) => ({
 function getContactName(value, props) {
   for (const contact of props.props.contacts.data) {
     if (value == contact.Email) {
-      console.log('function called and worked')
-      return contact.Email
+      console.log('function called and worked');
+      return contact.Email;
     }
-    console.log(contact.Email)
-    console.log('function called and did not work')
+    console.log(contact.Email);
+    console.log('function called and did not work');
   }
 }
 
 function Timeline(props) {
   var date = new Date();
-  console.log('date =', date);
-  console.log('props = ', props);
   const classes = useStyles();
-  const history = useHistory();
-  console.log('timeline');
-  // const [user, loading, error] = useAuthState(auth);
-  const [events, setEvents] = useState(props.props.events.data);
-  const [count, setCount] = useState(0);
-
-  const user = useContext(userContext);
-
-  // console.log('user = ', user);
-
-  console.log(events);
-  console.log(events);
 
   const signOut = async () => {
     try {
@@ -142,7 +128,7 @@ function Timeline(props) {
     );
 
     props.props.contactEventData.contactEventData.current = data;
-    console.log(props.props.contactEventData.contactEventData.current);
+    // console.log(props.props.contactEventData.contactEventData.current);
 
     return (
       <React.Fragment>
@@ -225,34 +211,50 @@ function Timeline(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {props.props.events.data.filter((value) => Date.parse(value.Date) < Date.parse(date) + 7 * (1000 * 60 * 60 * 24) && Date.parse(value.Date) > Date.parse(date)).map((value, index) => (
-                    <TableRow className={classes.row}>
-                      <TableCell
-                        className={classes.cell}
-                        style={{ width:250 }}
-                        component='th'
-                        scope='row'
-                      >
-                        <Typography> {value.Date} </Typography>
-                      </TableCell>
-                      <TableCell
-                        className={classes.cell}
-                        style={{ width:300 }}
-                        component='th'
-                        scope='row'
-                      >
-                        {props.props.contacts.data.filter(contactValue => value.RelevantContact == contactValue.Email).map((matchingContact) => (
-                          <Typography> {matchingContact.Name} </Typography>
-                        ))}
-                      </TableCell>
-                      <TableCell className={classes.cell} style={{ width:350 }} align='left'>
-                        <Typography> {value.Occasion} </Typography>
-                      </TableCell>
-                      <TableCell className={classes.cell} align='left'>
-                        <Typography> {value.Description} </Typography>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {props.props.events.data
+                    .filter(
+                      (value) =>
+                        Date.parse(value.Date) <
+                          Date.parse(date) + 7 * (1000 * 60 * 60 * 24) &&
+                        Date.parse(value.Date) > Date.parse(date)
+                    )
+                    .map((value, index) => (
+                      <TableRow className={classes.row}>
+                        <TableCell
+                          className={classes.cell}
+                          style={{ width: 250 }}
+                          component='th'
+                          scope='row'
+                        >
+                          <Typography> {value.Date} </Typography>
+                        </TableCell>
+                        <TableCell
+                          className={classes.cell}
+                          style={{ width: 300 }}
+                          component='th'
+                          scope='row'
+                        >
+                          {props.props.contacts.data
+                            .filter(
+                              (contactValue) =>
+                                value.RelevantContact == contactValue.Email
+                            )
+                            .map((matchingContact) => (
+                              <Typography> {matchingContact.Name} </Typography>
+                            ))}
+                        </TableCell>
+                        <TableCell
+                          className={classes.cell}
+                          style={{ width: 350 }}
+                          align='left'
+                        >
+                          <Typography> {value.Occasion} </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align='left'>
+                          <Typography> {value.Description} </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -287,34 +289,49 @@ function Timeline(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {props.props.events.data.filter(value => Date.parse(value.Date) > Date.parse(date) + 7 * (1000 * 60 * 60 * 24)).map((value, index) => (
-                    <TableRow className={classes.row}>
-                      <TableCell
-                        className={classes.cell}
-                        style={{ width:250 }}
-                        component='th'
-                        scope='row'
-                      >
-                        <Typography> {value.Date} </Typography>
-                      </TableCell>
-                      <TableCell
-                        className={classes.cell}
-                        style={{ width:300 }}
-                        component='th'
-                        scope='row'
-                      >
-                        {props.props.contacts.data.filter(contactValue => value.RelevantContact == contactValue.Email).map((matchingContact) => (
-                          <Typography> {matchingContact.Name} </Typography>
-                        ))}
-                      </TableCell>
-                      <TableCell className={classes.cell} style={{ width:350 }} align='left'>
-                        <Typography> {value.Occasion} </Typography>
-                      </TableCell>
-                      <TableCell className={classes.cell} align='left'>
-                        <Typography> {value.Description} </Typography>
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {props.props.events.data
+                    .filter(
+                      (value) =>
+                        Date.parse(value.Date) >
+                        Date.parse(date) + 7 * (1000 * 60 * 60 * 24)
+                    )
+                    .map((value, index) => (
+                      <TableRow className={classes.row}>
+                        <TableCell
+                          className={classes.cell}
+                          style={{ width: 250 }}
+                          component='th'
+                          scope='row'
+                        >
+                          <Typography> {value.Date} </Typography>
+                        </TableCell>
+                        <TableCell
+                          className={classes.cell}
+                          style={{ width: 300 }}
+                          component='th'
+                          scope='row'
+                        >
+                          {props.props.contacts.data
+                            .filter(
+                              (contactValue) =>
+                                value.RelevantContact == contactValue.Email
+                            )
+                            .map((matchingContact) => (
+                              <Typography> {matchingContact.Name} </Typography>
+                            ))}
+                        </TableCell>
+                        <TableCell
+                          className={classes.cell}
+                          style={{ width: 350 }}
+                          align='left'
+                        >
+                          <Typography> {value.Occasion} </Typography>
+                        </TableCell>
+                        <TableCell className={classes.cell} align='left'>
+                          <Typography> {value.Description} </Typography>
+                        </TableCell>
+                      </TableRow>
+                    ))}
                 </TableBody>
               </Table>
             </TableContainer>
@@ -324,8 +341,5 @@ function Timeline(props) {
     );
   }
 }
-
- 
-
 
 export default Timeline;
