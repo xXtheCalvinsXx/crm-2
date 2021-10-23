@@ -1,15 +1,15 @@
 function createContactData(contacts, events) {
-  console.log('events = ', events);
+  // console.log('events = ', events);
   let data = [];
   const n = contacts.length;
   for (var i = 0; i < n; i++) {
     let contactData = {
-      contact: {},
+      ...contacts[i],
       pastEvents: [],
       upcomingEvents: [],
       eventCount: 0,
     };
-    contactData.contact = contacts[i];
+    // contactData.contact = contacts[i];
     [
       contactData.pastEvents,
       contactData.upcomingEvents,
@@ -28,7 +28,7 @@ function assignEvents(contactId, events) {
   const n = events.length;
   var eventCount = 0;
 
-  console.log(events[0]);
+  // console.log(events[0]);
   for (var i = 0; i < n; i++) {
     if (events[i].RelevantContact === contactId) {
       const eventDate = convertDate(events[i]);

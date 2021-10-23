@@ -14,6 +14,7 @@ function PastEvents(props) {
 
   const handleInputChangeEventPast = (index, event) => {
     const values = [...eventFieldPast];
+    // console.log(event.target.value);
     values[index][event.target.name] = event.target.value;
     setEventFieldPast(values);
   };
