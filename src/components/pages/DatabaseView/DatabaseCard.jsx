@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SearchBar from "material-ui-search-bar";
 
 // Styling
 import { Grid, Card, Avatar, Typography, Dialog } from '@material-ui/core';
@@ -10,11 +11,31 @@ import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 // Axios
 import deleteContact from '../../../axios/deleteContact';
 
+function escapeRegExp(value) {
+  return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 const drawerWidth = 40;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+  },
+  textField: {
+    margin: 0,
+    outline: 'none',
+    border: 0,
+    borderBottom: 'none',
+    "&.MuiPaper-root .ForwardRef-root-43 .makeStyles-textField-30 .MuiPaper-elevation1 .MuiPaper-rounded": {
+      outline: 'none',
+      border: 0,
+      borderBottom: 'none',
+    },
+    "&.MuiButtonBase-root MuiIconButton-root ForwardRef-iconButton-44 ForwardRef-iconButtonHidden-45": {
+      outline: 'none',
+      border: 0,
+      borderBottom: 'none',
+    }
   },
   page: {
     width: '100%',
@@ -75,6 +96,7 @@ function DatabaseCard(props) {
   const [contacts, setContacts] = useState(
     props.props.props.contactEventData.contactEventData.current
   );
+  const [searched, setSearched] = useState("");
   const [deleteContactModal, setDeleteContactModal] = useState(false);
 
   const removeContact = (contactId) => {
@@ -111,8 +133,35 @@ function DatabaseCard(props) {
     setEditOpen(true);
   };
 
+  const requestSearch = (searchValue) => {
+    setSearched(searchValue);
+    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
+    const filteredRows = props.props.props.contactEventData.contactEventData.current.filter((row) => {
+      return Object.keys(row).some((field) => {
+        return searchRegex.test(row[field].toString());
+      });
+    });
+    setContacts(filteredRows);
+  };
+
+  useEffect(() => {
+    setContacts(contacts);
+  }, [contacts]);
+
+  const cancelSearch = () => {
+    setSearched("");
+    requestSearch(searched);
+  };
+
   return (
     <div>
+      <SearchBar
+        className={classes.textField}
+        value={searched}
+        onChange={(searchVal) => requestSearch(searchVal)}
+        onCancelSearch={() => cancelSearch()}
+      />
+      <br />
       <Grid container spacing={3}>
         {contacts.map((contact) => (
           <Grid item xs={12} sm={6} md={4}>

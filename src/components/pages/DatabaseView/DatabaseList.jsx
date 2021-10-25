@@ -202,7 +202,7 @@ export default function DatabaseList(props) {
   useEffect(() => {
     const getContact = (selectionModel) => {
       for (const contact of contacts) {
-        if (contact.Email == selectionModel[0]) {
+        if (contact.contactId == selectionModel[0]) {
           setContact(contact);
         }
       }
