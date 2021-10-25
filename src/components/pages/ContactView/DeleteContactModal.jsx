@@ -1,7 +1,6 @@
 import React, { useContext } from 'react';
 import { userContext } from '../../../appContext/userContext';
 import { Grid, Button, Dialog, DialogActions } from '@material-ui/core';
-import { styled } from '@mui/material/styles';
 import DialogContentText from '@mui/material/DialogContentText';
 import DialogContent from '@mui/material/DialogContent';
 
@@ -11,12 +10,7 @@ function DeleteContactModal(props) {
 
   return (
     <React.Fragment>
-      <Dialog
-        fullWidth
-        // classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
-        open={open}
-        onClose={handleClose}
-      >
+      <Dialog fullWidth open={open} onClose={handleClose}>
         <DialogContent>
           <DialogContentText>
             Are you sure you would like to delete this contact?
@@ -29,7 +23,6 @@ function DeleteContactModal(props) {
                 <Button
                   color='red'
                   onClick={() => {
-                    console.log('contact = ', contact);
                     handleDelete(user, contact);
                   }}
                 >

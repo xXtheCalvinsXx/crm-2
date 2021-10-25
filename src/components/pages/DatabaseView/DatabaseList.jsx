@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
-import { Grid, Button, IconButton, TextField } from '@material-ui/core';
+import { IconButton, TextField } from '@material-ui/core';
 import { DataGrid, GridToolbarFilterButton } from '@mui/x-data-grid';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
-import { Dialog, DialogActions } from '@material-ui/core';
 
 // Icons
 import ClearIcon from '@material-ui/icons/Clear';
@@ -15,7 +14,6 @@ import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 
 // Axios
 import deleteContact from '../../../axios/deleteContact';
-import DeleteContactModal from '../ContactView/DeleteContactModal';
 
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
