@@ -13,6 +13,10 @@ import SearchIcon from '@material-ui/icons/Search';
 // Components
 import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 
+// Axios
+import deleteContact from '../../../axios/deleteContact';
+import DeleteContactModal from '../ContactView/DeleteContactModal';
+
 function escapeRegExp(value) {
   return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
 }
@@ -157,9 +161,30 @@ export default function DatabaseList(props) {
     setContacts(contacts);
   }, [contacts]);
 
+  const removeContact = (contactId) => {
+    setContacts(
+      contacts.filter(function (e) {
+        console.log('id = ', e.contactId, 'target = ', contactId);
+        return e.contactId !== contactId;
+      })
+    );
+  };
+
   // Dialog Open and Close
   const [open, setOpen] = useState(false);
+  const [deleteContactModal, setDeleteContactModal] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
+
+  const handleDelete = async (user, contact) => {
+    console.log('contacts pre delete ', contacts);
+    const success = await deleteContact(user, contact.contactId);
+
+    if (success) removeContact(contact.contactId);
+    console.log('contacts post delete', contacts);
+
+    setDeleteContactModal(false);
+    setOpen(false);
+  };
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -172,6 +197,7 @@ export default function DatabaseList(props) {
   const handleClose = () => {
     setEditOpen(false);
     setOpen(false);
+    setDeleteContactModal(false);
   };
 
   // Gets particular contact and it's events
@@ -220,7 +246,11 @@ export default function DatabaseList(props) {
         open={open}
         contact={contact}
         handleClose={handleClose}
+        deleteContactModal={deleteContactModal}
+        setDeleteContactModal={setDeleteContactModal}
+        handleDelete={handleDelete}
       />
+
       {/* </div> */}
     </div>
   );

@@ -1,15 +1,34 @@
-import React from 'react';
-
+import React, { useContext } from 'react';
+import { userContext } from '../../../appContext/userContext';
 // Styling
 import { Grid, Button, Dialog, DialogActions } from '@material-ui/core';
 
 // Components
 import AddContactDialogueContent from '../AddContact/AddContactDialogueContent';
 import ContactView from './ContactView';
+import DeleteContactModal from './DeleteContactModal';
 
 function ContactViewDialogue(props) {
-  const { classes, handleClose, handleEditOpen, editOpen, open, contact } =
-    props;
+  const {
+    classes,
+    handleClose,
+    handleEditOpen,
+    editOpen,
+    open,
+    contact,
+    deleteContactModal,
+    setDeleteContactModal,
+    handleDelete,
+  } = props;
+
+  const handleDeleteModalOpen = () => {
+    setDeleteContactModal(true);
+  };
+
+  const handleDeleteModalClose = () => {
+    setDeleteContactModal(false);
+  };
+
   return (
     <React.Fragment>
       <Dialog
@@ -26,6 +45,7 @@ function ContactViewDialogue(props) {
               {!editOpen && <Button onClick={handleEditOpen}>Edit</Button>}
 
               <Button onClick={handleClose}>Close</Button>
+              <Button onClick={handleDeleteModalOpen}>Delete</Button>
             </DialogActions>
             {/* </div> */}
           </Grid>
@@ -36,6 +56,15 @@ function ContactViewDialogue(props) {
             contact={contact}
             editContact={true}
             avatar={contact.imageUrl}
+          />
+        )}
+        {deleteContactModal && (
+          <DeleteContactModal
+            classes={classes}
+            open={deleteContactModal}
+            contact={contact}
+            handleClose={handleDeleteModalClose}
+            handleDelete={handleDelete}
           />
         )}
       </Dialog>
