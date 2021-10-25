@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import { IconButton, TextField } from '@material-ui/core';
-import { DataGrid, GridToolbarFilterButton } from '@mui/x-data-grid';
+import { DataGrid, GridToolbarFilterButton } from '@material-ui/data-grid';
 import { createTheme } from '@material-ui/core/styles';
 import { createStyles, makeStyles } from '@material-ui/core/styles';
 
@@ -147,7 +147,7 @@ export default function DatabaseList(props) {
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-    const filteredRows = contacts.filter((row) => {
+    const filteredRows = props.contactEventData.contactEventData.current.filter((row) => {
       return Object.keys(row).some((field) => {
         return searchRegex.test(row[field].toString());
       });
@@ -213,7 +213,7 @@ export default function DatabaseList(props) {
 
   return (
     <div className={classes.main}>
-      <div className={classes.page} style={{ height: '85vh', width: '100%' }}>
+      <div className={classes.page} style={{ height: '90vh', width: '100%' }}>
         <DataGrid
           className={classes.grid}
           rowHeight={45}
