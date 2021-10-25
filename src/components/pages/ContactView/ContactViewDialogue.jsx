@@ -1,5 +1,4 @@
 import React, { useContext } from 'react';
-import { userContext } from '../../../appContext/userContext';
 // Styling
 import { Grid, Button, Dialog, DialogActions } from '@material-ui/core';
 
@@ -40,14 +39,12 @@ function ContactViewDialogue(props) {
         <Grid justifyContent='space-between' container spacing={12}>
           <Grid item></Grid>
           <Grid item>
-            {/* <div> */}
             <DialogActions>
               {!editOpen && <Button onClick={handleEditOpen}>Edit</Button>}
 
               <Button onClick={handleClose}>Close</Button>
               <Button onClick={handleDeleteModalOpen}>Delete</Button>
             </DialogActions>
-            {/* </div> */}
           </Grid>
         </Grid>
         {!editOpen && open && <ContactView contact={contact} />}

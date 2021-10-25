@@ -1,17 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 
+// Styling
+import { Grid, Card, Avatar, Typography, Dialog } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
+
+// Components
 import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 
-import {
-  Grid,
-  Card,
-  Avatar,
-  Typography,
-  Button,
-  Dialog,
-  DialogActions,
-} from '@material-ui/core';
-import { makeStyles } from '@material-ui/core/styles';
+// Axios
+import deleteContact from '../../../axios/deleteContact';
 
 const drawerWidth = 40;
 
@@ -75,6 +72,30 @@ function DatabaseCard(props) {
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [clickedContact, setClickedContact] = useState([]);
+  const [contacts, setContacts] = useState(
+    props.props.props.contactEventData.contactEventData.current
+  );
+  const [deleteContactModal, setDeleteContactModal] = useState(false);
+
+  const removeContact = (contactId) => {
+    setContacts(
+      contacts.filter(function (e) {
+        console.log('id = ', e.contactId, 'target = ', contactId);
+        return e.contactId !== contactId;
+      })
+    );
+  };
+
+  const handleDelete = async (user, contact) => {
+    console.log('contacts pre delete ', contacts);
+    const success = await deleteContact(user, contact.contactId);
+
+    if (success) removeContact(contact.contactId);
+    console.log('contacts post delete', contacts);
+
+    setDeleteContactModal(false);
+    setOpen(false);
+  };
 
   const handleClickOpen = (contact) => {
     setOpen(true);
@@ -90,8 +111,6 @@ function DatabaseCard(props) {
     setEditOpen(true);
   };
 
-  console.log('props -= ', props);
-  const contacts = props.props.props.contactEventData.contactEventData.current;
   return (
     <div>
       <Grid container spacing={3}>
@@ -101,7 +120,6 @@ function DatabaseCard(props) {
               className={classes.card}
               onClick={() => {
                 handleClickOpen(contact);
-                console.log('contact is  = ', contact);
               }}
             >
               <Grid justifyContent='space-between' container>
@@ -167,6 +185,9 @@ function DatabaseCard(props) {
               open={open}
               contact={clickedContact}
               handleClose={handleClose}
+              deleteContactModal={deleteContactModal}
+              setDeleteContactModal={setDeleteContactModal}
+              handleDelete={handleDelete}
             />
           </Grid>
         </Grid>
