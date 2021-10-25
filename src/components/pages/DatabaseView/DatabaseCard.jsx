@@ -173,7 +173,7 @@ function DatabaseCard(props) {
             >
               <Grid justifyContent='space-between' container>
                 <Grid item>
-                  <Avatar className={classes.sizeAvatar} variant='square' />
+                  <Avatar src={contact.imageUrl} className={classes.sizeAvatar} variant='square' />
                 </Grid>
                 <Grid item>
                   <Typography className={classes.typography}>Name</Typography>
