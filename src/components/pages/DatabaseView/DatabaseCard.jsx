@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import SearchBar from 'material-ui-search-bar';
 
 // Styling
 import { Grid, Card, Avatar, Typography, Dialog } from '@material-ui/core';
@@ -10,11 +11,33 @@ import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 // Axios
 import deleteContact from '../../../axios/deleteContact';
 
+function escapeRegExp(value) {
+  return value.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, '\\$&');
+}
+
 const drawerWidth = 40;
 
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
+  },
+  textField: {
+    margin: 0,
+    outline: 'none',
+    border: 0,
+    borderBottom: 'none',
+    '&.MuiPaper-root .ForwardRef-root-43 .makeStyles-textField-30 .MuiPaper-elevation1 .MuiPaper-rounded':
+      {
+        outline: 'none',
+        border: 0,
+        borderBottom: 'none',
+      },
+    '&.MuiButtonBase-root MuiIconButton-root ForwardRef-iconButton-44 ForwardRef-iconButtonHidden-45':
+      {
+        outline: 'none',
+        border: 0,
+        borderBottom: 'none',
+      },
   },
   page: {
     width: '100%',
@@ -67,32 +90,18 @@ const useStyles = makeStyles((theme) => ({
 
 function DatabaseCard(props) {
   const classes = useStyles();
+  const { contacts, setContacts, removeContact } = props;
 
   // Dialog Open and Close
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [clickedContact, setClickedContact] = useState([]);
-  const [contacts, setContacts] = useState(
-    props.props.props.contactEventData.contactEventData.current
-  );
+  const [searched, setSearched] = useState('');
   const [deleteContactModal, setDeleteContactModal] = useState(false);
 
-  const removeContact = (contactId) => {
-    setContacts(
-      contacts.filter(function (e) {
-        console.log('id = ', e.contactId, 'target = ', contactId);
-        return e.contactId !== contactId;
-      })
-    );
-  };
-
   const handleDelete = async (user, contact) => {
-    console.log('contacts pre delete ', contacts);
     const success = await deleteContact(user, contact.contactId);
-
     if (success) removeContact(contact.contactId);
-    console.log('contacts post delete', contacts);
-
     setDeleteContactModal(false);
     setOpen(false);
   };
@@ -100,7 +109,6 @@ function DatabaseCard(props) {
   const handleClickOpen = (contact) => {
     setOpen(true);
     setClickedContact(contact);
-    console.log('yay');
   };
 
   const handleClose = () => {
@@ -111,8 +119,37 @@ function DatabaseCard(props) {
     setEditOpen(true);
   };
 
+  const requestSearch = (searchValue) => {
+    setSearched(searchValue);
+    const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
+    const filteredRows = props.props.props.contactEventData.current.filter(
+      (row) => {
+        return Object.keys(row).some((field) => {
+          return searchRegex.test(row[field].toString());
+        });
+      }
+    );
+    setContacts(filteredRows);
+  };
+
+  useEffect(() => {
+    setContacts(contacts);
+  }, [contacts]);
+
+  const cancelSearch = () => {
+    setSearched('');
+    requestSearch(searched);
+  };
+
   return (
     <div>
+      <SearchBar
+        className={classes.textField}
+        value={searched}
+        onChange={(searchVal) => requestSearch(searchVal)}
+        onCancelSearch={() => cancelSearch()}
+      />
+      <br />
       <Grid container spacing={3}>
         {contacts.map((contact) => (
           <Grid item xs={12} sm={6} md={4}>
@@ -124,7 +161,11 @@ function DatabaseCard(props) {
             >
               <Grid justifyContent='space-between' container>
                 <Grid item>
-                  <Avatar className={classes.sizeAvatar} variant='square' />
+                  <Avatar
+                    src={contact.imageUrl}
+                    className={classes.sizeAvatar}
+                    variant='square'
+                  />
                 </Grid>
                 <Grid item>
                   <Typography className={classes.typography}>Name</Typography>

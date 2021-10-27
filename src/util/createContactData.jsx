@@ -1,5 +1,4 @@
 function createContactData(contacts, events) {
-  // console.log('events = ', events);
   let data = [];
   const n = contacts.length;
   for (var i = 0; i < n; i++) {

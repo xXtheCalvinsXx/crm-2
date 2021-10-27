@@ -10,6 +10,7 @@ import axios from 'axios';
 // context
 import { useContext } from 'react';
 import { userContext } from '../../../appContext/userContext';
+import ContactsContext from '../../../appContext/contactsContext';
 
 // layout
 import { useHistory } from 'react-router';
@@ -74,8 +75,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function getContactName(value, props) {
-  for (const contact of props.props.contacts.data) {
+function getContactName(value, contacts) {
+  for (const contact of contacts) {
     if (value == contact.Email) {
       console.log('function called and worked');
       return contact.Email;
@@ -97,6 +98,7 @@ function Timeline(props) {
       return 'sign out failure';
     }
   };
+  // const { contactData, setNewContacts } = useContext(ContactsContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
@@ -107,8 +109,12 @@ function Timeline(props) {
     setAnchorEl(null);
   };
 
-  const loading = props.props.queryLoading.queryLoading;
-  if (loading || !props.props.contacts.data || !props.props.events.data) {
+  const loading = props.props.queryLoading;
+  if (
+    loading ||
+    !props.props.contacts?.length > 0 ||
+    !props.props.events?.length > 0
+  ) {
     return (
       <React.Fragment>
         <Box
@@ -122,12 +128,14 @@ function Timeline(props) {
       </React.Fragment>
     );
   } else {
-    const data = createContactData(
-      props.props.contacts.data,
-      props.props.events.data
-    );
+    const events = props.props.events;
+    const contacts = props.props.contacts;
+    const data = createContactData(contacts, events);
+    if (!(props.props.contactEventData.current.length > 0)) {
+      console.log('timeline reset');
+      props.props.contactEventData.current = data;
+    }
 
-    props.props.contactEventData.contactEventData.current = data;
     // console.log(props.props.contactEventData.contactEventData.current);
 
     return (
@@ -211,7 +219,7 @@ function Timeline(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {props.props.events.data
+                  {events
                     .filter(
                       (value) =>
                         Date.parse(value.Date) <
@@ -234,7 +242,7 @@ function Timeline(props) {
                           component='th'
                           scope='row'
                         >
-                          {props.props.contacts.data
+                          {contacts
                             .filter(
                               (contactValue) =>
                                 value.RelevantContact == contactValue.Email
@@ -289,7 +297,7 @@ function Timeline(props) {
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {props.props.events.data
+                  {events
                     .filter(
                       (value) =>
                         Date.parse(value.Date) >
@@ -311,7 +319,7 @@ function Timeline(props) {
                           component='th'
                           scope='row'
                         >
-                          {props.props.contacts.data
+                          {contacts
                             .filter(
                               (contactValue) =>
                                 value.RelevantContact == contactValue.Email

@@ -6,7 +6,7 @@ import AddContactDialogueContent from './AddContactDialogueContent';
 
 function AddContactDialogue(props) {
   const descriptionElementRef = useRef(null);
-  const { open, handleClose, scroll } = props;
+  const { open, handleClose, scroll, handleAddContact } = props;
   useEffect(() => {
     if (open) {
       const { current: descriptionElement } = descriptionElementRef;
@@ -29,6 +29,8 @@ function AddContactDialogue(props) {
           scroll={scroll}
           descriptionElementRef={descriptionElementRef}
           editContact={false}
+          handleClose={handleClose}
+          handleAddContact={handleAddContact}
         />
       </Dialog>
     </React.Fragment>

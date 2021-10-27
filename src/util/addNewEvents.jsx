@@ -1,7 +1,7 @@
 import postAddNewEvent from '../axios/postAddNewEvent';
 import putUpdateEvent from '../axios/putUpdateEvent';
 
-function addNewEvents(user, contactId, events, createBody, post) {
+function addNewEvents(user, contactId, events, createBody) {
   const n = events.length;
 
   if (n < 1) {

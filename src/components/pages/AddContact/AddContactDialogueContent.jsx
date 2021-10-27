@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { userContext } from '../../../appContext/userContext';
+import contactsContext from '../../../appContext/contactsContext';
 
 // styling
 import {
@@ -27,6 +28,7 @@ import postAddNewEvent from '../../../axios/postAddNewEvent';
 // util
 import addContactIdToEvent from '../../../util/addContactIdToEvent';
 import addNewEvents from '../../../util/addNewEvents';
+import { Contacts } from '@material-ui/icons';
 
 const useStyle = makeStyles((theme) => ({
   root: {
@@ -70,7 +72,7 @@ const phoneRegExp =
   /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
 
 function AddContactDialogueContent(props) {
-  const { editContact } = props;
+  const { editContact, handleClose, handleAddContact } = props;
   const contact = props?.contact;
   const user = useContext(userContext);
   const futureEvents = contact?.upcomingEvents;
@@ -87,15 +89,6 @@ function AddContactDialogueContent(props) {
   );
   const { scroll } = props;
 
-  // useEffect(() => {
-  //   if (editContact) {
-  //     initialiseEvents(setEventFieldFuture, futureEvents, contact.contactId);
-  //     initialiseEvents(setEventFieldPast, pastEvents, contact.contactId);
-  //   }
-  // }, []);
-
-  //   const initialFutureEvents = futureEvents.length > 0 ? :
-
   const validationSchema = Yup.object({
     Name: Yup.string('Please enter contact name').required(),
     Location: Yup.string('Enter location'),
@@ -104,7 +97,7 @@ function AddContactDialogueContent(props) {
     Birthday: Yup.date('Enter birthday'),
     Education: Yup.string('Enter education'),
     Industry: Yup.string('Enter industry'),
-    Email: Yup.string('Enter email').email('Enter a valid email').required(),
+    Email: Yup.string('Enter email').email('Enter a valid email'),
     PhoneNumber: Yup.string().matches(phoneRegExp, 'Phone number is not valid'),
   });
 
@@ -133,6 +126,9 @@ function AddContactDialogueContent(props) {
         Email,
       } = formik.values;
 
+      let newContact = null;
+      let newContactId = null;
+
       const requestBody = {
         Name: Name,
         Location: Location,
@@ -144,6 +140,7 @@ function AddContactDialogueContent(props) {
         Email: Email,
         Phone_Number: formik.values.PhoneNumber,
       };
+
       if (editContact) {
         contact.Name = Name;
         contact.Location = Location;
@@ -156,19 +153,32 @@ function AddContactDialogueContent(props) {
         contact.Phone_Number = formik.values.PhoneNumber;
         putUpdateContact(user, contact.contactId, requestBody);
       } else {
-        postAddContact(user, requestBody);
+        newContactId = await postAddContact(user, requestBody);
+
+        newContact = {
+          contactId: newContactId,
+          ...requestBody,
+          pastEvents: futureEvents,
+          upcomingEvents: pastEvents,
+        };
+
+        console.log(newContact.contactId);
+        addEventsToContact(newContact, eventFieldFuture, eventFieldPast);
+        handleAddContact(newContact);
       }
+
+      const targetContactId = editContact ? contact.contactId : newContactId;
 
       addNewEvents(
         user,
-        Email,
+        targetContactId,
         eventFieldPast,
         addContactIdToEvent,
         postAddNewEvent
       );
       addNewEvents(
         user,
-        Email,
+        targetContactId,
         eventFieldFuture,
         addContactIdToEvent,
         postAddNewEvent
@@ -201,6 +211,9 @@ function AddContactDialogueContent(props) {
           style={{ textTransform: 'none' }}
           type='submit'
           id='SubmitButton'
+          onClick={() => {
+            handleClose();
+          }}
         >
           Save
         </Button>
@@ -209,18 +222,9 @@ function AddContactDialogueContent(props) {
   );
 }
 
-function initialiseEvents(setEvents, data, contactID) {
-  var arr = [];
-  const n = data.length;
-  for (var i = 0; i < n; i++) {
-    arr.push({
-      Date: data[i].Date,
-      Occasion: data[i].Occasion,
-      Description: data[i].Description,
-      RelevantContact: contactID,
-      eventId: data[i].eventId,
-    });
-  }
-  setEvents(arr);
+function addEventsToContact(contact, futureEvents, pastEvents) {
+  contact.pastEvents = pastEvents;
+  contact.upcomingEvents = futureEvents;
 }
+
 export default AddContactDialogueContent;

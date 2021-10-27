@@ -49,8 +49,6 @@ function AddContact(props) {
         style={{ textTransform: 'none' }}
         onClick={() => {
           handleClickOpen('paper');
-          console.log('clicked!');
-          console.log('open  =', open);
         }}
       >
         Add Contact
@@ -60,6 +58,7 @@ function AddContact(props) {
         open={open}
         handleClose={handleClose}
         scroll={scroll}
+        handleAddContact={props.handleAddContact}
       ></AddContactDialogue>
     </React.Fragment>
   );
