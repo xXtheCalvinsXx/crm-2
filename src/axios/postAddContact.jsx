@@ -2,6 +2,7 @@ import React from 'react';
 import axios from 'axios';
 
 async function postAddContact(user, requestBody) {
+  let contactId = null;
   if (user) {
     const token = await user.getIdToken();
     const headers = await {
@@ -14,6 +15,7 @@ async function postAddContact(user, requestBody) {
       .post(`/contact`, requestBody, { headers })
       .then((response) => {
         console.log('added contact', response);
+        contactId = response.data;
       })
       .catch((error) => {
         console.log(error);
@@ -21,7 +23,7 @@ async function postAddContact(user, requestBody) {
       });
   }
 
-  return;
+  return contactId;
 }
 
 export default postAddContact;

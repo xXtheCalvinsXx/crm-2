@@ -131,14 +131,9 @@ QuickSearchToolbar.propTypes = {
 };
 
 export default function DatabaseList(props) {
-  // console.log('list props = ', props);
+  const { contacts, setContacts, removeContact } = props;
   const classes = useStyles();
-
-  const [selectionModel, setSelectionModel] = React.useState([]);
-  const [contacts, setContacts] = useState(
-    props.contactEventData.contactEventData.current
-  );
-
+  const [selectionModel, setSelectionModel] = useState([]);
   const [contact, setContact] = useState({});
 
   // Search Functionality
@@ -147,11 +142,13 @@ export default function DatabaseList(props) {
   const requestSearch = (searchValue) => {
     setSearchText(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-    const filteredRows = props.contactEventData.contactEventData.current.filter((row) => {
-      return Object.keys(row).some((field) => {
-        return searchRegex.test(row[field].toString());
-      });
-    });
+    const filteredRows = props.props.props.contactEventData.current.filter(
+      (row) => {
+        return Object.keys(row).some((field) => {
+          return searchRegex.test(row[field].toString());
+        });
+      }
+    );
     setContacts(filteredRows);
   };
 
@@ -159,14 +156,9 @@ export default function DatabaseList(props) {
     setContacts(contacts);
   }, [contacts]);
 
-  const removeContact = (contactId) => {
-    setContacts(
-      contacts.filter(function (e) {
-        console.log('id = ', e.contactId, 'target = ', contactId);
-        return e.contactId !== contactId;
-      })
-    );
-  };
+  useEffect(() => {
+    setContacts(props.props.props.contactEventData.current);
+  }, []);
 
   // Dialog Open and Close
   const [open, setOpen] = useState(false);
@@ -174,12 +166,8 @@ export default function DatabaseList(props) {
   const [editOpen, setEditOpen] = useState(false);
 
   const handleDelete = async (user, contact) => {
-    console.log('contacts pre delete ', contacts);
     const success = await deleteContact(user, contact.contactId);
-
     if (success) removeContact(contact.contactId);
-    console.log('contacts post delete', contacts);
-
     setDeleteContactModal(false);
     setOpen(false);
   };
@@ -202,7 +190,7 @@ export default function DatabaseList(props) {
   useEffect(() => {
     const getContact = (selectionModel) => {
       for (const contact of contacts) {
-        if (contact.contactId == selectionModel[0]) {
+        if (contact.contactId === selectionModel[0]) {
           setContact(contact);
         }
       }
@@ -236,7 +224,6 @@ export default function DatabaseList(props) {
           }}
         />
       </div>
-      {/* <div className={classes.root}> */}
       <ContactViewDialogue
         classes={classes}
         handleEditOpen={handleEditOpen}
@@ -248,8 +235,6 @@ export default function DatabaseList(props) {
         setDeleteContactModal={setDeleteContactModal}
         handleDelete={handleDelete}
       />
-
-      {/* </div> */}
     </div>
   );
 }

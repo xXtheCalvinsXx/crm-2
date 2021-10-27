@@ -53,6 +53,7 @@ function ContactViewDialogue(props) {
             contact={contact}
             editContact={true}
             avatar={contact.imageUrl}
+            onClose={handleClose}
           />
         )}
         {deleteContactModal && (

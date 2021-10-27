@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import SearchBar from "material-ui-search-bar";
+import SearchBar from 'material-ui-search-bar';
 
 // Styling
 import { Grid, Card, Avatar, Typography, Dialog } from '@material-ui/core';
@@ -26,16 +26,18 @@ const useStyles = makeStyles((theme) => ({
     outline: 'none',
     border: 0,
     borderBottom: 'none',
-    "&.MuiPaper-root .ForwardRef-root-43 .makeStyles-textField-30 .MuiPaper-elevation1 .MuiPaper-rounded": {
-      outline: 'none',
-      border: 0,
-      borderBottom: 'none',
-    },
-    "&.MuiButtonBase-root MuiIconButton-root ForwardRef-iconButton-44 ForwardRef-iconButtonHidden-45": {
-      outline: 'none',
-      border: 0,
-      borderBottom: 'none',
-    }
+    '&.MuiPaper-root .ForwardRef-root-43 .makeStyles-textField-30 .MuiPaper-elevation1 .MuiPaper-rounded':
+      {
+        outline: 'none',
+        border: 0,
+        borderBottom: 'none',
+      },
+    '&.MuiButtonBase-root MuiIconButton-root ForwardRef-iconButton-44 ForwardRef-iconButtonHidden-45':
+      {
+        outline: 'none',
+        border: 0,
+        borderBottom: 'none',
+      },
   },
   page: {
     width: '100%',
@@ -88,33 +90,18 @@ const useStyles = makeStyles((theme) => ({
 
 function DatabaseCard(props) {
   const classes = useStyles();
+  const { contacts, setContacts, removeContact } = props;
 
   // Dialog Open and Close
   const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
   const [clickedContact, setClickedContact] = useState([]);
-  const [contacts, setContacts] = useState(
-    props.props.props.contactEventData.contactEventData.current
-  );
-  const [searched, setSearched] = useState("");
+  const [searched, setSearched] = useState('');
   const [deleteContactModal, setDeleteContactModal] = useState(false);
 
-  const removeContact = (contactId) => {
-    setContacts(
-      contacts.filter(function (e) {
-        console.log('id = ', e.contactId, 'target = ', contactId);
-        return e.contactId !== contactId;
-      })
-    );
-  };
-
   const handleDelete = async (user, contact) => {
-    console.log('contacts pre delete ', contacts);
     const success = await deleteContact(user, contact.contactId);
-
     if (success) removeContact(contact.contactId);
-    console.log('contacts post delete', contacts);
-
     setDeleteContactModal(false);
     setOpen(false);
   };
@@ -122,7 +109,6 @@ function DatabaseCard(props) {
   const handleClickOpen = (contact) => {
     setOpen(true);
     setClickedContact(contact);
-    console.log('yay');
   };
 
   const handleClose = () => {
@@ -136,11 +122,13 @@ function DatabaseCard(props) {
   const requestSearch = (searchValue) => {
     setSearched(searchValue);
     const searchRegex = new RegExp(escapeRegExp(searchValue), 'i');
-    const filteredRows = props.props.props.contactEventData.contactEventData.current.filter((row) => {
-      return Object.keys(row).some((field) => {
-        return searchRegex.test(row[field].toString());
-      });
-    });
+    const filteredRows = props.props.props.contactEventData.current.filter(
+      (row) => {
+        return Object.keys(row).some((field) => {
+          return searchRegex.test(row[field].toString());
+        });
+      }
+    );
     setContacts(filteredRows);
   };
 
@@ -149,7 +137,7 @@ function DatabaseCard(props) {
   }, [contacts]);
 
   const cancelSearch = () => {
-    setSearched("");
+    setSearched('');
     requestSearch(searched);
   };
 
@@ -173,7 +161,11 @@ function DatabaseCard(props) {
             >
               <Grid justifyContent='space-between' container>
                 <Grid item>
-                  <Avatar src={contact.imageUrl} className={classes.sizeAvatar} variant='square' />
+                  <Avatar
+                    src={contact.imageUrl}
+                    className={classes.sizeAvatar}
+                    variant='square'
+                  />
                 </Grid>
                 <Grid item>
                   <Typography className={classes.typography}>Name</Typography>

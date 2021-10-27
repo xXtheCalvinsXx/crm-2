@@ -1,19 +1,13 @@
 import React, { useEffect, useState, useRef } from 'react';
-import {
-  Switch,
-  Route,
-  BrowserRouter as Router,
-  useHistory,
-  Redirect,
-} from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import PrivateRoute from './components/PrivateRoute';
 
 // redux
-import { setCurrentUser } from './redux/user/user.actions';
-import { connect, useSelector } from 'react-redux';
+// import { setCurrentUser } from './redux/user/user.actions';
+// import { connect, useSelector } from 'react-redux';
 
 // styling
-import { GlobalStyles, Title } from './styles.js';
+import { GlobalStyles } from './styles.js';
 import { ThemeProvider, createTheme } from '@material-ui/core/styles';
 import CircularProgress from '@mui/material/CircularProgress';
 import Box from '@mui/material/Box';
@@ -24,11 +18,9 @@ import Header from './components/header/Header';
 import Signup from './components/pages/Signup/Signup';
 import Login from './components/pages/Login/Login';
 import Database from './components/pages/DatabaseView/Database';
-import temp from './components/pages/temp';
 
 // firebase
 import { auth } from './firebase/firebaseUtils';
-import { onAuthStateChanged } from 'firebase/auth';
 import { useAuthState } from 'react-firebase-hooks/auth';
 
 // axios
@@ -38,6 +30,7 @@ import getEvents from './axios/getEvents';
 
 // user context
 import { userContext } from './appContext/userContext';
+import { ContactsProvider } from './appContext/contactsContext';
 
 const theme = createTheme({
   typography: {
@@ -52,10 +45,12 @@ const theme = createTheme({
 });
 
 function App() {
-  const [user, loading, error] = useAuthState(auth);
+  const [user, loading] = useAuthState(auth);
   const [queryLoading, setQueryLoading] = useState(true);
   const [contacts, setContacts] = useState([]);
   const [events, setEvents] = useState([]);
+  // let contacts = useRef();
+  // let events = useRef();
   const contactEventData = useRef([]);
 
   axios.defaults.baseURL =
@@ -86,26 +81,35 @@ function App() {
 
   useEffect(() => {
     const getData = async () => {
-      if (!events.length && user) {
-        const contacts = await getContacts(user);
-        const events = await getEvents(user);
-        setContacts(contacts);
-        setEvents(events);
-        console.log(contacts);
-        // setQueryLoading(false);
+      if (!events?.current?.length > 0 && user) {
+        console.log(events);
+        const tempc = (await getContacts(user)).data;
+        const tempe = (await getEvents(user)).data;
+        // contacts.current = tempc;
+        // events.current = tempe;
+        if (tempe) {
+          console.log('temp e = ', tempe.length);
+          setEvents(tempe);
+          setContacts(tempc);
+          console.log(events);
+          console.log(contacts);
+        }
       }
     };
     // setQueryLoading(true);
     getData();
     setQueryLoading(false);
+    console.log('exoted axio');
 
     // to add error handling
   }, [user]);
 
-  let history = useHistory();
   console.log('loading = ', queryLoading);
 
+  console.log(user);
+
   if (loading || queryLoading) {
+    console.log('still loading');
     return (
       <Box
         display='flex'
@@ -124,52 +128,55 @@ function App() {
           <Header />
 
           <userContext.Provider value={user}>
-            <Switch>
-              <PrivateRoute
-                exact
-                path='/'
-                component={Timeline}
-                props={{
-                  contacts: contacts,
-                  events: events,
-                  queryLoading: { queryLoading },
-                  contactEventData: { contactEventData },
-                }}
-              />
+            <ContactsProvider contacts={[]}>
+              <Switch>
+                <PrivateRoute
+                  exact
+                  path='/'
+                  component={Timeline}
+                  props={{
+                    contacts: contacts,
+                    events: events,
+                    queryLoading: queryLoading,
+                    contactEventData: contactEventData,
+                  }}
+                />
 
-              <Route
-                exact
-                path='/signup'
-                render={() => (user ? <Redirect to='/' /> : <Signup />)}
-              />
-              <Route
-                exact
-                path='/signin'
-                render={() => (user ? <Redirect to='/' /> : <Login />)}
-              />
-              <PrivateRoute
-                exact
-                path='/contacts'
-                component={Database}
-                props={{
-                  contacts: contacts,
-                  events: events,
-                  queryLoading: { queryLoading },
-                  contactEventData: { contactEventData },
-                }}
-              />
-            </Switch>
+                <Route
+                  exact
+                  path='/signup'
+                  render={() => (user ? <Redirect to='/' /> : <Signup />)}
+                />
+                <Route
+                  exact
+                  path='/signin'
+                  render={() => (user ? <Redirect to='/' /> : <Login />)}
+                />
+                <PrivateRoute
+                  exact
+                  path='/contacts'
+                  component={Database}
+                  props={{
+                    contacts: contacts,
+                    events: events,
+                    queryLoading: queryLoading,
+                    contactEventData: contactEventData,
+                  }}
+                />
+              </Switch>
+            </ContactsProvider>
           </userContext.Provider>
         </ThemeProvider>
       </div>
     );
 }
 
-const mapStateToProps = ({ user }) => ({
-  currentUser: user.currentUser,
-});
+// const mapStateToProps = ({ user }) => ({
+//   currentUser: user.currentUser,
+// });
 
-const mapDispatchToProps = (dispatch) => ({
-  setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-});
-export default connect(mapStateToProps, mapDispatchToProps)(App);
+// const mapDispatchToProps = (dispatch) => ({
+//   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
+// });
+// export default connect(mapStateToProps, mapDispatchToProps)(App);
+export default App;

@@ -1,12 +1,4 @@
-import React, { useContext, useState } from 'react';
-import PropTypes from 'prop-types';
-
-// firebase
-import { useAuthState } from 'react-firebase-hooks/auth';
-
-import axios from 'axios';
-
-import { userContext } from '../../../appContext/userContext';
+import React, { useState } from 'react';
 
 // firebase
 import { auth } from '../../../firebase/firebaseUtils';
@@ -71,9 +63,7 @@ function Database(props) {
 
   // const [user, loading, error] = useAuthState(auth);
   const [cardView, setCardView] = useState(false);
-
-  const user = useContext(userContext);
-
+  const [contacts, setContacts] = useState([]);
   const [anchorEl, setAnchorEl] = React.useState(null);
   const open = Boolean(anchorEl);
   const moreMenuClick = (event) => {
@@ -92,8 +82,29 @@ function Database(props) {
     }
   };
 
-  const loading = props.props.queryLoading.queryLoading;
-  if (loading || !props.props.contacts.data || !props.props.events.data) {
+  const handleAddContact = (newContact) => {
+    const arr = [...contacts];
+    arr.push(newContact);
+    setContacts(arr);
+    props.props.contactEventData.current = arr;
+  };
+
+  const removeContact = (contactId) => {
+    const arr = contacts.filter(function (e) {
+      return e.contactId !== contactId;
+    });
+    setContacts(arr);
+
+    props.props.contactEventData.current = arr;
+  };
+
+  const loading = props.props.queryLoading;
+
+  if (
+    loading ||
+    !props.props.contacts?.length > 0 ||
+    !props.props.events?.length > 0
+  ) {
     return (
       <React.Fragment>
         <Box
@@ -107,14 +118,12 @@ function Database(props) {
       </React.Fragment>
     );
   } else {
-    const data = createContactData(
-      props.props.contacts.data,
-      props.props.events.data
-    );
-
-    props.props.contactEventData.contactEventData.current = data;
-    // console.log(props.props.contactEventData.contactEventData.current);
-    // console.log(props);
+    if (!(props.props.contactEventData.current.length > 0)) {
+      const events = props.props.events;
+      const contacts_ = props.props.contacts;
+      const data = createContactData(contacts_, events);
+      props.props.contactEventData.current = data;
+    }
 
     return (
       <div className={classes.root}>
@@ -172,7 +181,7 @@ function Database(props) {
         <div className={classes.page}>
           <Grid justifyContent='space-between' container spacing={24}>
             <Grid item>
-              <AddContact />
+              <AddContact handleAddContact={handleAddContact} />
             </Grid>
             <Grid item>
               <div>
@@ -191,16 +200,23 @@ function Database(props) {
           <Divider />
           <br />
           <br />
-          {/* {console.log('db screen: ', props.props.contactEventData)} */}
           {cardView ? (
             <DatabaseCard
               props={props}
-              // contactEventData={props.props.contactEventData}
+              addContact={handleAddContact}
+              contacts={contacts}
+              initialData={props.props.contactEventData.current}
+              setContacts={setContacts}
+              removeContact={removeContact}
             />
           ) : (
             <DatabaseList
               props={props}
-              contactEventData={props.props.contactEventData}
+              addContact={handleAddContact}
+              contacts={contacts}
+              initialData={props.props.contactEventData.current}
+              setContacts={setContacts}
+              removeContact={removeContact}
             />
           )}
         </div>
