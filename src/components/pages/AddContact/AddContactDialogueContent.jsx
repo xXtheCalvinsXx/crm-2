@@ -211,9 +211,7 @@ function AddContactDialogueContent(props) {
           style={{ textTransform: 'none' }}
           type='submit'
           id='SubmitButton'
-          onClick={() => {
-            handleClose();
-          }}
+          onClick= {handleClose}
         >
           Save
         </Button>
