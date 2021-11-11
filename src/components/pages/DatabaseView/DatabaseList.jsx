@@ -83,11 +83,11 @@ const useStyles = makeStyles(
 const heading = [
   { field: 'Name', headerName: 'Name', width: 300 },
   { field: 'Position', headerName: 'Position', width: 250 },
-  { field: 'Company', headerName: 'Company', width: 300 },
-  { field: 'Email', headerName: 'Email', width: 400 },
+  { field: 'Company', headerName: 'Company', width: 250 },
+  { field: 'Email', headerName: 'Email', width: 350 },
   { field: 'Phone_Number', headerName: 'Phone Number', width: 300 },
-  { field: 'Education', headerName: 'Education', width: 250 },
-  { field: 'Location', headerName: 'Location', width: 300 },
+  { field: 'Education', headerName: 'Education', width: 225 },
+  { field: 'Location', headerName: 'Location', width: 150 },
 ];
 
 function QuickSearchToolbar(props) {

@@ -32,11 +32,27 @@ const useStyles = makeStyles((theme) =>
       color: 'black',
     },
     typography: {
-      marginLeft: theme.spacing(3.3),
+      marginLeft: theme.spacing(3.5),
       marginRight: theme.spacing(0.5),
       marginTop: theme.spacing(0.5),
       marginBottom: theme.spacing(0.5),
       color: 'gray',
+    },
+    typographyTable: {
+      marginLeft: theme.spacing(1.3),
+      marginRight: theme.spacing(0.5),
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+      color: 'gray',
+    },
+    typographyTableData: {
+      marginLeft: theme.spacing(1.3),
+      marginRight: theme.spacing(0.5),
+      marginTop: theme.spacing(0.5),
+      marginBottom: theme.spacing(0.5),
+    },
+    title: {
+      marginLeft: theme.spacing(3.3),
     },
     root: {
       padding: theme.spacing(0.5, 0.5, 0),
@@ -59,7 +75,10 @@ const useStyles = makeStyles((theme) =>
     sizeAvatar: {
       height: theme.spacing(23),
       width: theme.spacing(23),
-      margin: theme.spacing(3),
+      marginTop: theme.spacing(3),
+      marginBottom: theme.spacing(3),
+      marginRight: theme.spacing(3),
+      marginLeft: theme.spacing(6),
     },
     table: {
       minWidth: 500,
@@ -84,35 +103,40 @@ export default function ContactView(props) {
 
       <DialogTitle>
         <Avatar src={contact.imageUrl} className={classes.sizeAvatar} />
-        <Typography gutterBottom variant='h3'>
+        <Typography gutterBottom variant='h3' className={classes.title}>
           {contact.Name}
         </Typography>
       </DialogTitle>
 
       <DialogContent>
-        <Typography gutterBottom variant='h4'>
+        <Typography gutterBottom variant='h4' className={classes.title}>
           Future Interactions
         </Typography>
 
         <DialogContentText>
           <TableContainer>
             <Table className={classes.table}>
+            <colgroup>
+              <col style={{width:'17%'}}/>
+              <col style={{width:'27.7%'}}/>
+              <col style={{width:'65%'}}/>
+            </colgroup>
               <TableHead>
                 <TableRow>
                   <TableCell className={classes.cell}>
-                    <Typography variant='h6' className={classes.typography}>
+                    <Typography variant='h6' className={classes.typographyTable}>
                       {' '}
                       Date{' '}
                     </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align='left'>
-                    <Typography variant='h6' className={classes.typography}>
+                    <Typography variant='h6' className={classes.typographyTable}>
                       {' '}
                       Description{' '}
                     </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align='left'>
-                    <Typography variant='h6' className={classes.typography}>
+                    <Typography variant='h6' className={classes.typographyTable}>
                       {' '}
                       Notes{' '}
                     </Typography>
@@ -127,13 +151,13 @@ export default function ContactView(props) {
                       component='th'
                       scope='row'
                     >
-                      <Typography> {row.Date} </Typography>
+                      <Typography className={classes.typographyTableData}> {row.Date} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align='left'>
-                      <Typography> {row.Occasion} </Typography>
+                      <Typography className={classes.typographyTableData}> {row.Occasion} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align='left'>
-                      <Typography> {row.Description} </Typography>
+                      <Typography className={classes.typographyTableData}> {row.Description} </Typography>
                     </TableCell>
                   </TableRow>
                 ))}
@@ -144,7 +168,7 @@ export default function ContactView(props) {
 
         <br />
 
-        <Typography gutterBottom variant='h4'>
+        <Typography gutterBottom variant='h4' className={classes.title}>
           Details
         </Typography>
 
@@ -244,29 +268,34 @@ export default function ContactView(props) {
 
         <br />
 
-        <Typography gutterBottom variant='h4'>
+        <Typography gutterBottom variant='h4' className={classes.title}>
           Past Interactions
         </Typography>
 
         <DialogContentText>
           <TableContainer>
             <Table className={classes.table}>
+              <colgroup>
+                <col style={{width:'17%'}}/>
+                <col style={{width:'27.7%'}}/>
+                <col style={{width:'65%'}}/>
+              </colgroup>
               <TableHead>
                 <TableRow>
                   <TableCell className={classes.cell}>
-                    <Typography variant='h6' className={classes.typography}>
+                    <Typography variant='h6' className={classes.typographyTable}>
                       {' '}
                       Date{' '}
                     </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align='left'>
-                    <Typography variant='h6' className={classes.typography}>
+                    <Typography variant='h6' className={classes.typographyTable}>
                       {' '}
                       Description{' '}
                     </Typography>
                   </TableCell>
                   <TableCell className={classes.cell} align='left'>
-                    <Typography variant='h6' className={classes.typography}>
+                    <Typography variant='h6' className={classes.typographyTable}>
                       {' '}
                       Notes{' '}
                     </Typography>
@@ -281,13 +310,13 @@ export default function ContactView(props) {
                       component='th'
                       scope='row'
                     >
-                      <Typography> {row.Date} </Typography>
+                      <Typography className={classes.typographyTableData}> {row.Date} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align='left'>
-                      <Typography> {row.Occasion} </Typography>
+                      <Typography className={classes.typographyTableData}> {row.Occasion} </Typography>
                     </TableCell>
                     <TableCell className={classes.cell} align='left'>
-                      <Typography> {row.Description} </Typography>
+                      <Typography className={classes.typographyTableData}> {row.Description} </Typography>
                     </TableCell>
                   </TableRow>
                 ))}

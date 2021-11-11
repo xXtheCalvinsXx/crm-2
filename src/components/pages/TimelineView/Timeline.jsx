@@ -6,6 +6,7 @@ import { useAuthState } from 'react-firebase-hooks/auth';
 
 // axios
 import axios from 'axios';
+import deleteContact from '../../../axios/deleteContact';
 
 // context
 import { useContext } from 'react';
@@ -16,6 +17,7 @@ import ContactsContext from '../../../appContext/contactsContext';
 import { useHistory } from 'react-router';
 import Layout from '../../layout/Layout';
 import createContactData from '../../../util/createContactData';
+import ContactViewDialogue from '../ContactView/ContactViewDialogue';
 
 // styling
 import {
@@ -27,6 +29,7 @@ import {
   Box,
   CircularProgress,
   Menu,
+  Dialog,
   MenuItem,
 } from '@material-ui/core';
 import {
@@ -73,6 +76,9 @@ const useStyles = makeStyles((theme) => ({
   typography: {
     color: '#b0bec5',
   },
+  heading: {
+    marginLeft: theme.spacing(1.7)
+  },
 }));
 
 function getContactName(value, contacts) {
@@ -87,8 +93,36 @@ function getContactName(value, contacts) {
 }
 
 function Timeline(props) {
-  var date = new Date();
   const classes = useStyles();
+  var date = new Date();
+  const { contacts, setContacts, removeContact } = props;
+
+  // Dialog Open and Close
+  const [open, setOpen] = useState(false);
+  const [editOpen, setEditOpen] = useState(false);
+  const [clickedContact, setClickedContact] = useState([]);
+  const [searched, setSearched] = useState('');
+  const [deleteContactModal, setDeleteContactModal] = useState(false);
+
+  const handleDelete = async (user, contact) => {
+    const success = await deleteContact(user, contact.contactId);
+    if (success) removeContact(contact.contactId);
+    setDeleteContactModal(false);
+    setOpen(false);
+  };
+
+  const handleClickOpen = (contact) => {
+    setOpen(true);
+    setClickedContact(contact);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    setEditOpen(false);
+  };
+  const handleEditOpen = () => {
+    setEditOpen(true);
+  };
 
   const signOut = async () => {
     try {
@@ -101,7 +135,7 @@ function Timeline(props) {
   // const { contactData, setNewContacts } = useContext(ContactsContext);
 
   const [anchorEl, setAnchorEl] = React.useState(null);
-  const open = Boolean(anchorEl);
+  const openMenu = Boolean(anchorEl);
   const moreMenuClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
@@ -136,7 +170,8 @@ function Timeline(props) {
       props.props.contactEventData.current = data;
     }
 
-    // console.log(props.props.contactEventData.contactEventData.current);
+    console.log(events);
+    console.log(contacts);
 
     return (
       <React.Fragment>
@@ -162,7 +197,7 @@ function Timeline(props) {
                     <Menu
                       id='basic-menu'
                       anchorEl={anchorEl}
-                      open={open}
+                      open={openMenu}
                       onClose={moreMenuClose}
                       PaperProps={{
                         elevation: 0,
@@ -189,7 +224,7 @@ function Timeline(props) {
             </Toolbar>
           </AppBar>
           <div className={classes.page}>
-            <Typography gutterBottom variant='h4'>
+            <Typography gutterBottom variant='h4' className={classes.heading}>
               Upcoming this Week
             </Typography>
             <TableContainer>
@@ -227,7 +262,9 @@ function Timeline(props) {
                         Date.parse(value.Date) > Date.parse(date)
                     )
                     .map((value, index) => (
-                      <TableRow className={classes.row}>
+                      <TableRow 
+                        className={classes.row}
+                      >
                         <TableCell
                           className={classes.cell}
                           style={{ width: 250 }}
@@ -267,7 +304,7 @@ function Timeline(props) {
               </Table>
             </TableContainer>
             <br />
-            <Typography gutterBottom variant='h4'>
+            <Typography gutterBottom variant='h4' className={classes.heading}>
               Happening later
             </Typography>
             <TableContainer>
@@ -343,7 +380,31 @@ function Timeline(props) {
                 </TableBody>
               </Table>
             </TableContainer>
+            <Dialog
+              fullWidth
+              classes={{ paperFullWidth: classes.dialogCustomizedWidth }}
+              open={open}
+              onClose={handleClose}
+            >
+              <Grid justifyContent='space-between' container spacing={12}>
+                <Grid item></Grid>
+                <Grid item>
+                  <ContactViewDialogue
+                    classes={classes}
+                    handleEditOpen={handleEditOpen}
+                    editOpen={editOpen}
+                    open={open}
+                    contact={clickedContact}
+                    handleClose={handleClose}
+                    deleteContactModal={deleteContactModal}
+                    setDeleteContactModal={setDeleteContactModal}
+                    handleDelete={handleDelete}
+                  />
+                </Grid>
+              </Grid>
+            </Dialog>
           </div>
+          
         </div>
       </React.Fragment>
     );
