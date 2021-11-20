@@ -95,6 +95,10 @@ function App() {
           console.log(contacts);
         }
       }
+
+      setTimeout(function () {
+        console.log('I am the third log after 5 seconds');
+      }, 3000);
     };
     // setQueryLoading(true);
     getData();
@@ -103,10 +107,6 @@ function App() {
 
     // to add error handling
   }, [user]);
-
-  console.log('loading = ', queryLoading);
-
-  console.log(user);
 
   if (loading || queryLoading) {
     console.log('still loading');
@@ -120,63 +120,60 @@ function App() {
         <CircularProgress size={100} />
       </Box>
     );
-  } else
-    return (
-      <div className='App'>
-        <ThemeProvider theme={theme}>
-          <GlobalStyles />
-          <Header />
+  }
 
-          <userContext.Provider value={user}>
-            <ContactsProvider contacts={[]}>
-              <Switch>
-                <PrivateRoute
-                  exact
-                  path='/'
-                  component={Timeline}
-                  props={{
-                    contacts: contacts,
-                    events: events,
-                    queryLoading: queryLoading,
-                    contactEventData: contactEventData,
-                  }}
-                />
+  console.log('loading = ', queryLoading);
 
-                <Route
-                  exact
-                  path='/signup'
-                  render={() => (user ? <Redirect to='/' /> : <Signup />)}
-                />
-                <Route
-                  exact
-                  path='/signin'
-                  render={() => (user ? <Redirect to='/' /> : <Login />)}
-                />
-                <PrivateRoute
-                  exact
-                  path='/contacts'
-                  component={Database}
-                  props={{
-                    contacts: contacts,
-                    events: events,
-                    queryLoading: queryLoading,
-                    contactEventData: contactEventData,
-                  }}
-                />
-              </Switch>
-            </ContactsProvider>
-          </userContext.Provider>
-        </ThemeProvider>
-      </div>
-    );
+  console.log(user);
+
+  return (
+    <div className='App'>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Header />
+
+        <userContext.Provider value={user}>
+          <ContactsProvider contacts={[]}>
+            <Switch>
+              <PrivateRoute
+                exact
+                path='/'
+                component={Timeline}
+                props={{
+                  contacts: contacts,
+                  events: events,
+                  queryLoading: queryLoading,
+                  contactEventData: contactEventData,
+                }}
+              />
+
+              <Route
+                exact
+                path='/signup'
+                render={() => (user ? <Redirect to='/' /> : <Signup />)}
+              />
+              <Route
+                exact
+                path='/signin'
+                render={() => (user ? <Redirect to='/' /> : <Login />)}
+              />
+              <PrivateRoute
+                exact
+                path='/contacts'
+                component={Database}
+                props={{
+                  contacts: contacts,
+                  events: events,
+                  queryLoading: queryLoading,
+                  contactEventData: contactEventData,
+                }}
+              />
+            </Switch>
+          </ContactsProvider>
+        </userContext.Provider>
+      </ThemeProvider>
+    </div>
+  );
 }
 
-// const mapStateToProps = ({ user }) => ({
-//   currentUser: user.currentUser,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-// });
-// export default connect(mapStateToProps, mapDispatchToProps)(App);
 export default App;

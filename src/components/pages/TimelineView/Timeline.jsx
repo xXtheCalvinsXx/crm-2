@@ -77,7 +77,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#b0bec5',
   },
   heading: {
-    marginLeft: theme.spacing(1.7)
+    marginLeft: theme.spacing(1.7),
   },
 }));
 
@@ -126,11 +126,13 @@ function Timeline(props) {
 
   const signOut = async () => {
     try {
+      window.location.reload();
       await auth.signOut();
       return 'sign out success';
     } catch (error) {
       return 'sign out failure';
     }
+    window.location.reload();
   };
   // const { contactData, setNewContacts } = useContext(ContactsContext);
 
@@ -144,11 +146,12 @@ function Timeline(props) {
   };
 
   const loading = props.props.queryLoading;
-  if (
-    loading ||
-    !props.props.contacts?.length > 0 ||
-    !props.props.events?.length > 0
-  ) {
+  // if (
+  //   loading ||
+  //   !props.props.contacts?.length >= 0 ||
+  //   !props.props.events?.length >= 0
+  // ) {
+  if (loading) {
     return (
       <React.Fragment>
         <Box
@@ -262,9 +265,7 @@ function Timeline(props) {
                         Date.parse(value.Date) > Date.parse(date)
                     )
                     .map((value, index) => (
-                      <TableRow 
-                        className={classes.row}
-                      >
+                      <TableRow className={classes.row}>
                         <TableCell
                           className={classes.cell}
                           style={{ width: 250 }}
@@ -404,7 +405,6 @@ function Timeline(props) {
               </Grid>
             </Dialog>
           </div>
-          
         </div>
       </React.Fragment>
     );

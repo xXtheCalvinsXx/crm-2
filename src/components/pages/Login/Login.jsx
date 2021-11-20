@@ -60,15 +60,9 @@ function Login() {
     validationSchema: validationSchema,
     onSubmit: (values) => {
       console.log(values);
-      console.log('yeet!');
 
       signInWithEmailAndPassword(auth, values.email, values.password)
-        .then((userCredential) => {
-          // Signed in
-          // console.log('signed in!', userCredential.user);
-          // setCurrentUser(userCredential.user);
-          history.push('/');
-        })
+        .then((userCredential) => {})
         .catch((error) => {
           setLoginError(error);
           // const errorCode = error.code;

@@ -9,6 +9,7 @@ import TextField from '@material-ui/core/TextField';
 import { makeStyles } from '@material-ui/core/styles';
 import { Title } from '../../../styles';
 import Alert from '@mui/material/Alert';
+import { Grid, Divider, Typography, Avatar } from '@material-ui/core';
 
 // firebase
 import { createUserWithEmailAndPassword } from 'firebase/auth';
@@ -28,12 +29,12 @@ const useStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(3),
     marginRight: theme.spacing(2),
     // marginTop: 10,
-    width: textWidth,
+    // width: textWidth,
   },
   emailField: {
     marginBottom: theme.spacing(3),
     marginRight: theme.spacing(2),
-    width: '52ch',
+    width: '28.28rem',
   },
   alert: {
     marginTop: theme.spacing(10),
@@ -107,7 +108,7 @@ function Signup() {
       <Title>Sign up</Title>
 
       <form className={classes.root} onSubmit={formik.handleSubmit}>
-        <div>
+        <Container>
           <TextField
             id='firstName'
             name='firstName'
@@ -119,6 +120,7 @@ function Signup() {
             helperText={formik.touched.firstName && formik.errors.firstName}
             className={classes.textField}
             variant='outlined'
+            // style={{ float: 'left' }}
           />
           <TextField
             id='lastName'
@@ -131,22 +133,27 @@ function Signup() {
             helperText={formik.touched.lastName && formik.errors.lastName}
             className={classes.textField}
             variant='outlined'
+            // style={{ float: 'right' }}
           />
-        </div>
-        <TextField
-          id='email'
-          name='email'
-          label='Email'
-          value={formik.values.email}
-          onChange={formik.handleChange}
-          error={formik.touched.email && Boolean(formik.errors.email)}
-          helperText={formik.touched.email && formik.errors.email}
-          className={classes.emailField}
-          variant='outlined'
-          // fullWidth
-        />
+        </Container>
 
-        <div>
+        <Container>
+          <TextField
+            id='email'
+            name='email'
+            label='Email'
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+            className={classes.emailField}
+            variant='outlined'
+            style={{ width: '100% !important' }}
+            fullWidth
+          />
+        </Container>
+
+        <Container>
           <TextField
             id='password'
             name='password'
@@ -171,12 +178,15 @@ function Signup() {
             className={classes.textField}
             variant='outlined'
           />
+        </Container>
 
+        <ButtonContainer>
           <Button
             id='SubmitButton'
             color='primary'
             variant='outlined'
             type='submit'
+            // style={{ marginRight: '-5px' }}
           >
             Sign up
           </Button>
@@ -187,37 +197,30 @@ function Signup() {
           ) : (
             ''
           )}
-        </div>
+        </ButtonContainer>
       </form>
     </SignupContainer>
   );
 }
 
-// const mapStateToProps = ({ state }) => ({
-//   currentUser: state.currentUser,
-// });
-
-// const mapDispatchToProps = (dispatch) => ({
-//   setCurrentUser: (user) => dispatch(setCurrentUser(user)),
-// });
-
 export default Signup;
 
-// export default connect(mapStateToProps, mapDispatchToProps)(Signup);
+export const Container = styled.div`
+  /* width: 47.5%; */
+  display: flex;
+`;
 
+export const ButtonContainer = styled.div`
+  /* width: 47.5%; */
+  float: right !important;
+  margin-left: auto;
+  margin-right: 1rem;
+`;
 export const SignupContainer = styled.div`
-  width: 480px;
+  width: 50%;
   margin: auto;
   display: flex;
   flex-direction: column;
-  #SubmitButton {
-    margin-top: 10px;
-    align-items: flex-end;
-    width: 20%;
-    margin-left: auto;
-    margin-right: 20px;
-    float: right;
-  }
 
   height: 100%;
 `;

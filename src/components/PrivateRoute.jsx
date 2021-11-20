@@ -18,20 +18,20 @@ const PrivateRoute = ({ component: Component, props, ...rest }) => {
   const user1 = useContext(userContext);
   const [user, loading, error] = useAuthState(auth);
   const parentProps = props;
-  // console.log(parentProps);
+  console.log('pp = ', parentProps);
 
-  // if (loading) {
-  //   return (
-  //     <Box
-  //       display='flex'
-  //       justifyContent='center'
-  //       alignItems='center'
-  //       minHeight='100vh'
-  //     >
-  //       <CircularProgress size={100} />
-  //     </Box>
-  //   );
-  // }
+  if (parentProps.queryLoading) {
+    return (
+      <Box
+        display='flex'
+        justifyContent='center'
+        alignItems='center'
+        minHeight='100vh'
+      >
+        <CircularProgress size={100} />
+      </Box>
+    );
+  }
 
   return (
     <Route

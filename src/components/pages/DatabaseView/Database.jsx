@@ -75,6 +75,7 @@ function Database(props) {
 
   const signOut = async () => {
     try {
+      window.location.reload();
       await auth.signOut();
       return 'sign out success';
     } catch (error) {
@@ -100,11 +101,12 @@ function Database(props) {
 
   const loading = props.props.queryLoading;
 
-  if (
-    loading ||
-    !props.props.contacts?.length > 0 ||
-    !props.props.events?.length > 0
-  ) {
+  // if (
+  //   loading ||
+  //   !props.props.contacts?.length >= 0 ||
+  //   !props.props.events?.length >= 0
+  // ) {
+  if (loading) {
     return (
       <React.Fragment>
         <Box
@@ -167,6 +169,7 @@ function Database(props) {
                   >
                     <MenuItem
                       onClick={() => {
+                        localStorage.clear();
                         signOut();
                       }}
                     >
