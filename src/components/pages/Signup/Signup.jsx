@@ -183,7 +183,7 @@ function Signup() {
         <ButtonContainer>
           <Button
             id='SubmitButton'
-            color='primary'
+            // color='primary'
             variant='outlined'
             type='submit'
             // style={{ marginRight: '-5px' }}
@@ -214,13 +214,12 @@ export const ButtonContainer = styled.div`
   /* width: 47.5%; */
   float: right !important;
   margin-left: auto;
-  margin-right: 1rem;
+  margin-right: 1.6rem;
 `;
 export const SignupContainer = styled.div`
-  width: 50%;
+  width: 480px;
   margin: auto;
   display: flex;
   flex-direction: column;
-
   height: 100%;
 `;
